@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CrowdSystem : MonoBehaviour
@@ -5,17 +6,22 @@ public class CrowdSystem : MonoBehaviour
     [SerializeField] private float radius = 1f;
     [SerializeField] private float angle = 1f;
 
+    private readonly List<Runner> runners = new List<Runner>();
+
     private void Update()
     {
-        PlaceRunner();
+        PlaceRunners();
     }
 
-    private void PlaceRunner()
+    private void PlaceRunners()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        runners.Clear();
+        GetComponentsInChildren(false, runners);
+
+        for (int i = 0; i < runners.Count; i++)
         {
-            Vector3 childPosition = CalculateRunnerPosition(i);
-            transform.GetChild(i).localPosition = childPosition;
+            Vector3 runnerPosition = CalculateRunnerPosition(i);
+            runners[i].transform.localPosition = runnerPosition;
         }
     }
     
