@@ -5,19 +5,16 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float slideSpeed = 5f;
     [SerializeField] private float screenLimit = 2f;
-    
-    private float minX;
-    private float maxX;
 
     private Vector3 clickScreenPosition;
     private Vector3 clickPlayerPosition;
-
+    private CrowdSystem crowdSystem;
+    
     private void Awake()
     {
-        minX = -screenLimit;
-        maxX = screenLimit;
+        crowdSystem = GetComponentInChildren<CrowdSystem>();
     }
-
+    
     private void Update()
     {
         Move();
@@ -51,9 +48,11 @@ public class MovementController : MonoBehaviour
             Vector3 newPosition = transform.position;
 
             float targetX = clickPlayerPosition.x + xScreenDifference;
-            newPosition.x = Mathf.Clamp(targetX, minX, maxX);
-            
+            newPosition.x = Mathf.Clamp(targetX, -screenLimit / 2 + crowdSystem.GetCrowdRadius(), screenLimit / 2 - crowdSystem.GetCrowdRadius());
+
             transform.position = newPosition;
         }
     }
+    
+
 }

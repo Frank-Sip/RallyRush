@@ -24,11 +24,16 @@ public class CrowdSystem : MonoBehaviour
             runners[i].transform.localPosition = runnerPosition;
         }
     }
-    
+
     private Vector3 CalculateRunnerPosition(int index)
     {
         float x = radius * Mathf.Sqrt(index) * Mathf.Cos(Mathf.Deg2Rad * index * angle);
         float z = radius * Mathf.Sqrt(index) * Mathf.Sin(Mathf.Deg2Rad * index * angle);
         return new Vector3(x, 0f, z);
+    }
+    
+    public float GetCrowdRadius()
+    {
+        return radius * Mathf.Sqrt(runners.Count);
     }
 }
