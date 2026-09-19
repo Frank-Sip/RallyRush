@@ -1759,6 +1759,8 @@ MonoBehaviour:
   rightDoorValue: 5
   leftDoorBonus: 1
   leftDoorValue: 5
+  minimumValue: 2
+  maximumValue: 30
   bonusColor: {r: 0.22745098, g: 0.078431375, b: 1, a: 1}
   penaltyColor: {r: 1, g: 0.20392157, b: 0, a: 1}
   collisionDistance: 0.15
@@ -1912,6 +1914,8 @@ MonoBehaviour:
   rightDoorValue: 5
   leftDoorBonus: 1
   leftDoorValue: 5
+  minimumValue: 2
+  maximumValue: 30
   bonusColor: {r: 0.22745098, g: 0.078431375, b: 1, a: 1}
   penaltyColor: {r: 1, g: 0.20392157, b: 0, a: 1}
   collisionDistance: 0.15
@@ -2939,6 +2943,8 @@ MonoBehaviour:
   rightDoorValue: 5
   leftDoorBonus: 1
   leftDoorValue: 5
+  minimumValue: 2
+  maximumValue: 30
   bonusColor: {r: 0.22745098, g: 0.078431375, b: 1, a: 1}
   penaltyColor: {r: 1, g: 0.20392157, b: 0, a: 1}
   collisionDistance: 0.15
@@ -3916,6 +3922,8 @@ MonoBehaviour:
   rightDoorValue: 25
   leftDoorBonus: 1
   leftDoorValue: 25
+  minimumValue: 2
+  maximumValue: 30
   bonusColor: {r: 0.22745098, g: 0.078431375, b: 1, a: 1}
   penaltyColor: {r: 1, g: 0.20392157, b: 0, a: 1}
   collisionDistance: 0.15

@@ -426,8 +426,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83b989cd110c602489ef0f9ac04d8168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CrowdSystem
-  radius: 0.55
-  angle: 106.08
+  radius: 0.4
+  angle: 137.50777
 --- !u!1001 &7967026028252224042
 PrefabInstance:
   m_ObjectHideFlags: 0

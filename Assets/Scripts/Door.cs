@@ -27,6 +27,12 @@ public class Door : MonoBehaviour
     [SerializeField] private BonusType leftDoorBonus;
     [SerializeField] private int leftDoorValue;
 
+    [Header("Random Value Settings")]
+    [Min(1)]
+    [SerializeField] private int minimumValue = 2;
+    [Min(1)]
+    [SerializeField] private int maximumValue = 30;
+
     [Header("Door Colors")]
     [SerializeField] private Color bonusColor;
     [SerializeField] private Color penaltyColor;
@@ -40,6 +46,7 @@ public class Door : MonoBehaviour
 
     private void Awake()
     {
+        RandomizeDoors();
         SetDoors();
     }
 
@@ -51,6 +58,50 @@ public class Door : MonoBehaviour
     private void Update()
     {
         DetectRunnerCollision();
+    }
+
+    private void OnValidate()
+    {
+        minimumValue = Mathf.Max(1, minimumValue);
+        maximumValue = Mathf.Max(minimumValue, maximumValue);
+    }
+
+    private void RandomizeDoors()
+    {
+        bool guaranteeBonusOnRightDoor = Random.value < 0.5f;
+        BonusType guaranteedBonus = GetRandomPositiveBonus();
+        BonusType randomBonus = GetRandomBonus();
+
+        if (guaranteeBonusOnRightDoor)
+        {
+            rightDoorBonus = guaranteedBonus;
+            leftDoorBonus = randomBonus;
+        }
+        else
+        {
+            leftDoorBonus = guaranteedBonus;
+            rightDoorBonus = randomBonus;
+        }
+
+        rightDoorValue = GetRandomValue();
+        leftDoorValue = GetRandomValue();
+    }
+
+    private BonusType GetRandomPositiveBonus()
+    {
+        return Random.value < 0.5f ? BonusType.Addition : BonusType.Multiplication;
+    }
+
+    private BonusType GetRandomBonus()
+    {
+        return (BonusType)Random.Range(0, (int)BonusType.Division + 1);
+    }
+
+    private int GetRandomValue()
+    {
+        int min = Mathf.Max(1, minimumValue);
+        int max = Mathf.Max(min, maximumValue);
+        return Random.Range(min, max + 1);
     }
 
     private void SetDoors()
