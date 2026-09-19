@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,25 +9,21 @@ public class CrowdSystem : MonoBehaviour
 
     private readonly List<Runner> runners = new List<Runner>();
 
+    public event Action<int> RunnersAmountChanged;
+
     private void Awake()
     {
         ServiceProvider.RegisterService(this);
         RefreshRunners();
+        UpdateRunnerTargets();
     }
 
-    private void Update()
+    private void UpdateRunnerTargets()
     {
-        PlaceRunners();
-    }
-
-    private void PlaceRunners()
-    {
-        RefreshRunners();
-
         for (int i = 0; i < runners.Count; i++)
         {
             Vector3 runnerPosition = CalculateRunnerPosition(i);
-            runners[i].transform.localPosition = runnerPosition;
+            runners[i].SetTargetPosition(runnerPosition);
         }
     }
 
@@ -66,6 +63,9 @@ public class CrowdSystem : MonoBehaviour
         {
             RemoveRunners(targetAmount);
         }
+
+        UpdateRunnerTargets();
+        RunnersAmountChanged?.Invoke(runners.Count);
     }
 
     private void AddRunners(int targetAmount)
@@ -77,8 +77,8 @@ public class CrowdSystem : MonoBehaviour
         {
             Runner newRunner = Instantiate(runnerTemplate, runnersParent);
             newRunner.name = runnerTemplate.name;
-            newRunner.transform.localPosition = CalculateRunnerPosition(runners.Count);
             newRunner.transform.localRotation = runnerTemplate.transform.localRotation;
+            newRunner.SetTargetPosition(CalculateRunnerPosition(runners.Count));
             runners.Add(newRunner);
         }
     }

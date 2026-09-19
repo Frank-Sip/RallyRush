@@ -643,6 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d153fec36daa342a4ec7013b6df66f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Runner
+  repositionSpeed: 20
 --- !u!1 &5943458128525558898
 GameObject:
   m_ObjectHideFlags: 0

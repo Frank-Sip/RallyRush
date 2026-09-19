@@ -7,18 +7,28 @@ public class CrowdCount : MonoBehaviour
 
     private CrowdSystem crowdSystem;
 
+    private void Awake()
+    {
+        ServiceProvider.RegisterService(this);
+    }
+
     private void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
+        crowdSystem.RunnersAmountChanged += UpdateCrowdCount;
+        UpdateCrowdCount(crowdSystem.GetRunnersAmount());
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        UpdateCrowdCount();
+        if (crowdSystem != null)
+        {
+            crowdSystem.RunnersAmountChanged -= UpdateCrowdCount;
+        }
     }
 
-    private void UpdateCrowdCount()
+    private void UpdateCrowdCount(int amount)
     {
-        crowdCountText.text = crowdSystem.GetRunnersAmount().ToString();
+        crowdCountText.text = amount.ToString();
     }
 }
