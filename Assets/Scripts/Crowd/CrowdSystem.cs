@@ -49,6 +49,14 @@ public class CrowdSystem : MonoBehaviour
         return runners.Count;
     }
 
+    public bool RemoveRunner(Runner runner)
+    {
+        Destroy(runner.gameObject);
+        UpdateRunnerTargets();
+        RunnersAmountChanged?.Invoke(runners.Count);
+        return true;
+    }
+
     public void SetRunnersAmount(int amount)
     {
         RefreshRunners();
