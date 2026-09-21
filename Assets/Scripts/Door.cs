@@ -2,30 +2,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+[System.Serializable]
+public class DoorOption
+{
+    [SerializeField] private SpriteRenderer renderer;
+    [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private BonusType bonusType;
+    [SerializeField] private int value;
+
+    public Bounds Bounds => renderer.bounds;
+    public BonusType BonusType => bonusType;
+    public int Value => value;
+    public bool IsValid => renderer != null && text != null;
+
+    public void SetBonus(BonusType type, int newValue)
+    {
+        bonusType = type;
+        value = newValue;
+    }
+
+    public void SetVisual(string label, Color color)
+    {
+        text.text = label;
+        renderer.color = color;
+    }
+}
+
+public enum BonusType
+{
+    Addition,
+    Subtraction,
+    Multiplication,
+    Division
+}
+
 [SelectionBase]
 public class Door : MonoBehaviour
 {
-    enum BonusType
-    {
-        Addition,
-        Subtraction,
-        Multiplication,
-        Division
-    }
-
-    [Header("Visual Elements")]
-    [SerializeField] private SpriteRenderer rightDoorRenderer;
-    [SerializeField] private SpriteRenderer leftDoorRenderer;
-    [SerializeField] private TextMeshProUGUI rightDoorText;
-    [SerializeField] private TextMeshProUGUI leftDoorText;
-
-    [Header("Right Door Settings")]
-    [SerializeField] private BonusType rightDoorBonus;
-    [SerializeField] private int rightDoorValue;
-
-    [Header("Left Door Settings")]
-    [SerializeField] private BonusType leftDoorBonus;
-    [SerializeField] private int leftDoorValue;
+    [Header("Door Options")]
+    [SerializeField] private DoorOption[] doorOptions;
 
     [Header("Random Value Settings")]
     [Min(1)]
@@ -68,23 +83,16 @@ public class Door : MonoBehaviour
 
     private void RandomizeDoors()
     {
-        bool guaranteeBonusOnRightDoor = Random.value < 0.5f;
-        BonusType guaranteedBonus = GetRandomPositiveBonus();
-        BonusType randomBonus = GetRandomBonus();
+        int guaranteedBonusIndex = Random.Range(0, doorOptions.Length);
 
-        if (guaranteeBonusOnRightDoor)
+        for (int i = 0; i < doorOptions.Length; i++)
         {
-            rightDoorBonus = guaranteedBonus;
-            leftDoorBonus = randomBonus;
-        }
-        else
-        {
-            leftDoorBonus = guaranteedBonus;
-            rightDoorBonus = randomBonus;
-        }
+            BonusType bonusType = i == guaranteedBonusIndex
+                ? GetRandomPositiveBonus()
+                : GetRandomBonus();
 
-        rightDoorValue = GetRandomValue();
-        leftDoorValue = GetRandomValue();
+            doorOptions[i].SetBonus(bonusType, GetRandomValue());
+        }
     }
 
     private BonusType GetRandomPositiveBonus()
@@ -106,44 +114,25 @@ public class Door : MonoBehaviour
 
     private void SetDoors()
     {
-        switch (rightDoorBonus)
+        for (int i = 0; i < doorOptions.Length; i++)
         {
-            case BonusType.Addition:
-                rightDoorText.text = "+" + rightDoorValue;
-                rightDoorRenderer.color = bonusColor;
-                break;
-            case BonusType.Subtraction:
-                rightDoorText.text = "-" + rightDoorValue;
-                rightDoorRenderer.color = penaltyColor;
-                break;
-            case BonusType.Multiplication:
-                rightDoorText.text = "x" + rightDoorValue;
-                rightDoorRenderer.color = bonusColor;
-                break;
-            case BonusType.Division:
-                rightDoorText.text = "/" + rightDoorValue;
-                rightDoorRenderer.color = penaltyColor;
-                break;
-        }
+            DoorOption option = doorOptions[i];
 
-        switch (leftDoorBonus)
-        {
-            case BonusType.Addition:
-                leftDoorText.text = "+" + leftDoorValue;
-                leftDoorRenderer.color = bonusColor;
-                break;
-            case BonusType.Subtraction:
-                leftDoorText.text = "-" + leftDoorValue;
-                leftDoorRenderer.color = penaltyColor;
-                break;
-            case BonusType.Multiplication:
-                leftDoorText.text = "x" + leftDoorValue;
-                leftDoorRenderer.color = bonusColor;
-                break;
-            case BonusType.Division:
-                leftDoorText.text = "/" + leftDoorValue;
-                leftDoorRenderer.color = penaltyColor;
-                break;
+            switch (option.BonusType)
+            {
+                case BonusType.Addition:
+                    option.SetVisual("+" + option.Value, bonusColor);
+                    break;
+                case BonusType.Subtraction:
+                    option.SetVisual("-" + option.Value, penaltyColor);
+                    break;
+                case BonusType.Multiplication:
+                    option.SetVisual("x" + option.Value, bonusColor);
+                    break;
+                case BonusType.Division:
+                    option.SetVisual("/" + option.Value, penaltyColor);
+                    break;
+            }
         }
     }
 
@@ -152,7 +141,7 @@ public class Door : MonoBehaviour
         if (wasUsed) return;
 
 
-        Vector3 doorCenter = (leftDoorRenderer.bounds.center + rightDoorRenderer.bounds.center) / 2f;
+        Vector3 doorCenter = GetDoorCenter();
         float distanceToDoorPlane = Mathf.Abs(Vector3.Dot(crowdSystem.transform.position - doorCenter, transform.forward));
 
         if (distanceToDoorPlane > crowdSystem.GetCrowdRadius() + collisionDistance) return;
@@ -160,37 +149,41 @@ public class Door : MonoBehaviour
         IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
         float collisionDistanceSqr = collisionDistance * collisionDistance;
         float closestDistanceSqr = collisionDistanceSqr;
-        BonusType selectedBonus = default;
-        int selectedValue = 0;
-        bool collisionDetected = false;
+        DoorOption selectedOption = null;
 
         for (int i = 0; i < runners.Count; i++)
         {
             Vector3 runnerPosition = runners[i].transform.position;
-            float rightDistanceSqr = GetSqrDistanceXZ(runnerPosition, rightDoorRenderer.bounds);
-            float leftDistanceSqr = GetSqrDistanceXZ(runnerPosition, leftDoorRenderer.bounds);
 
-            if (rightDistanceSqr <= closestDistanceSqr)
+            for (int optionIndex = 0; optionIndex < doorOptions.Length; optionIndex++)
             {
-                closestDistanceSqr = rightDistanceSqr;
-                selectedBonus = rightDoorBonus;
-                selectedValue = rightDoorValue;
-                collisionDetected = true;
-            }
+                DoorOption option = doorOptions[optionIndex];
+                float distanceSqr = GetSqrDistanceXZ(runnerPosition, option.Bounds);
 
-            if (leftDistanceSqr < closestDistanceSqr)
-            {
-                closestDistanceSqr = leftDistanceSqr;
-                selectedBonus = leftDoorBonus;
-                selectedValue = leftDoorValue;
-                collisionDetected = true;
+                if (distanceSqr <= closestDistanceSqr)
+                {
+                    closestDistanceSqr = distanceSqr;
+                    selectedOption = option;
+                }
             }
         }
 
-        if (!collisionDetected) return;
+        if (selectedOption == null) return;
 
-        SetRunnerAmount(selectedBonus, selectedValue);
+        SetRunnerAmount(selectedOption.BonusType, selectedOption.Value);
         wasUsed = true;
+    }
+
+    private Vector3 GetDoorCenter()
+    {
+        Vector3 center = Vector3.zero;
+
+        for (int i = 0; i < doorOptions.Length; i++)
+        {
+            center += doorOptions[i].Bounds.center;
+        }
+
+        return center / doorOptions.Length;
     }
 
     private void SetRunnerAmount(BonusType bonusType, int configuredValue)

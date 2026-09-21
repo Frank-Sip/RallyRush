@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float slideSpeed = 5f;
+    [Min(0)] [SerializeField] private float moveSpeed = 5f;
+    [Min(0)] [SerializeField] private float slideSpeed = 5f;
     [SerializeField] private float screenLimit = 2f;
 
     private Vector3 clickScreenPosition;
