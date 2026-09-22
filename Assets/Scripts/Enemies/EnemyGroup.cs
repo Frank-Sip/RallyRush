@@ -11,6 +11,10 @@ public class EnemyGroup : MonoBehaviour
     [Min(1)] [SerializeField] private int maxEnemies = 5;
     [SerializeField] private string attackAnimationTrigger = "Attack";
 
+    [Header("UI Movement")]
+    [SerializeField] private Transform enemyGroupUI;
+    [Min(0)] [SerializeField] private float uiMoveSpeed = 5f;
+
     private readonly List<Enemy> enemies = new List<Enemy>();
     private readonly HashSet<Runner> assignedRunners = new HashSet<Runner>();
 
@@ -83,7 +87,19 @@ public class EnemyGroup : MonoBehaviour
             SetEnemiesAttackAnimation();
         }
 
+        MoveUIToCrowd();
         AssignTargets();
+    }
+
+    private void MoveUIToCrowd()
+    {
+        Vector3 targetPosition = crowdSystem.transform.position;
+        targetPosition.y = enemyGroupUI.position.y;
+
+        enemyGroupUI.position = Vector3.MoveTowards(
+            enemyGroupUI.position,
+            targetPosition,
+            uiMoveSpeed * Time.deltaTime);
     }
 
     private void SetEnemiesAttackAnimation()
@@ -178,7 +194,6 @@ public class EnemyGroup : MonoBehaviour
         }
 
         EnemiesAmountChanged?.Invoke(enemies.Count);
-        CheckRemainingEnemies();
     }
 
     public int GetEnemiesAmount()
@@ -186,7 +201,7 @@ public class EnemyGroup : MonoBehaviour
         return enemies.Count;
     }
 
-    private void CheckRemainingEnemies()
+    public void Die()
     {
         if (enemies.Count > 0)
         {
@@ -198,7 +213,7 @@ public class EnemyGroup : MonoBehaviour
             movementController.RestoreRegularSpeed();
         }
 
-        enabled = false;
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmosSelected()

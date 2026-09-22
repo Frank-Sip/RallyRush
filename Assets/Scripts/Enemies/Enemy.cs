@@ -38,6 +38,7 @@ public abstract class Enemy : MonoBehaviour
 
         IsDead = true;
         Target = null;
-        enemyGroup?.RemoveEnemy(this);
+        enemyGroup.RemoveEnemy(this);
+        enemyGroup.Die();
     }
 }
