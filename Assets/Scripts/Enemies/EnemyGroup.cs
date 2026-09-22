@@ -4,6 +4,10 @@ using UnityEngine;
 public class EnemyGroup : MonoBehaviour
 {
     [SerializeField] private float detectionRange = 5f;
+    [Min(0)] [SerializeField] private float spawnRadius = 2f;
+    [SerializeField] private float placementAngle = 137.5f;
+    [Min(1)] [SerializeField] private int minEnemies = 1;
+    [Min(1)] [SerializeField] private int maxEnemies = 5;
     [SerializeField] private string attackAnimationTrigger = "Attack";
 
     private readonly List<Enemy> enemies = new List<Enemy>();
@@ -22,6 +26,43 @@ public class EnemyGroup : MonoBehaviour
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
         movementController = crowdSystem.GetComponentInParent<MovementController>();
+        SpawnEnemies();
+    }
+
+    private void SpawnEnemies()
+    {
+        int minimum = Mathf.Max(1, minEnemies);
+        int maximum = Mathf.Max(minimum, maxEnemies);
+        int enemiesToSpawn = Random.Range(minimum, maximum + 1);
+
+        Enemy enemyTemplate = enemies[0];
+
+        while (enemies.Count < enemiesToSpawn)
+        {
+            Enemy newEnemy = Instantiate(enemyTemplate, transform);
+            newEnemy.name = enemyTemplate.name;
+            newEnemy.SetEnemyGroup(this);
+            enemies.Add(newEnemy);
+        }
+
+        PlaceEnemies();
+    }
+
+    private void PlaceEnemies()
+    {
+        int outerIndex = Mathf.Max(1, enemies.Count - 1);
+
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            float normalizedRadius = Mathf.Sqrt((float)i / outerIndex);
+            float distanceFromCenter = spawnRadius * normalizedRadius;
+            float angleInRadians = Mathf.Deg2Rad * i * placementAngle;
+
+            float x = distanceFromCenter * Mathf.Cos(angleInRadians);
+            float z = distanceFromCenter * Mathf.Sin(angleInRadians);
+
+            enemies[i].transform.localPosition = new Vector3(x, 0f, z);
+        }
     }
 
     private void Update()
@@ -152,5 +193,14 @@ public class EnemyGroup : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, spawnRadius);
+    }
+
+    private void OnValidate()
+    {
+        minEnemies = Mathf.Max(1, minEnemies);
+        maxEnemies = Mathf.Max(minEnemies, maxEnemies);
     }
 }
