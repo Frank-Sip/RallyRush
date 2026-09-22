@@ -119,13 +119,15 @@ public class EnemyGroup : MonoBehaviour
                 continue;
             }
 
-            Runner nearestRunner = FindNearestAvailableRunner(enemy.transform.position);
+            bool onlyAvailableRunners = assignedRunners.Count < crowdSystem.GetRunners().Count;
+            Runner nearestRunner = FindNearestRunner(enemy.transform.position, onlyAvailableRunners);
+
             enemy.SetTarget(nearestRunner);
             assignedRunners.Add(nearestRunner);
         }
     }
 
-    private Runner FindNearestAvailableRunner(Vector3 enemyPosition)
+    private Runner FindNearestRunner(Vector3 enemyPosition, bool onlyAvailableRunners)
     {
         IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
         Runner nearestRunner = null;
@@ -134,7 +136,7 @@ public class EnemyGroup : MonoBehaviour
         for (int i = 0; i < runners.Count; i++)
         {
             Runner runner = runners[i];
-            if (assignedRunners.Contains(runner))
+            if (onlyAvailableRunners && assignedRunners.Contains(runner))
             {
                 continue;
             }
