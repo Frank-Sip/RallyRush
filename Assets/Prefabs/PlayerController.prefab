@@ -411,7 +411,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b8fb2623ae26741b18b3d3c421facc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementController
-  moveSpeed: 5
+  regularSpeed: 5
+  combatSpeed: 0.5
+  speedChangeRate: 10
   slideSpeed: 5
   screenLimit: 10
 --- !u!114 &6906829037168895027
@@ -428,6 +430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CrowdSystem
   radius: 0.4
   angle: 137.50777
+  maxRunners: 999
 --- !u!1001 &7967026028252224042
 PrefabInstance:
   m_ObjectHideFlags: 0

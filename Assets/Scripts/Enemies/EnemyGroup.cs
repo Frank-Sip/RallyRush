@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ public class EnemyGroup : MonoBehaviour
     private MovementController movementController;
     private bool isAttacking;
 
+    public event Action<int> EnemiesAmountChanged;
+
     private void Awake()
     {
         RefreshEnemies();
@@ -33,7 +36,7 @@ public class EnemyGroup : MonoBehaviour
     {
         int minimum = Mathf.Max(1, minEnemies);
         int maximum = Mathf.Max(minimum, maxEnemies);
-        int enemiesToSpawn = Random.Range(minimum, maximum + 1);
+        int enemiesToSpawn = UnityEngine.Random.Range(minimum, maximum + 1);
 
         Enemy enemyTemplate = enemies[0];
 
@@ -46,6 +49,7 @@ public class EnemyGroup : MonoBehaviour
         }
 
         PlaceEnemies();
+        EnemiesAmountChanged?.Invoke(enemies.Count);
     }
 
     private void PlaceEnemies()
@@ -173,7 +177,13 @@ public class EnemyGroup : MonoBehaviour
             return;
         }
 
+        EnemiesAmountChanged?.Invoke(enemies.Count);
         CheckRemainingEnemies();
+    }
+
+    public int GetEnemiesAmount()
+    {
+        return enemies.Count;
     }
 
     private void CheckRemainingEnemies()
@@ -200,9 +210,4 @@ public class EnemyGroup : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, spawnRadius);
     }
 
-    private void OnValidate()
-    {
-        minEnemies = Mathf.Max(1, minEnemies);
-        maxEnemies = Mathf.Max(minEnemies, maxEnemies);
-    }
 }

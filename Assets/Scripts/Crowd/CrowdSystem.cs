@@ -6,6 +6,7 @@ public class CrowdSystem : MonoBehaviour
 {
     [SerializeField] private float radius = 1f;
     [SerializeField] private float angle = 1f;
+    [Min(1)] [SerializeField] private int maxRunners = 999;
 
     private readonly List<Runner> runners = new List<Runner>();
 
@@ -15,6 +16,11 @@ public class CrowdSystem : MonoBehaviour
     {
         ServiceProvider.RegisterService(this);
         RefreshRunners();
+
+        if (runners.Count > maxRunners)
+        {
+            RemoveRunners(maxRunners);
+        }
     }
 
     private void UpdateRunnerTargets()
@@ -63,7 +69,7 @@ public class CrowdSystem : MonoBehaviour
     {
         RefreshRunners();
 
-        int targetAmount = Mathf.Max(1, amount);
+        int targetAmount = Mathf.Clamp(amount, 1, maxRunners);
 
         if (targetAmount > runners.Count)
         {
