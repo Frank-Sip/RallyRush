@@ -1,23 +1,36 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MovementController : MonoBehaviour
 {
-    [Min(0)] [SerializeField] private float moveSpeed = 5f;
+    [Min(0)] [SerializeField] private float regularSpeed = 5f;
+    [Min(0)] [SerializeField] private float combatSpeed = 2.5f;
+    [Min(0)] [SerializeField] private float speedChangeRate = 5f;
     [Min(0)] [SerializeField] private float slideSpeed = 5f;
     [SerializeField] private float screenLimit = 2f;
 
     private Vector3 clickScreenPosition;
     private Vector3 clickPlayerPosition;
     private CrowdSystem crowdSystem;
+    private float currentSpeed;
+    private float targetSpeed;
     
     private void Awake()
     {
         crowdSystem = GetComponentInChildren<CrowdSystem>();
+        currentSpeed = regularSpeed;
+        targetSpeed = regularSpeed;
     }
     
     private void Update()
     {
+        UpdateSpeed();
         Move();
+    }
+
+    private void UpdateSpeed()
+    {
+        currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, speedChangeRate * Time.deltaTime);
     }
 
     private void Move()
@@ -28,7 +41,22 @@ public class MovementController : MonoBehaviour
 
     private void MoveForward()
     {
-        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+    }
+
+    public void SetSpeed(float speed)
+    {
+        targetSpeed = Mathf.Max(0f, speed);
+    }
+
+    public void ReduceSpeedForCombat()
+    {
+        SetSpeed(combatSpeed);
+    }
+
+    public void RestoreRegularSpeed()
+    {
+        SetSpeed(regularSpeed);
     }
 
     private void LateralMovement()

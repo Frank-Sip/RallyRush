@@ -15,7 +15,6 @@ public class CrowdSystem : MonoBehaviour
     {
         ServiceProvider.RegisterService(this);
         RefreshRunners();
-        UpdateRunnerTargets();
     }
 
     private void UpdateRunnerTargets()
@@ -51,8 +50,11 @@ public class CrowdSystem : MonoBehaviour
 
     public bool RemoveRunner(Runner runner)
     {
-        Destroy(runner.gameObject);
-        UpdateRunnerTargets();
+        if (!runners.Remove(runner))
+        {
+            return false;
+        }
+
         RunnersAmountChanged?.Invoke(runners.Count);
         return true;
     }

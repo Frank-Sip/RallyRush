@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class MeleeEnemy : Enemy
 {
-    [SerializeField] private float moveSpeed = 6f;
-    [SerializeField] private float attackDistance = 0.01f;
-
-    private CrowdSystem crowdSystem;
-
-    private void Start()
-    {
-        crowdSystem = ServiceProvider.GetService<CrowdSystem>();
-    }
+    [Min(0)] [SerializeField] private float moveSpeed = 6f;
+    [Min(0)] [SerializeField] private float attackDistance = 0.01f;
 
     private void Update()
     {
@@ -22,10 +15,7 @@ public class MeleeEnemy : Enemy
         Vector3 targetPosition = Target.transform.position;
         targetPosition.y = transform.position.y;
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetPosition,
-            moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
         float attackDistanceSqr = attackDistance * attackDistance;
         if ((transform.position - targetPosition).sqrMagnitude <= attackDistanceSqr)
@@ -38,10 +28,18 @@ public class MeleeEnemy : Enemy
     {
         Runner attackedRunner = Target;
         SetTarget(null);
+        attackedRunner.Die();
+        Die();
+    }
 
-        if (crowdSystem.RemoveRunner(attackedRunner))
+    public override void Die()
+    {
+        if (IsDead)
         {
-            Destroy(gameObject);
+            return;
         }
+
+        base.Die();
+        Destroy(gameObject);
     }
 }

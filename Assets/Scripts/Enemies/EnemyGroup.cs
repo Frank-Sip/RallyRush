@@ -4,11 +4,13 @@ using UnityEngine;
 public class EnemyGroup : MonoBehaviour
 {
     [SerializeField] private float detectionRange = 5f;
+    [SerializeField] private string attackAnimationTrigger = "Attack";
 
     private readonly List<Enemy> enemies = new List<Enemy>();
     private readonly HashSet<Runner> assignedRunners = new HashSet<Runner>();
 
     private CrowdSystem crowdSystem;
+    private MovementController movementController;
     private bool isAttacking;
 
     private void Awake()
@@ -19,6 +21,7 @@ public class EnemyGroup : MonoBehaviour
     private void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
+        movementController = crowdSystem.GetComponentInParent<MovementController>();
     }
 
     private void Update()
@@ -31,9 +34,19 @@ public class EnemyGroup : MonoBehaviour
             }
 
             isAttacking = true;
+            movementController.ReduceSpeedForCombat();
+            SetEnemiesAttackAnimation();
         }
 
         AssignTargets();
+    }
+
+    private void SetEnemiesAttackAnimation()
+    {
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].SetAnimTrigger(attackAnimationTrigger);
+        }
     }
 
     private bool IsCrowdInRange()
@@ -47,7 +60,6 @@ public class EnemyGroup : MonoBehaviour
 
     private void AssignTargets()
     {
-        enemies.RemoveAll(enemy => enemy == null);
         assignedRunners.Clear();
 
         for (int i = 0; i < enemies.Count; i++)
@@ -104,6 +116,36 @@ public class EnemyGroup : MonoBehaviour
     {
         enemies.Clear();
         GetComponentsInChildren(false, enemies);
+
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].SetEnemyGroup(this);
+        }
+    }
+
+    public void RemoveEnemy(Enemy enemy)
+    {
+        if (!enemies.Remove(enemy))
+        {
+            return;
+        }
+
+        CheckRemainingEnemies();
+    }
+
+    private void CheckRemainingEnemies()
+    {
+        if (enemies.Count > 0)
+        {
+            return;
+        }
+
+        if (isAttacking)
+        {
+            movementController.RestoreRegularSpeed();
+        }
+
+        enabled = false;
     }
 
     private void OnDrawGizmosSelected()
