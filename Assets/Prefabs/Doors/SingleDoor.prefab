@@ -174,14 +174,7 @@ MonoBehaviour:
     text: {fileID: 4110904867575283070}
     bonusType: 1
     value: 5
-  - renderer: {fileID: 0}
-    text: {fileID: 0}
-    bonusType: 1
-    value: 5
-  minimumValue: 2
-  maximumValue: 30
-  bonusColor: {r: 0.22745098, g: 0.078431375, b: 1, a: 1}
-  penaltyColor: {r: 1, g: 0.20392157, b: 0, a: 1}
+  doorSettings: {fileID: 11400000, guid: 21b6d022d2fa22a4babf8349bcc4f621, type: 2}
   collisionDistance: 0.15
 --- !u!1 &5230290599389308794
 GameObject:

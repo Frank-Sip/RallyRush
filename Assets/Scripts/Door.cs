@@ -42,15 +42,8 @@ public class Door : MonoBehaviour
     [Header("Door Options")]
     [SerializeField] private DoorOption[] doorOptions;
 
-    [Header("Random Value Settings")]
-    [Min(1)]
-    [SerializeField] private int minimumValue = 2;
-    [Min(1)]
-    [SerializeField] private int maximumValue = 30;
-
-    [Header("Door Colors")]
-    [SerializeField] private Color bonusColor;
-    [SerializeField] private Color penaltyColor;
+    [Header("Settings")]
+    [SerializeField] private DoorSettingsSO doorSettings;
 
     [Header("Collision Detection")]
     [Min(0f)]
@@ -75,12 +68,6 @@ public class Door : MonoBehaviour
         DetectRunnerCollision();
     }
 
-    private void OnValidate()
-    {
-        minimumValue = Mathf.Max(1, minimumValue);
-        maximumValue = Mathf.Max(minimumValue, maximumValue);
-    }
-
     private void RandomizeDoors()
     {
         int guaranteedBonusIndex = Random.Range(0, doorOptions.Length);
@@ -91,7 +78,7 @@ public class Door : MonoBehaviour
                 ? GetRandomPositiveBonus()
                 : GetRandomBonus();
 
-            doorOptions[i].SetBonus(bonusType, GetRandomValue());
+            doorOptions[i].SetBonus(bonusType, doorSettings.GetRandomValue(bonusType));
         }
     }
 
@@ -105,13 +92,6 @@ public class Door : MonoBehaviour
         return (BonusType)Random.Range(0, (int)BonusType.Division + 1);
     }
 
-    private int GetRandomValue()
-    {
-        int min = Mathf.Max(1, minimumValue);
-        int max = Mathf.Max(min, maximumValue);
-        return Random.Range(min, max + 1);
-    }
-
     private void SetDoors()
     {
         for (int i = 0; i < doorOptions.Length; i++)
@@ -121,16 +101,16 @@ public class Door : MonoBehaviour
             switch (option.BonusType)
             {
                 case BonusType.Addition:
-                    option.SetVisual("+" + option.Value, bonusColor);
+                    option.SetVisual("+" + option.Value, doorSettings.BonusColor);
                     break;
                 case BonusType.Subtraction:
-                    option.SetVisual("-" + option.Value, penaltyColor);
+                    option.SetVisual("-" + option.Value, doorSettings.PenaltyColor);
                     break;
                 case BonusType.Multiplication:
-                    option.SetVisual("x" + option.Value, bonusColor);
+                    option.SetVisual("x" + option.Value, doorSettings.BonusColor);
                     break;
                 case BonusType.Division:
-                    option.SetVisual("/" + option.Value, penaltyColor);
+                    option.SetVisual("/" + option.Value, doorSettings.PenaltyColor);
                     break;
             }
         }
