@@ -5,12 +5,14 @@ public class RangedEnemyGroup : EnemyGroup
 {
     [SerializeField] private float shootPointHeight = 1f;
 
+    private string ShootAnimationTrigger = "Shoot";
     private RangedAttack rangedAttack;
 
     protected override void Awake()
     {
         base.Awake();
         rangedAttack = GetComponent<RangedAttack>();
+        rangedAttack.OnStartShooting += SetShootAnimation;
     }
 
     protected override void Start()
@@ -39,5 +41,15 @@ public class RangedEnemyGroup : EnemyGroup
     {
         base.DetectCrowd();
         rangedAttack.SetCanShoot(false);
+    }
+
+    public void SetShootAnimation()
+    {
+        Enemy[] enemies = GetComponentsInChildren<Enemy>(false);
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].SetAnimTrigger(ShootAnimationTrigger);
+        }
     }
 }

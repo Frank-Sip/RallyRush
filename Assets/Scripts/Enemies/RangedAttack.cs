@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,9 @@ public class RangedAttack : MonoBehaviour
     private CrowdSystem crowdSystem;
     private float fireTimer;
     private bool canShoot = true;
+    private bool isInsideShootingRange;
+
+    public event Action OnStartShooting;
 
     private void Start()
     {
@@ -44,7 +48,14 @@ public class RangedAttack : MonoBehaviour
         if (!IsRunnerInsideDetectionRange())
         {
             fireTimer = 0f;
+            isInsideShootingRange = false;
             return;
+        }
+
+        if (!isInsideShootingRange)
+        {
+            isInsideShootingRange = true;
+            OnStartShooting?.Invoke();
         }
 
         fireTimer -= Time.deltaTime;
