@@ -2,6 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum RunnerBehaviour
+{
+    Running,
+    Combat
+}
+
 public class CrowdSystem : MonoBehaviour
 {
     [SerializeField] private float radius = 1f;
@@ -10,11 +16,17 @@ public class CrowdSystem : MonoBehaviour
 
     private readonly List<Runner> runners = new List<Runner>();
 
+    private MovementController movementController;
+
+    public RunnerBehaviour Behaviour { get; private set; } = RunnerBehaviour.Running;
+    public EnemyGroup CombatTarget { get; private set; }
+
     public event Action<int> RunnersAmountChanged;
 
     private void Awake()
     {
         ServiceProvider.RegisterService(this);
+        movementController = GetComponentInParent<MovementController>();
         RefreshRunners();
 
         if (runners.Count > maxRunners)
@@ -23,7 +35,7 @@ public class CrowdSystem : MonoBehaviour
         }
     }
 
-    private void UpdateRunnerTargets()
+    private void PlaceRunners()
     {
         for (int i = 0; i < runners.Count; i++)
         {
@@ -65,6 +77,20 @@ public class CrowdSystem : MonoBehaviour
         return true;
     }
 
+    public void EnterCombat(EnemyGroup enemyGroup)
+    {
+        Behaviour = RunnerBehaviour.Combat;
+        CombatTarget = enemyGroup;
+        movementController.EnterCombat(enemyGroup);
+    }
+
+    public void ExitCombat()
+    {
+        Behaviour = RunnerBehaviour.Running;
+        CombatTarget = null;
+        movementController.ExitCombat();
+    }
+
     public void SetRunnersAmount(int amount)
     {
         RefreshRunners();
@@ -80,7 +106,7 @@ public class CrowdSystem : MonoBehaviour
             RemoveRunners(targetAmount);
         }
 
-        UpdateRunnerTargets();
+        PlaceRunners();
         RunnersAmountChanged?.Invoke(runners.Count);
     }
 

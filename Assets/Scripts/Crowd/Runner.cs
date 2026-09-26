@@ -28,7 +28,20 @@ public class Runner : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 movementDirection = transform.position - previousWorldPosition;
+        Vector3 movementDirection;
+
+        switch (crowdSystem.Behaviour)
+        {
+            case RunnerBehaviour.Running:
+                movementDirection = transform.position - previousWorldPosition;
+                break;
+            case RunnerBehaviour.Combat:
+                movementDirection = crowdSystem.CombatTarget.transform.position - transform.position;
+                break;
+            default:
+                throw new System.ArgumentOutOfRangeException();
+        }
+
         movementDirection.y = 0f;
 
         if (movementDirection.sqrMagnitude > 0f)

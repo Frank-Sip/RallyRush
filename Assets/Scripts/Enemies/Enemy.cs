@@ -2,6 +2,8 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
+    [Min(0)] [SerializeField] protected float attackDistance = 0.5f;
+
     public Runner Target { get; private set; }
     public bool HasTarget => Target != null;
     public bool IsDead { get; private set; }
@@ -27,6 +29,13 @@ public abstract class Enemy : MonoBehaviour
     public void SetAnimTrigger(string triggerName)
     {
         animator.SetTrigger(triggerName);
+    }
+
+    public virtual bool IsTargetInAttackRange()
+    {
+        Vector3 distance = Target.transform.position - transform.position;
+        distance.y = 0f;
+        return distance.sqrMagnitude <= attackDistance * attackDistance;
     }
 
     public virtual void Die()

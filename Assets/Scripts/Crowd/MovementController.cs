@@ -12,6 +12,7 @@ public class MovementController : MonoBehaviour
     private Vector3 clickScreenPosition;
     private Vector3 clickPlayerPosition;
     private CrowdSystem crowdSystem;
+    private EnemyGroup combatTarget;
     private float currentSpeed;
     private float targetSpeed;
     
@@ -35,13 +36,30 @@ public class MovementController : MonoBehaviour
 
     private void Move()
     {
-        MoveForward();
-        LateralMovement();
+        switch (crowdSystem.Behaviour)
+        {
+            case RunnerBehaviour.Running:
+                MoveForward();
+                LateralMovement();
+                break;
+            case RunnerBehaviour.Combat:
+                MoveTowardsEnemyGroup();
+                break;
+        }
     }
 
     private void MoveForward()
     {
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+    }
+
+    private void MoveTowardsEnemyGroup()
+    {
+        Vector3 direction = combatTarget.transform.position - transform.position;
+        direction.y = 0f;
+
+        float movementDistance = Mathf.Min(currentSpeed * Time.deltaTime, direction.magnitude);
+        transform.position += direction.normalized * movementDistance;
     }
 
     public void SetSpeed(float speed)
@@ -52,6 +70,18 @@ public class MovementController : MonoBehaviour
     public void ReduceSpeedForCombat()
     {
         SetSpeed(combatSpeed);
+    }
+
+    public void EnterCombat(EnemyGroup enemyGroup)
+    {
+        combatTarget = enemyGroup;
+        ReduceSpeedForCombat();
+    }
+
+    public void ExitCombat()
+    {
+        combatTarget = null;
+        RestoreRegularSpeed();
     }
 
     public void RestoreRegularSpeed()

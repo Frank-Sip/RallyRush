@@ -229,6 +229,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f347761798fe678418aeaadfb971ed63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
+  attackDistance: 0.5
+  moveSpeed: 1
+  rotationSpeed: 720
 --- !u!1 &1992834700303900545
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,16 +11,11 @@ public class EnemyGroup : MonoBehaviour
     [Min(1)] [SerializeField] private int maxEnemies = 5;
     [SerializeField] private string attackAnimationTrigger = "Attack";
 
-    [Header("UI Movement")]
-    [SerializeField] private Transform enemyGroupUI;
-    [Min(0)] [SerializeField] private float uiMoveSpeed = 5f;
-
     private readonly List<Enemy> enemies = new List<Enemy>();
-    private readonly HashSet<Runner> assignedRunners = new HashSet<Runner>();
 
     private CrowdSystem crowdSystem;
-    private MovementController movementController;
-    private bool isAttacking;
+    private float formationSpacing;
+    private bool crowdDetected;
 
     public event Action<int> EnemiesAmountChanged;
 
@@ -32,7 +27,6 @@ public class EnemyGroup : MonoBehaviour
     private void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
-        movementController = crowdSystem.GetComponentInParent<MovementController>();
         SpawnEnemies();
     }
 
@@ -52,54 +46,53 @@ public class EnemyGroup : MonoBehaviour
             enemies.Add(newEnemy);
         }
 
+        formationSpacing = spawnRadius / Mathf.Sqrt(Mathf.Max(1, enemies.Count - 1));
         PlaceEnemies();
         EnemiesAmountChanged?.Invoke(enemies.Count);
     }
 
     private void PlaceEnemies()
     {
-        int outerIndex = Mathf.Max(1, enemies.Count - 1);
-
         for (int i = 0; i < enemies.Count; i++)
         {
-            float normalizedRadius = Mathf.Sqrt((float)i / outerIndex);
-            float distanceFromCenter = spawnRadius * normalizedRadius;
-            float angleInRadians = Mathf.Deg2Rad * i * placementAngle;
-
-            float x = distanceFromCenter * Mathf.Cos(angleInRadians);
-            float z = distanceFromCenter * Mathf.Sin(angleInRadians);
-
-            enemies[i].transform.localPosition = new Vector3(x, 0f, z);
+            enemies[i].transform.localPosition = CalculateEnemyPosition(i);
         }
+    }
+
+    private Vector3 CalculateEnemyPosition(int index)
+    {
+        float distanceFromCenter = formationSpacing * Mathf.Sqrt(index);
+        float angleInRadians = Mathf.Deg2Rad * index * placementAngle;
+
+        float x = distanceFromCenter * Mathf.Cos(angleInRadians);
+        float z = distanceFromCenter * Mathf.Sin(angleInRadians);
+
+        return new Vector3(x, 0f, z);
     }
 
     private void Update()
     {
-        if (!isAttacking)
+        if (!crowdDetected)
         {
-            if (!IsCrowdInRange())
-            {
-                return;
-            }
-
-            isAttacking = true;
-            movementController.ReduceSpeedForCombat();
-            SetEnemiesAttackAnimation();
+            DetectCrowd();
         }
 
-        MoveUIToCrowd();
-        AssignTargets();
+        if (crowdDetected)
+        {
+            AssignTargets();
+        }
     }
 
-    private void MoveUIToCrowd()
+    private void DetectCrowd()
     {
-        Vector3 targetPosition = crowdSystem.transform.position;
-        targetPosition.y = enemyGroupUI.position.y;
+        if (!IsRunnerInsideRange(detectionRange))
+        {
+            return;
+        }
 
-        enemyGroupUI.position = Vector3.MoveTowards(
-            enemyGroupUI.position,
-            targetPosition,
-            uiMoveSpeed * Time.deltaTime);
+        crowdDetected = true;
+        crowdSystem.EnterCombat(this);
+        SetEnemiesAttackAnimation();
     }
 
     private void SetEnemiesAttackAnimation()
@@ -110,44 +103,38 @@ public class EnemyGroup : MonoBehaviour
         }
     }
 
-    private bool IsCrowdInRange()
+    private bool IsRunnerInsideRange(float range)
     {
-        Vector3 distance = crowdSystem.transform.position - transform.position;
-        distance.y = 0f;
+        IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
+        float rangeSqr = range * range;
 
-        float totalDetectionRange = detectionRange + crowdSystem.GetCrowdRadius();
-        return distance.sqrMagnitude <= totalDetectionRange * totalDetectionRange;
+        for (int i = 0; i < runners.Count; i++)
+        {
+            Vector3 distance = runners[i].transform.position - transform.position;
+            distance.y = 0f;
+
+            if (distance.sqrMagnitude <= rangeSqr)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void AssignTargets()
     {
-        assignedRunners.Clear();
-
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            if (enemies[i].HasTarget)
-            {
-                assignedRunners.Add(enemies[i].Target);
-            }
-        }
-
         for (int i = 0; i < enemies.Count; i++)
         {
             Enemy enemy = enemies[i];
-            if (enemy.HasTarget)
+            if (!enemy.HasTarget)
             {
-                continue;
+                enemy.SetTarget(FindNearestRunner(enemy.transform.position));
             }
-
-            bool onlyAvailableRunners = assignedRunners.Count < crowdSystem.GetRunners().Count;
-            Runner nearestRunner = FindNearestRunner(enemy.transform.position, onlyAvailableRunners);
-
-            enemy.SetTarget(nearestRunner);
-            assignedRunners.Add(nearestRunner);
         }
     }
 
-    private Runner FindNearestRunner(Vector3 enemyPosition, bool onlyAvailableRunners)
+    private Runner FindNearestRunner(Vector3 enemyPosition)
     {
         IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
         Runner nearestRunner = null;
@@ -156,11 +143,6 @@ public class EnemyGroup : MonoBehaviour
         for (int i = 0; i < runners.Count; i++)
         {
             Runner runner = runners[i];
-            if (onlyAvailableRunners && assignedRunners.Contains(runner))
-            {
-                continue;
-            }
-
             Vector3 distance = runner.transform.position - enemyPosition;
             distance.y = 0f;
             float distanceSqr = distance.sqrMagnitude;
@@ -208,9 +190,9 @@ public class EnemyGroup : MonoBehaviour
             return;
         }
 
-        if (isAttacking)
+        if (crowdDetected)
         {
-            movementController.RestoreRegularSpeed();
+            crowdSystem.ExitCombat();
         }
 
         Destroy(gameObject);

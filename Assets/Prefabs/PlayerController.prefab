@@ -412,7 +412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementController
   regularSpeed: 5
-  combatSpeed: 0.5
+  combatSpeed: 1
   speedChangeRate: 10
   slideSpeed: 5
   screenLimit: 10
