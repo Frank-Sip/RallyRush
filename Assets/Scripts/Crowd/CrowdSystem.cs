@@ -29,6 +29,11 @@ public class CrowdSystem : MonoBehaviour
         movementController = GetComponentInParent<MovementController>();
         RefreshRunners();
 
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runners[i].SetFormationIndex(i);
+        }
+
         if (runners.Count > maxRunners)
         {
             RemoveRunners(maxRunners);
@@ -40,7 +45,7 @@ public class CrowdSystem : MonoBehaviour
         for (int i = 0; i < runners.Count; i++)
         {
             Vector3 runnerPosition = CalculateRunnerPosition(i);
-            runners[i].SetTargetPosition(runnerPosition);
+            runners[i].SetTargetPosition(runnerPosition, i);
         }
     }
 
@@ -94,39 +99,85 @@ public class CrowdSystem : MonoBehaviour
 
     private void CloseFormationGaps()
     {
-        List<Runner> availableRunners = new List<Runner>(runners);
-        List<Runner> orderedRunners = new List<Runner>(runners.Count);
+        List<int> emptyPositionIndices = new List<int>();
 
         for (int positionIndex = 0; positionIndex < runners.Count; positionIndex++)
         {
-            Vector3 targetPosition = CalculateRunnerPosition(positionIndex);
-            int closestRunnerIndex = 0;
-            float closestDistanceSqr = (availableRunners[0].transform.localPosition - targetPosition).sqrMagnitude;
+            bool positionIsOccupied = false;
 
-            for (int runnerIndex = 1; runnerIndex < availableRunners.Count; runnerIndex++)
+            for (int runnerIndex = 0; runnerIndex < runners.Count; runnerIndex++)
             {
-                float distanceSqr = (availableRunners[runnerIndex].transform.localPosition - targetPosition).sqrMagnitude;
-
-                if (distanceSqr < closestDistanceSqr)
+                if (runners[runnerIndex].FormationIndex == positionIndex)
                 {
-                    closestDistanceSqr = distanceSqr;
-                    closestRunnerIndex = runnerIndex;
+                    positionIsOccupied = true;
+                    break;
+                }
+            }
+
+            if (!positionIsOccupied)
+            {
+                emptyPositionIndices.Add(positionIndex);
+            }
+        }
+
+        List<Runner> availableRunners = new List<Runner>(runners);
+
+        while (emptyPositionIndices.Count > 0)
+        {
+            int closestRunnerIndex = -1;
+            int closestPositionIndex = -1;
+            float closestDistanceSqr = float.MaxValue;
+
+            for (int runnerIndex = 0; runnerIndex < availableRunners.Count; runnerIndex++)
+            {
+                Runner runner = availableRunners[runnerIndex];
+
+                for (int positionIndex = 0; positionIndex < emptyPositionIndices.Count; positionIndex++)
+                {
+                    int emptyPositionIndex = emptyPositionIndices[positionIndex];
+
+                    if (runner.FormationIndex <= emptyPositionIndex)
+                    {
+                        continue;
+                    }
+
+                    Vector3 targetPosition = CalculateRunnerPosition(emptyPositionIndex);
+                    float distanceSqr = (runner.transform.localPosition - targetPosition).sqrMagnitude;
+
+                    if (distanceSqr < closestDistanceSqr)
+                    {
+                        closestDistanceSqr = distanceSqr;
+                        closestRunnerIndex = runnerIndex;
+                        closestPositionIndex = positionIndex;
+                    }
                 }
             }
 
             Runner closestRunner = availableRunners[closestRunnerIndex];
-            closestRunner.SetTargetPosition(targetPosition);
-            orderedRunners.Add(closestRunner);
+            int previousPositionIndex = closestRunner.FormationIndex;
+            int reservedPositionIndex = emptyPositionIndices[closestPositionIndex];
+
+            closestRunner.SetTargetPosition(
+                CalculateRunnerPosition(reservedPositionIndex),
+                reservedPositionIndex);
+
             availableRunners.RemoveAt(closestRunnerIndex);
+            emptyPositionIndices.RemoveAt(closestPositionIndex);
+
+            if (previousPositionIndex < runners.Count)
+            {
+                emptyPositionIndices.Add(previousPositionIndex);
+            }
         }
 
-        runners.Clear();
-        runners.AddRange(orderedRunners);
+        runners.Sort((firstRunner, secondRunner) =>
+            firstRunner.FormationIndex.CompareTo(secondRunner.FormationIndex));
     }
 
     public void SetRunnersAmount(int amount)
     {
         RefreshRunners();
+        runners.Sort((firstRunner, secondRunner) => firstRunner.FormationIndex.CompareTo(secondRunner.FormationIndex));
 
         int targetAmount = Mathf.Clamp(amount, 1, maxRunners);
 
@@ -153,7 +204,8 @@ public class CrowdSystem : MonoBehaviour
             Runner newRunner = Instantiate(runnerTemplate, runnersParent);
             newRunner.name = runnerTemplate.name;
             newRunner.transform.localRotation = runnerTemplate.transform.localRotation;
-            newRunner.SetTargetPosition(CalculateRunnerPosition(runners.Count));
+            int formationIndex = runners.Count;
+            newRunner.SetTargetPosition(CalculateRunnerPosition(formationIndex), formationIndex);
             runners.Add(newRunner);
         }
     }

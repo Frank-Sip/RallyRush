@@ -10,6 +10,8 @@ public class Runner : MonoBehaviour
     private CrowdSystem crowdSystem;
     private bool isDead;
 
+    public int FormationIndex { get; private set; }
+
     private void Awake()
     {
         targetLocalPosition = transform.localPosition;
@@ -53,9 +55,15 @@ public class Runner : MonoBehaviour
         previousWorldPosition = transform.position;
     }
 
-    public void SetTargetPosition(Vector3 position)
+    public void SetTargetPosition(Vector3 position, int formationIndex)
     {
         targetLocalPosition = position;
+        FormationIndex = formationIndex;
+    }
+
+    public void SetFormationIndex(int formationIndex)
+    {
+        FormationIndex = formationIndex;
     }
 
     public bool Die()
