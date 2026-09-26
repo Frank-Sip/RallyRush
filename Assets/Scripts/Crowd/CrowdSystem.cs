@@ -87,8 +87,41 @@ public class CrowdSystem : MonoBehaviour
     public void ExitCombat()
     {
         Behaviour = RunnerBehaviour.Running;
+        CloseFormationGaps();
         CombatTarget = null;
         movementController.ExitCombat();
+    }
+
+    private void CloseFormationGaps()
+    {
+        List<Runner> availableRunners = new List<Runner>(runners);
+        List<Runner> orderedRunners = new List<Runner>(runners.Count);
+
+        for (int positionIndex = 0; positionIndex < runners.Count; positionIndex++)
+        {
+            Vector3 targetPosition = CalculateRunnerPosition(positionIndex);
+            int closestRunnerIndex = 0;
+            float closestDistanceSqr = (availableRunners[0].transform.localPosition - targetPosition).sqrMagnitude;
+
+            for (int runnerIndex = 1; runnerIndex < availableRunners.Count; runnerIndex++)
+            {
+                float distanceSqr = (availableRunners[runnerIndex].transform.localPosition - targetPosition).sqrMagnitude;
+
+                if (distanceSqr < closestDistanceSqr)
+                {
+                    closestDistanceSqr = distanceSqr;
+                    closestRunnerIndex = runnerIndex;
+                }
+            }
+
+            Runner closestRunner = availableRunners[closestRunnerIndex];
+            closestRunner.SetTargetPosition(targetPosition);
+            orderedRunners.Add(closestRunner);
+            availableRunners.RemoveAt(closestRunnerIndex);
+        }
+
+        runners.Clear();
+        runners.AddRange(orderedRunners);
     }
 
     public void SetRunnersAmount(int amount)
