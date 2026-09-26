@@ -2,32 +2,46 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class EnemyGroup : MonoBehaviour
 {
     [SerializeField] private float detectionRange = 5f;
-    [Min(0)] [SerializeField] private float spawnRadius = 2f;
+    [Min(0)][SerializeField] private float spawnRadius = 2f;
     [SerializeField] private float placementAngle = 137.5f;
-    [Min(1)] [SerializeField] private int minEnemies = 1;
-    [Min(1)] [SerializeField] private int maxEnemies = 5;
-    [SerializeField] private string attackAnimationTrigger = "Attack";
+    [Min(1)][SerializeField] private int minEnemies = 1;
+    [Min(1)][SerializeField] private int maxEnemies = 5;
 
     private readonly List<Enemy> enemies = new List<Enemy>();
 
+    private string attackAnimationTrigger = "Attack";
     private CrowdSystem crowdSystem;
     private float formationSpacing;
     private bool crowdDetected;
 
     public event Action<int> EnemiesAmountChanged;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         RefreshEnemies();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
         SpawnEnemies();
+    }
+
+    protected virtual void Update()
+    {
+        if (!crowdDetected && IsRunnerInsideRange(detectionRange))
+        {
+            DetectCrowd();
+        }
+
+        if (crowdDetected)
+        {
+            AssignTargets();
+        }
     }
 
     private void SpawnEnemies()
@@ -70,26 +84,8 @@ public class EnemyGroup : MonoBehaviour
         return new Vector3(x, 0f, z);
     }
 
-    private void Update()
+    protected virtual void DetectCrowd()
     {
-        if (!crowdDetected)
-        {
-            DetectCrowd();
-        }
-
-        if (crowdDetected)
-        {
-            AssignTargets();
-        }
-    }
-
-    private void DetectCrowd()
-    {
-        if (!IsRunnerInsideRange(detectionRange))
-        {
-            return;
-        }
-
         crowdDetected = true;
         crowdSystem.EnterCombat(this);
         SetEnemiesAttackAnimation();
