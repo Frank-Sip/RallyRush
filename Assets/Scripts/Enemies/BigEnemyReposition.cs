@@ -48,7 +48,7 @@ public class BigEnemyReposition : Enemy
 
     private void ExitCombat()
     {
-        crowdSystem.ExitCombat();
+        crowdSystem.ExitBigEnemyCombat();
     }
 
     private void OnDrawGizmosSelected()

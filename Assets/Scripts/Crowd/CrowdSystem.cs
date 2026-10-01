@@ -123,6 +123,14 @@ public class CrowdSystem : MonoBehaviour
         movementController.ExitCombat();
     }
 
+    public void ExitBigEnemyCombat()
+    {
+        Behaviour = RunnerBehaviour.Running;
+        PlaceRunners();
+        CombatTarget = null;
+        movementController.ExitCombat();
+    }
+
     private void CloseFormationGaps()
     {
         List<int> emptyPositionIndices = new List<int>();
