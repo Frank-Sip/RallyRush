@@ -45,7 +45,16 @@ public class CrowdSystem : MonoBehaviour
         for (int i = 0; i < runners.Count; i++)
         {
             Vector3 runnerPosition = CalculateRunnerPosition(i);
-            runners[i].SetTargetPosition(runnerPosition, i);
+            runners[i].SetDoorTargetPosition(runnerPosition, i);
+        }
+    }
+
+    private void PlaceRunnersAfterCombat()
+    {
+        for (int i = 0; i < runners.Count; i++)
+        {
+            Vector3 runnerPosition = CalculateRunnerPosition(i);
+            runners[i].SetCombatExitTargetPosition(runnerPosition, i);
         }
     }
 
@@ -64,7 +73,7 @@ public class CrowdSystem : MonoBehaviour
                 0f,
                 distanceFromCenter * Mathf.Sin(angleInRadians));
 
-            runners[i].SetTargetPosition(runnerPosition, i);
+            runners[i].SetCombatEnterTargetPosition(runnerPosition, i);
         }
     }
 
@@ -126,7 +135,7 @@ public class CrowdSystem : MonoBehaviour
     public void ExitBigEnemyCombat()
     {
         Behaviour = RunnerBehaviour.Running;
-        PlaceRunners();
+        PlaceRunnersAfterCombat();
         CombatTarget = null;
         movementController.ExitCombat();
     }
@@ -191,7 +200,7 @@ public class CrowdSystem : MonoBehaviour
             int previousPositionIndex = closestRunner.FormationIndex;
             int reservedPositionIndex = emptyPositionIndices[closestPositionIndex];
 
-            closestRunner.SetTargetPosition(
+            closestRunner.SetCombatExitTargetPosition(
                 CalculateRunnerPosition(reservedPositionIndex),
                 reservedPositionIndex);
 
@@ -239,7 +248,7 @@ public class CrowdSystem : MonoBehaviour
             newRunner.name = runnerTemplate.name;
             newRunner.transform.localRotation = runnerTemplate.transform.localRotation;
             int formationIndex = runners.Count;
-            newRunner.SetTargetPosition(CalculateRunnerPosition(formationIndex), formationIndex);
+            newRunner.SetDoorTargetPosition(CalculateRunnerPosition(formationIndex), formationIndex);
             runners.Add(newRunner);
         }
     }

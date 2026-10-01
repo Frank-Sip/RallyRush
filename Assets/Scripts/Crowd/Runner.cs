@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class Runner : MonoBehaviour
 {
-    [SerializeField] private float repositionSpeed = 5f;
+    [UnityEngine.Serialization.FormerlySerializedAs("repositionSpeed")]
+    [SerializeField] private float doorRepositionSpeed = 20f;
+    [UnityEngine.Serialization.FormerlySerializedAs("combatRepositionSpeed")]
+    [SerializeField] private float combatEnterRepositionSpeed = 5f;
+    [SerializeField] private float combatExitRepositionSpeed = 5f;
     [SerializeField] private float attackSpeed = 5f;
     [SerializeField] private float rotationSpeed = 720f;
     [Min(0)] [SerializeField] private float enemyCollisionDistance = 0.01f;
@@ -10,6 +14,7 @@ public class Runner : MonoBehaviour
     private Vector3 targetLocalPosition;
     private Vector3 previousWorldPosition;
     private CrowdSystem crowdSystem;
+    private float currentRepositionSpeed;
     private bool attackPositionReached;
     private bool isDead;
 
@@ -19,6 +24,7 @@ public class Runner : MonoBehaviour
     {
         targetLocalPosition = transform.localPosition;
         previousWorldPosition = transform.position;
+        currentRepositionSpeed = doorRepositionSpeed;
     }
 
     private void Start()
@@ -31,7 +37,7 @@ public class Runner : MonoBehaviour
         switch (crowdSystem.Behaviour)
         {
             case RunnerBehaviour.Running:
-                MoveTowardsTarget(repositionSpeed);
+                MoveTowardsTarget(currentRepositionSpeed);
                 break;
             case RunnerBehaviour.Combat:
                 AttackTarget();
@@ -52,7 +58,7 @@ public class Runner : MonoBehaviour
     {
         if (!attackPositionReached)
         {
-            MoveTowardsTarget(repositionSpeed);
+            MoveTowardsTarget(currentRepositionSpeed);
             attackPositionReached = transform.localPosition == targetLocalPosition;
             return;
         }
@@ -107,10 +113,26 @@ public class Runner : MonoBehaviour
         previousWorldPosition = transform.position;
     }
 
-    public void SetTargetPosition(Vector3 position, int formationIndex)
+    public void SetDoorTargetPosition(Vector3 position, int formationIndex)
+    {
+        SetTargetPosition(position, formationIndex, doorRepositionSpeed);
+    }
+
+    public void SetCombatEnterTargetPosition(Vector3 position, int formationIndex)
+    {
+        SetTargetPosition(position, formationIndex, combatEnterRepositionSpeed);
+    }
+
+    public void SetCombatExitTargetPosition(Vector3 position, int formationIndex)
+    {
+        SetTargetPosition(position, formationIndex, combatExitRepositionSpeed);
+    }
+
+    private void SetTargetPosition(Vector3 position, int formationIndex, float repositionSpeed)
     {
         targetLocalPosition = position;
         FormationIndex = formationIndex;
+        currentRepositionSpeed = repositionSpeed;
         attackPositionReached = false;
     }
 

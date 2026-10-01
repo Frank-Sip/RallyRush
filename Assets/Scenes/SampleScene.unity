@@ -937,11 +937,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: attackSpeed
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: repositionSpeed
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: combatRepositionSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: combatExitRepositionSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: combatEnterRepositionSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7729875140569456883, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_Name
