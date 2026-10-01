@@ -3,11 +3,14 @@ using UnityEngine;
 public class Runner : MonoBehaviour
 {
     [SerializeField] private float repositionSpeed = 5f;
+    [SerializeField] private float attackSpeed = 5f;
     [SerializeField] private float rotationSpeed = 720f;
+    [Min(0)] [SerializeField] private float enemyCollisionDistance = 0.01f;
 
     private Vector3 targetLocalPosition;
     private Vector3 previousWorldPosition;
     private CrowdSystem crowdSystem;
+    private bool attackPositionReached;
     private bool isDead;
 
     public int FormationIndex { get; private set; }
@@ -25,7 +28,56 @@ public class Runner : MonoBehaviour
 
     private void Update()
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetLocalPosition, repositionSpeed * Time.deltaTime);
+        switch (crowdSystem.Behaviour)
+        {
+            case RunnerBehaviour.Running:
+                MoveTowardsTarget(repositionSpeed);
+                break;
+            case RunnerBehaviour.Combat:
+                AttackTarget();
+                break;
+            default:
+                throw new System.ArgumentOutOfRangeException();
+        }
+
+        CheckEnemyCollision();
+    }
+
+    private void MoveTowardsTarget(float speed)
+    {
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetLocalPosition, speed * Time.deltaTime);
+    }
+
+    private void AttackTarget()
+    {
+        if (!attackPositionReached)
+        {
+            MoveTowardsTarget(repositionSpeed);
+            attackPositionReached = transform.localPosition == targetLocalPosition;
+            return;
+        }
+
+        transform.position = Vector3.MoveTowards(transform.position, crowdSystem.CombatTarget.position, attackSpeed * Time.deltaTime);
+    }
+
+    private void CheckEnemyCollision()
+    {
+        for (int i = 0; i < Enemy.ActiveEnemies.Count; i++)
+        {
+            Enemy enemy = Enemy.ActiveEnemies[i];
+            IEnemy damageTarget = enemy;
+            Vector3 distance = enemy.transform.position - transform.position;
+            distance.y = 0f;
+
+            float totalCollisionDistance = enemyCollisionDistance + damageTarget.CollisionRadius;
+
+            if (distance.sqrMagnitude <= totalCollisionDistance * totalCollisionDistance)
+            {
+                damageTarget.TakeDamage();
+                Die();
+                return;
+            }
+        }
     }
 
     private void LateUpdate()
@@ -38,7 +90,7 @@ public class Runner : MonoBehaviour
                 movementDirection = transform.position - previousWorldPosition;
                 break;
             case RunnerBehaviour.Combat:
-                movementDirection = crowdSystem.CombatTarget.transform.position - transform.position;
+                movementDirection = crowdSystem.CombatTarget.position - transform.position;
                 break;
             default:
                 throw new System.ArgumentOutOfRangeException();
@@ -59,6 +111,7 @@ public class Runner : MonoBehaviour
     {
         targetLocalPosition = position;
         FormationIndex = formationIndex;
+        attackPositionReached = false;
     }
 
     public void SetFormationIndex(int formationIndex)
@@ -74,8 +127,6 @@ public class Runner : MonoBehaviour
         }
 
         isDead = true;
-        crowdSystem = ServiceProvider.GetService<CrowdSystem>();
-
         crowdSystem.RemoveRunner(this);
         Destroy(gameObject);
         return true;

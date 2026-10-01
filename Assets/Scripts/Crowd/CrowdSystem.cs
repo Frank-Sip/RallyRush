@@ -19,7 +19,7 @@ public class CrowdSystem : MonoBehaviour
     private MovementController movementController;
 
     public RunnerBehaviour Behaviour { get; private set; } = RunnerBehaviour.Running;
-    public EnemyGroup CombatTarget { get; private set; }
+    public Transform CombatTarget { get; private set; }
 
     public event Action<int> RunnersAmountChanged;
 
@@ -45,6 +45,25 @@ public class CrowdSystem : MonoBehaviour
         for (int i = 0; i < runners.Count; i++)
         {
             Vector3 runnerPosition = CalculateRunnerPosition(i);
+            runners[i].SetTargetPosition(runnerPosition, i);
+        }
+    }
+
+    public void PlaceRunners(Transform center)
+    {
+        Vector3 centerLocalPosition = transform.InverseTransformPoint(center.position);
+        centerLocalPosition.y = 0f;
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            float distanceFromCenter = radius * Mathf.Sqrt(i);
+            float angleInRadians = Mathf.Deg2Rad * i * angle;
+
+            Vector3 runnerPosition = centerLocalPosition + new Vector3(
+                distanceFromCenter * Mathf.Cos(angleInRadians),
+                0f,
+                distanceFromCenter * Mathf.Sin(angleInRadians));
+
             runners[i].SetTargetPosition(runnerPosition, i);
         }
     }
@@ -82,11 +101,18 @@ public class CrowdSystem : MonoBehaviour
         return true;
     }
 
-    public void EnterCombat(EnemyGroup enemyGroup)
+    public void EnterCombat(Transform combatTarget)
     {
         Behaviour = RunnerBehaviour.Combat;
-        CombatTarget = enemyGroup;
-        movementController.EnterCombat(enemyGroup);
+        CombatTarget = combatTarget;
+        movementController.EnterCombat(combatTarget);
+    }
+
+    public void EnterCombat(Transform combatTarget, float combatSpeed)
+    {
+        Behaviour = RunnerBehaviour.Combat;
+        CombatTarget = combatTarget;
+        movementController.EnterCombat(combatTarget, combatSpeed);
     }
 
     public void ExitCombat()

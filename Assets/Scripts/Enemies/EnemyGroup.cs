@@ -87,7 +87,7 @@ public class EnemyGroup : MonoBehaviour
     protected virtual void DetectCrowd()
     {
         crowdDetected = true;
-        crowdSystem.EnterCombat(this);
+        crowdSystem.EnterCombat(transform);
 
         for (int i = 0; i < enemies.Count; i++)
         {

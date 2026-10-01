@@ -644,6 +644,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Runner
   repositionSpeed: 20
+  rotationSpeed: 720
+  damage: 0.5
+  damageDistance: 3
+  damageInterval: 1
 --- !u!1 &5943458128525558898
 GameObject:
   m_ObjectHideFlags: 0

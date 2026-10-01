@@ -1,8 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IEnemy
 {
+    private static readonly List<Enemy> activeEnemies = new List<Enemy>();
+
     [Min(0)] [SerializeField] protected float attackDistance = 0.5f;
+    [Min(0)] [SerializeField] protected float collisionRadius = 0.5f;
+    [Min(0)] [SerializeField] private float damageTakenPerHit = 1f;
 
     public Runner Target { get; private set; }
     public bool HasTarget => Target != null;
@@ -10,10 +15,25 @@ public abstract class Enemy : MonoBehaviour
 
     private EnemyGroup enemyGroup;
     private Animator animator;
+    protected HealthComponent healthComponent;
+
+    public static IReadOnlyList<Enemy> ActiveEnemies => activeEnemies;
+    public virtual float CollisionRadius => collisionRadius;
+
+    protected virtual void OnEnable()
+    {
+        activeEnemies.Add(this);
+    }
+
+    protected virtual void OnDisable()
+    {
+        activeEnemies.Remove(this);
+    }
 
     protected virtual void Awake()
     {
         animator = GetComponentInChildren<Animator>();
+        healthComponent = GetComponent<HealthComponent>();
     }
 
     public virtual void SetTarget(Runner target)
@@ -38,6 +58,11 @@ public abstract class Enemy : MonoBehaviour
         return distance.sqrMagnitude <= attackDistance * attackDistance;
     }
 
+    public virtual void TakeDamage()
+    {
+        healthComponent.TakeDamage(damageTakenPerHit);
+    }
+
     public virtual void Die()
     {
         if (IsDead)
@@ -49,5 +74,11 @@ public abstract class Enemy : MonoBehaviour
         Target = null;
         enemyGroup.RemoveEnemy(this);
         enemyGroup.Die();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, collisionRadius);
     }
 }

@@ -10,7 +10,7 @@ public class RangedAttack : MonoBehaviour
     [Header("Shooting")]
     [SerializeField] private GameObject projectilePrefab;
     [Min(0.01f)] [SerializeField] private float fireInterval = 1f;
-    private Transform[] shootPoints = new Transform[0];
+    [SerializeField] private Transform[] shootPoints = new Transform[0];
     private Vector3 shootPointOffset;
 
     [Header("Projectile")]

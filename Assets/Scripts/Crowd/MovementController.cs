@@ -12,7 +12,7 @@ public class MovementController : MonoBehaviour
     private Vector3 clickScreenPosition;
     private Vector3 clickPlayerPosition;
     private CrowdSystem crowdSystem;
-    private EnemyGroup combatTarget;
+    private Transform combatTarget;
     private float currentSpeed;
     private float targetSpeed;
     
@@ -72,10 +72,17 @@ public class MovementController : MonoBehaviour
         SetSpeed(combatSpeed);
     }
 
-    public void EnterCombat(EnemyGroup enemyGroup)
+    public void EnterCombat(Transform target)
     {
-        combatTarget = enemyGroup;
+        combatTarget = target;
         ReduceSpeedForCombat();
+    }
+
+    public void EnterCombat(Transform target, float speed)
+    {
+        combatTarget = target;
+        currentSpeed = Mathf.Max(0f, speed);
+        targetSpeed = currentSpeed;
     }
 
     public void ExitCombat()

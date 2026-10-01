@@ -21,10 +21,6 @@ public class MeleeEnemy : Enemy
             targetPosition,
             moveSpeed * Time.deltaTime);
 
-        if (IsTargetInAttackRange())
-        {
-            AttackTarget();
-        }
     }
 
     private void RotateTowards(Vector3 targetPosition)
@@ -38,15 +34,9 @@ public class MeleeEnemy : Enemy
         }
     }
 
-    private void AttackTarget()
+    public override void TakeDamage()
     {
-        Runner attackedRunner = Target;
-        SetTarget(null);
-
-        if (attackedRunner.Die())
-        {
-            Die();
-        }
+        Die();
     }
 
     public override void Die()
