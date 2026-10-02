@@ -15,6 +15,7 @@ public class Runner : MonoBehaviour
     private Vector3 previousWorldPosition;
     private CrowdSystem crowdSystem;
     private float currentRepositionSpeed;
+    private float repositionDelay;
     private bool attackPositionReached;
     private bool isDead;
 
@@ -37,7 +38,7 @@ public class Runner : MonoBehaviour
         switch (crowdSystem.Behaviour)
         {
             case RunnerBehaviour.Running:
-                MoveTowardsTarget(currentRepositionSpeed);
+                UpdateRunningMovement();
                 break;
             case RunnerBehaviour.Combat:
                 AttackTarget();
@@ -47,6 +48,17 @@ public class Runner : MonoBehaviour
         }
 
         CheckEnemyCollision();
+    }
+
+    private void UpdateRunningMovement()
+    {
+        if (repositionDelay > 0f)
+        {
+            repositionDelay -= Time.deltaTime;
+            return;
+        }
+
+        MoveTowardsTarget(currentRepositionSpeed);
     }
 
     private void MoveTowardsTarget(float speed)
@@ -116,24 +128,25 @@ public class Runner : MonoBehaviour
     public void SetDoorTargetPosition(Vector3 position, int formationIndex)
     {
         FormationIndex = formationIndex;
-        SetTargetPosition(position, doorRepositionSpeed);
+        SetTargetPosition(position, doorRepositionSpeed, 0f);
     }
 
     public void SetCombatEnterTargetPosition(Vector3 position)
     {
-        SetTargetPosition(position, combatEnterRepositionSpeed);
+        SetTargetPosition(position, combatEnterRepositionSpeed, 0f);
     }
 
-    public void SetCombatExitTargetPosition(Vector3 position, int formationIndex)
+    public void SetCombatExitTargetPosition(Vector3 position, int formationIndex, float delay = 0f)
     {
         FormationIndex = formationIndex;
-        SetTargetPosition(position, combatExitRepositionSpeed);
+        SetTargetPosition(position, combatExitRepositionSpeed, delay);
     }
 
-    private void SetTargetPosition(Vector3 position, float repositionSpeed)
+    private void SetTargetPosition(Vector3 position, float repositionSpeed, float delay)
     {
         targetLocalPosition = position;
         currentRepositionSpeed = repositionSpeed;
+        repositionDelay = delay;
         attackPositionReached = false;
     }
 

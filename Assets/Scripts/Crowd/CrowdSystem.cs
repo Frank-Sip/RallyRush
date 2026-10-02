@@ -12,6 +12,7 @@ public class CrowdSystem : MonoBehaviour
 {
     [SerializeField] private float radius = 1f;
     [SerializeField] private float angle = 1f;
+    [Min(0)] [SerializeField] private float combatExitStaggerDuration = 0.5f;
     [Min(1)] [SerializeField] private int maxRunners = 999;
 
     private readonly List<Runner> runners = new List<Runner>();
@@ -22,6 +23,20 @@ public class CrowdSystem : MonoBehaviour
     public Transform CombatTarget { get; private set; }
 
     public event Action<int> RunnersAmountChanged;
+
+    private readonly struct FormationAssignment
+    {
+        public readonly Runner Runner;
+        public readonly Vector3 TargetPosition;
+        public readonly int FormationIndex;
+
+        public FormationAssignment(Runner runner, Vector3 targetPosition, int formationIndex)
+        {
+            Runner = runner;
+            TargetPosition = targetPosition;
+            FormationIndex = formationIndex;
+        }
+    }
 
     private void Awake()
     {
@@ -149,6 +164,7 @@ public class CrowdSystem : MonoBehaviour
     private void RestoreRunningFormation()
     {
         List<Runner> availableRunners = new List<Runner>(runners);
+        List<FormationAssignment> assignments = new List<FormationAssignment>(runners.Count);
 
         for (int formationIndex = 0; formationIndex < runners.Count; formationIndex++)
         {
@@ -156,8 +172,22 @@ public class CrowdSystem : MonoBehaviour
             int closestRunnerIndex = FindClosestRunnerIndex(availableRunners, targetPosition);
             Runner closestRunner = availableRunners[closestRunnerIndex];
 
-            closestRunner.SetCombatExitTargetPosition(targetPosition, formationIndex);
+            assignments.Add(new FormationAssignment(closestRunner, targetPosition, formationIndex));
             availableRunners.RemoveAt(closestRunnerIndex);
+        }
+
+        assignments.Sort((firstAssignment, secondAssignment) =>
+            firstAssignment.TargetPosition.z.CompareTo(secondAssignment.TargetPosition.z));
+
+        for (int i = 0; i < assignments.Count; i++)
+        {
+            FormationAssignment assignment = assignments[i];
+            float delay = combatExitStaggerDuration * i / Mathf.Max(1, assignments.Count - 1);
+
+            assignment.Runner.SetCombatExitTargetPosition(
+                assignment.TargetPosition,
+                assignment.FormationIndex,
+                delay);
         }
 
         runners.Sort((firstRunner, secondRunner) =>
