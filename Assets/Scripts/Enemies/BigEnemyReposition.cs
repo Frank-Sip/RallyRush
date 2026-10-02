@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BigEnemyReposition : Enemy
 {
-    private CrowdSystem crowdSystem;
+    protected CrowdSystem crowdSystem;
     private bool crowdDetected;
 
     protected override void Awake()
@@ -13,12 +13,12 @@ public class BigEnemyReposition : Enemy
         healthComponent.OnDeath += ExitCombat;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (!crowdDetected)
         {
@@ -41,9 +41,14 @@ public class BigEnemyReposition : Enemy
                 crowdDetected = true;
                 crowdSystem.EnterCombat(transform, 0f);
                 crowdSystem.PlaceRunnersForBigEnemy(transform);
+                OnCombatStarted();
                 return;
             }
         }
+    }
+
+    protected virtual void OnCombatStarted()
+    {
     }
 
     private void ExitCombat()

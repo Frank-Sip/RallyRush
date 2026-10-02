@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public abstract class Enemy : MonoBehaviour, IEnemy
 {
     private static readonly List<Enemy> activeEnemies = new List<Enemy>();
 
-    [Min(0)] [SerializeField] protected float attackDistance = 0.5f;
-    [Min(0)] [SerializeField] protected float collisionRadius = 0.5f;
-    [Min(0)] [SerializeField] private float damageTakenPerHit = 1f;
+    [Min(0)][SerializeField] protected float attackDistance = 0.5f;
+    [Min(0)][SerializeField] protected float collisionRadius = 0.5f;
+    [Min(0)][SerializeField] private float damageTakenPerHit = 1f;
 
     public Runner Target { get; private set; }
     public bool HasTarget => Target != null;
