@@ -40,28 +40,11 @@ public class CrowdSystem : MonoBehaviour
         }
     }
 
-    private void PlaceRunners()
-    {
-        for (int i = 0; i < runners.Count; i++)
-        {
-            Vector3 runnerPosition = CalculateRunnerPosition(i);
-            runners[i].SetDoorTargetPosition(runnerPosition, i);
-        }
-    }
-
-    private void PlaceRunnersAfterCombat()
-    {
-        for (int i = 0; i < runners.Count; i++)
-        {
-            Vector3 runnerPosition = CalculateRunnerPosition(i);
-            runners[i].SetCombatExitTargetPosition(runnerPosition, i);
-        }
-    }
-
-    public void PlaceRunners(Transform center)
+    public void PlaceRunnersForBigEnemy(Transform center)
     {
         Vector3 centerLocalPosition = transform.InverseTransformPoint(center.position);
         centerLocalPosition.y = 0f;
+        List<Runner> availableRunners = new List<Runner>(runners);
 
         for (int i = 0; i < runners.Count; i++)
         {
@@ -73,8 +56,31 @@ public class CrowdSystem : MonoBehaviour
                 0f,
                 distanceFromCenter * Mathf.Sin(angleInRadians));
 
-            runners[i].SetCombatEnterTargetPosition(runnerPosition, i);
+            int closestRunnerIndex = FindClosestRunnerIndex(availableRunners, runnerPosition);
+            Runner closestRunner = availableRunners[closestRunnerIndex];
+
+            closestRunner.SetCombatEnterTargetPosition(runnerPosition);
+            availableRunners.RemoveAt(closestRunnerIndex);
         }
+    }
+
+    private static int FindClosestRunnerIndex(List<Runner> availableRunners, Vector3 targetPosition)
+    {
+        int closestRunnerIndex = 0;
+        float closestDistanceSqr = float.MaxValue;
+
+        for (int i = 0; i < availableRunners.Count; i++)
+        {
+            float distanceSqr = (availableRunners[i].transform.localPosition - targetPosition).sqrMagnitude;
+
+            if (distanceSqr < closestDistanceSqr)
+            {
+                closestDistanceSqr = distanceSqr;
+                closestRunnerIndex = i;
+            }
+        }
+
+        return closestRunnerIndex;
     }
 
     private Vector3 CalculateRunnerPosition(int index)
@@ -135,9 +141,27 @@ public class CrowdSystem : MonoBehaviour
     public void ExitBigEnemyCombat()
     {
         Behaviour = RunnerBehaviour.Running;
-        PlaceRunnersAfterCombat();
+        RestoreRunningFormation();
         CombatTarget = null;
         movementController.ExitCombat();
+    }
+
+    private void RestoreRunningFormation()
+    {
+        List<Runner> availableRunners = new List<Runner>(runners);
+
+        for (int formationIndex = 0; formationIndex < runners.Count; formationIndex++)
+        {
+            Vector3 targetPosition = CalculateRunnerPosition(formationIndex);
+            int closestRunnerIndex = FindClosestRunnerIndex(availableRunners, targetPosition);
+            Runner closestRunner = availableRunners[closestRunnerIndex];
+
+            closestRunner.SetCombatExitTargetPosition(targetPosition, formationIndex);
+            availableRunners.RemoveAt(closestRunnerIndex);
+        }
+
+        runners.Sort((firstRunner, secondRunner) =>
+            firstRunner.FormationIndex.CompareTo(secondRunner.FormationIndex));
     }
 
     private void CloseFormationGaps()
@@ -233,7 +257,6 @@ public class CrowdSystem : MonoBehaviour
             RemoveRunners(targetAmount);
         }
 
-        PlaceRunners();
         RunnersAmountChanged?.Invoke(runners.Count);
     }
 
@@ -241,20 +264,36 @@ public class CrowdSystem : MonoBehaviour
     {
         Runner runnerTemplate = runners[0];
         Transform runnersParent = runnerTemplate.transform.parent;
+        HashSet<int> occupiedFormationIndices = new HashSet<int>();
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            occupiedFormationIndices.Add(runners[i].FormationIndex);
+        }
+
+        int formationIndex = 0;
 
         while (runners.Count < targetAmount)
         {
+            while (occupiedFormationIndices.Contains(formationIndex))
+            {
+                formationIndex++;
+            }
+
             Runner newRunner = Instantiate(runnerTemplate, runnersParent);
             newRunner.name = runnerTemplate.name;
             newRunner.transform.localRotation = runnerTemplate.transform.localRotation;
-            int formationIndex = runners.Count;
             newRunner.SetDoorTargetPosition(CalculateRunnerPosition(formationIndex), formationIndex);
             runners.Add(newRunner);
+            occupiedFormationIndices.Add(formationIndex);
         }
     }
 
     private void RemoveRunners(int targetAmount)
     {
+        runners.Sort((firstRunner, secondRunner) =>
+            firstRunner.FormationIndex.CompareTo(secondRunner.FormationIndex));
+
         for (int i = runners.Count - 1; i >= targetAmount; i--)
         {
             Destroy(runners[i].gameObject);

@@ -115,23 +115,24 @@ public class Runner : MonoBehaviour
 
     public void SetDoorTargetPosition(Vector3 position, int formationIndex)
     {
-        SetTargetPosition(position, formationIndex, doorRepositionSpeed);
+        FormationIndex = formationIndex;
+        SetTargetPosition(position, doorRepositionSpeed);
     }
 
-    public void SetCombatEnterTargetPosition(Vector3 position, int formationIndex)
+    public void SetCombatEnterTargetPosition(Vector3 position)
     {
-        SetTargetPosition(position, formationIndex, combatEnterRepositionSpeed);
+        SetTargetPosition(position, combatEnterRepositionSpeed);
     }
 
     public void SetCombatExitTargetPosition(Vector3 position, int formationIndex)
     {
-        SetTargetPosition(position, formationIndex, combatExitRepositionSpeed);
+        FormationIndex = formationIndex;
+        SetTargetPosition(position, combatExitRepositionSpeed);
     }
 
-    private void SetTargetPosition(Vector3 position, int formationIndex, float repositionSpeed)
+    private void SetTargetPosition(Vector3 position, float repositionSpeed)
     {
         targetLocalPosition = position;
-        FormationIndex = formationIndex;
         currentRepositionSpeed = repositionSpeed;
         attackPositionReached = false;
     }

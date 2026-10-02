@@ -40,7 +40,7 @@ public class BigEnemyReposition : Enemy
             {
                 crowdDetected = true;
                 crowdSystem.EnterCombat(transform, 0f);
-                crowdSystem.PlaceRunners(transform);
+                crowdSystem.PlaceRunnersForBigEnemy(transform);
                 return;
             }
         }
