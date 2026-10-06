@@ -13,7 +13,6 @@ public class Runner : MonoBehaviour
     [Min(0)] [SerializeField] private float enemyCollisionDistance = 0.01f;
 
     private Vector3 targetLocalPosition;
-    private Vector3 previousWorldPosition;
     private CrowdSystem crowdSystem;
     private float currentRepositionSpeed;
     private float repositionDelay;
@@ -27,7 +26,6 @@ public class Runner : MonoBehaviour
     private void Awake()
     {
         targetLocalPosition = transform.localPosition;
-        previousWorldPosition = transform.position;
         currentRepositionSpeed = doorRepositionSpeed;
     }
 
@@ -126,7 +124,7 @@ public class Runner : MonoBehaviour
         switch (crowdSystem.Behaviour)
         {
             case RunnerBehaviour.Running:
-                movementDirection = transform.position - previousWorldPosition;
+                movementDirection = crowdSystem.transform.forward;
                 break;
             case RunnerBehaviour.Combat:
                 movementDirection = crowdSystem.CombatTarget.position - transform.position;
@@ -143,7 +141,6 @@ public class Runner : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        previousWorldPosition = transform.position;
     }
 
     public void SetDoorTargetPosition(Vector3 position, int formationIndex)
