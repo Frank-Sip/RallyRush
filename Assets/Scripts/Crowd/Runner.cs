@@ -9,6 +9,7 @@ public class Runner : MonoBehaviour
     [SerializeField] private float combatExitRepositionSpeed = 5f;
     [SerializeField] private float attackSpeed = 5f;
     [SerializeField] private float rotationSpeed = 720f;
+    [Min(0f)] [SerializeField] private float gravity = 20f;
     [Min(0)] [SerializeField] private float enemyCollisionDistance = 0.01f;
 
     private Vector3 targetLocalPosition;
@@ -16,7 +17,9 @@ public class Runner : MonoBehaviour
     private CrowdSystem crowdSystem;
     private float currentRepositionSpeed;
     private float repositionDelay;
+    private float verticalVelocity;
     private bool attackPositionReached;
+    private bool gravityEnabled;
     private bool isDead;
 
     public int FormationIndex { get; private set; }
@@ -47,6 +50,7 @@ public class Runner : MonoBehaviour
                 throw new System.ArgumentOutOfRangeException();
         }
 
+        ApplyGravity();
         CheckEnemyCollision();
     }
 
@@ -63,7 +67,9 @@ public class Runner : MonoBehaviour
 
     private void MoveTowardsTarget(float speed)
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetLocalPosition, speed * Time.deltaTime);
+        Vector3 horizontalTargetPosition = targetLocalPosition;
+        horizontalTargetPosition.y = transform.localPosition.y;
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, horizontalTargetPosition, speed * Time.deltaTime);
     }
 
     private void AttackTarget()
@@ -71,11 +77,26 @@ public class Runner : MonoBehaviour
         if (!attackPositionReached)
         {
             MoveTowardsTarget(currentRepositionSpeed);
-            attackPositionReached = transform.localPosition == targetLocalPosition;
+            Vector3 distanceToTarget = targetLocalPosition - transform.localPosition;
+            distanceToTarget.y = 0f;
+            attackPositionReached = distanceToTarget.sqrMagnitude == 0f;
             return;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, crowdSystem.CombatTarget.position, attackSpeed * Time.deltaTime);
+        Vector3 combatTargetPosition = crowdSystem.CombatTarget.position;
+        combatTargetPosition.y = transform.position.y;
+        transform.position = Vector3.MoveTowards(transform.position, combatTargetPosition, attackSpeed * Time.deltaTime);
+    }
+
+    private void ApplyGravity()
+    {
+        if (!gravityEnabled)
+        {
+            return;
+        }
+
+        verticalVelocity -= gravity * Time.deltaTime;
+        transform.position += Vector3.up * verticalVelocity * Time.deltaTime;
     }
 
     private void CheckEnemyCollision()
@@ -153,6 +174,16 @@ public class Runner : MonoBehaviour
     public void SetFormationIndex(int formationIndex)
     {
         FormationIndex = formationIndex;
+    }
+
+    public void ToggleGravity()
+    {
+        gravityEnabled = !gravityEnabled;
+
+        if (!gravityEnabled)
+        {
+            verticalVelocity = 0f;
+        }
     }
 
     public bool Die()
