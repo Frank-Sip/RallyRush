@@ -107,7 +107,16 @@ public class CrowdSystem : MonoBehaviour
 
     public float GetCrowdRadius()
     {
-        return radius * Mathf.Sqrt(runners.Count);
+        float farthestDistanceSqr = 0f;
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            Vector3 distanceFromCenter = runners[i].transform.position - transform.position;
+            distanceFromCenter.y = 0f;
+            farthestDistanceSqr = Mathf.Max(farthestDistanceSqr, distanceFromCenter.sqrMagnitude);
+        }
+
+        return Mathf.Sqrt(farthestDistanceSqr);
     }
 
     public IReadOnlyList<Runner> GetRunners()

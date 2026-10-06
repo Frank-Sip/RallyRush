@@ -120,12 +120,6 @@ public class Door : MonoBehaviour
     {
         if (wasUsed) return;
 
-
-        Vector3 doorCenter = GetDoorCenter();
-        float distanceToDoorPlane = Mathf.Abs(Vector3.Dot(crowdSystem.transform.position - doorCenter, transform.forward));
-
-        if (distanceToDoorPlane > crowdSystem.GetCrowdRadius() + collisionDistance) return;
-
         IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
         float collisionDistanceSqr = collisionDistance * collisionDistance;
         float closestDistanceSqr = collisionDistanceSqr;
@@ -152,18 +146,6 @@ public class Door : MonoBehaviour
 
         SetRunnerAmount(selectedOption.BonusType, selectedOption.Value);
         wasUsed = true;
-    }
-
-    private Vector3 GetDoorCenter()
-    {
-        Vector3 center = Vector3.zero;
-
-        for (int i = 0; i < doorOptions.Length; i++)
-        {
-            center += doorOptions[i].Bounds.center;
-        }
-
-        return center / doorOptions.Length;
     }
 
     private void SetRunnerAmount(BonusType bonusType, int configuredValue)
