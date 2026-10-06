@@ -145,7 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6730628800995185165}
   m_Layer: 0
-  m_Name: Attacker
+  m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

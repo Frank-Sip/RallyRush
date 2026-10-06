@@ -186,6 +186,11 @@ public class Runner : MonoBehaviour
         }
     }
 
+    public void Jump(float jumpForce)
+    {
+        verticalVelocity = jumpForce;
+    }
+
     public bool Die()
     {
         if (isDead)
