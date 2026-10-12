@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class Runner : MonoBehaviour
 {
-    [UnityEngine.Serialization.FormerlySerializedAs("repositionSpeed")]
+    [Header("Reposition Settings")]
     [SerializeField] private float doorRepositionSpeed = 20f;
-    [UnityEngine.Serialization.FormerlySerializedAs("combatRepositionSpeed")]
     [SerializeField] private float combatEnterRepositionSpeed = 5f;
     [SerializeField] private float combatExitRepositionSpeed = 5f;
+    [SerializeField] private float pyramidRepositionSpeed = 5f;
+
+    [Header("Movement Settings")]
     [SerializeField] private float attackSpeed = 5f;
     [SerializeField] private float rotationSpeed = 720f;
     [Min(0f)] [SerializeField] private float gravity = 20f;
@@ -44,6 +46,9 @@ public class Runner : MonoBehaviour
             case RunnerBehaviour.Combat:
                 AttackTarget();
                 break;
+            case RunnerBehaviour.Pyramid:
+                MoveTowardsPyramidPosition();
+                break;
             default:
                 throw new System.ArgumentOutOfRangeException();
         }
@@ -68,6 +73,11 @@ public class Runner : MonoBehaviour
         Vector3 horizontalTargetPosition = targetLocalPosition;
         horizontalTargetPosition.y = transform.localPosition.y;
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, horizontalTargetPosition, speed * Time.deltaTime);
+    }
+
+    private void MoveTowardsPyramidPosition()
+    {
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetLocalPosition, pyramidRepositionSpeed * Time.deltaTime);
     }
 
     private void AttackTarget()
@@ -129,6 +139,9 @@ public class Runner : MonoBehaviour
             case RunnerBehaviour.Combat:
                 movementDirection = crowdSystem.CombatTarget.position - transform.position;
                 break;
+            case RunnerBehaviour.Pyramid:
+                movementDirection = crowdSystem.transform.forward;
+                break;
             default:
                 throw new System.ArgumentOutOfRangeException();
         }
@@ -158,6 +171,11 @@ public class Runner : MonoBehaviour
     {
         FormationIndex = formationIndex;
         SetTargetPosition(position, combatExitRepositionSpeed, delay);
+    }
+
+    public void SetPyramidTargetPosition(Vector3 position)
+    {
+        SetTargetPosition(position, pyramidRepositionSpeed, 0f);
     }
 
     private void SetTargetPosition(Vector3 position, float repositionSpeed, float delay)

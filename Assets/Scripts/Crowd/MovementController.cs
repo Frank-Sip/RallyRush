@@ -45,6 +45,8 @@ public class MovementController : MonoBehaviour
             case RunnerBehaviour.Combat:
                 MoveTowardsEnemyGroup();
                 break;
+            case RunnerBehaviour.Pyramid:
+                break;
         }
     }
 

@@ -5,7 +5,8 @@ using UnityEngine;
 public enum RunnerBehaviour
 {
     Running,
-    Combat
+    Combat,
+    Pyramid
 }
 
 public class CrowdSystem : MonoBehaviour
@@ -168,6 +169,11 @@ public class CrowdSystem : MonoBehaviour
         RestoreRunningFormation();
         CombatTarget = null;
         movementController.ExitCombat();
+    }
+
+    public void EnterPyramid()
+    {
+        Behaviour = RunnerBehaviour.Pyramid;
     }
 
     private void RestoreRunningFormation()
