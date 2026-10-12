@@ -17,6 +17,18 @@ public class PyramidFormation : MonoBehaviour
 
     private CrowdSystem crowdSystem;
 
+    private readonly struct FormationAssignment
+    {
+        public readonly Runner Runner;
+        public readonly Vector3 TargetLocalPosition;
+
+        public FormationAssignment(Runner runner, Vector3 targetLocalPosition)
+        {
+            Runner = runner;
+            TargetLocalPosition = targetLocalPosition;
+        }
+    }
+
     public int Levels { get; private set; }
     public int UsedRunners { get; private set; }
     public int RemainingRunners { get; private set; }
@@ -49,25 +61,28 @@ public class PyramidFormation : MonoBehaviour
         }
 
         RemainingRunners = runnerAmount - UsedRunners;
-    }
 
-    public void StartPyramidFormation()
-    {
-        CalculateLevels();
-        crowdSystem.EnterPyramid();
-        PlaceRunners();
-    }
-
-    private void PlaceRunners()
-    {
-        List<Runner> availableRunners = new List<Runner>(crowdSystem.GetRunners());
-
-        if (availableRunners.Count == 2)
+        if (runnerAmount == 2)
         {
             Levels = 2;
             UsedRunners = 2;
             RemainingRunners = 0;
         }
+    }
+
+    public void StartPyramidFormation()
+    {
+        CalculateLevels();
+        List<FormationAssignment> assignments = CalculateRunnerAssignments();
+        PlaceRunners(assignments);
+        crowdSystem.EnterPyramid();
+    }
+
+    private List<FormationAssignment> CalculateRunnerAssignments()
+    {
+        List<Runner> availableRunners = new List<Runner>(crowdSystem.GetRunners());
+        List<FormationAssignment> assignments = new List<FormationAssignment>(availableRunners.Count);
+        bool twoRunnerFormation = availableRunners.Count == 2;
 
         for (int level = 0; level < Levels; level++)
         {
@@ -78,7 +93,7 @@ public class PyramidFormation : MonoBehaviour
                 runnersInLevel += RemainingRunners;
             }
 
-            if (availableRunners.Count == 2)
+            if (twoRunnerFormation)
             {
                 runnersInLevel = 1;
             }
@@ -92,9 +107,20 @@ public class PyramidFormation : MonoBehaviour
                 Runner runner = availableRunners[closestRunnerIndex];
                 Vector3 targetLocalPosition = runner.transform.parent.InverseTransformPoint(targetWorldPosition);
 
-                runner.SetPyramidTargetPosition(targetLocalPosition);
+                assignments.Add(new FormationAssignment(runner, targetLocalPosition));
                 availableRunners.RemoveAt(closestRunnerIndex);
             }
+        }
+
+        return assignments;
+    }
+
+    private static void PlaceRunners(List<FormationAssignment> assignments)
+    {
+        for (int i = 0; i < assignments.Count; i++)
+        {
+            FormationAssignment assignment = assignments[i];
+            assignment.Runner.SetPyramidTargetPosition(assignment.TargetLocalPosition);
         }
     }
 
