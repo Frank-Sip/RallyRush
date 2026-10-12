@@ -22,6 +22,7 @@ public class CrowdSystem : MonoBehaviour
 
     public RunnerBehaviour Behaviour { get; private set; } = RunnerBehaviour.Running;
     public Transform CombatTarget { get; private set; }
+    public bool IsPyramidRepositioning { get; private set; }
 
     public event Action<int> RunnersAmountChanged;
 
@@ -174,6 +175,12 @@ public class CrowdSystem : MonoBehaviour
     public void EnterPyramid()
     {
         Behaviour = RunnerBehaviour.Pyramid;
+        IsPyramidRepositioning = true;
+    }
+
+    public void FinishPyramidReposition()
+    {
+        IsPyramidRepositioning = false;
     }
 
     private void RestoreRunningFormation()

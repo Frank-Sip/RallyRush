@@ -15,15 +15,22 @@ public class Runner : MonoBehaviour
     [Min(0)] [SerializeField] private float enemyCollisionDistance = 0.01f;
 
     private Vector3 targetLocalPosition;
+    private Vector3 pyramidRepositionLocalPosition;
+    private Vector3 pyramidTargetWorldPosition;
+    private Vector3 pyramidForward;
     private CrowdSystem crowdSystem;
     private float currentRepositionSpeed;
     private float repositionDelay;
+    private float pyramidRepositionDelay;
     private float verticalVelocity;
     private bool attackPositionReached;
+    private bool pyramidAdvanceEnabled;
+    private bool pyramidTargetReached;
     private bool gravityEnabled;
     private bool isDead;
 
     public int FormationIndex { get; private set; }
+    public bool PyramidRepositionCompleted => pyramidRepositionDelay <= 0f && transform.localPosition == pyramidRepositionLocalPosition;
 
     private void Awake()
     {
@@ -49,8 +56,6 @@ public class Runner : MonoBehaviour
             case RunnerBehaviour.Pyramid:
                 MoveTowardsPyramidPosition();
                 break;
-            default:
-                throw new System.ArgumentOutOfRangeException();
         }
 
         ApplyGravity();
@@ -77,7 +82,21 @@ public class Runner : MonoBehaviour
 
     private void MoveTowardsPyramidPosition()
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetLocalPosition, pyramidRepositionSpeed * Time.deltaTime);
+        if (pyramidAdvanceEnabled)
+        {
+            return;
+        }
+
+        if (pyramidRepositionDelay > 0f)
+        {
+            pyramidRepositionDelay -= Time.deltaTime;
+            return;
+        }
+
+        transform.localPosition = Vector3.MoveTowards(
+            transform.localPosition,
+            pyramidRepositionLocalPosition,
+            pyramidRepositionSpeed * Time.deltaTime);
     }
 
     private void AttackTarget()
@@ -129,6 +148,11 @@ public class Runner : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (crowdSystem.Behaviour == RunnerBehaviour.Pyramid && pyramidAdvanceEnabled)
+        {
+            StopAtPyramidTarget();
+        }
+
         Vector3 movementDirection;
 
         switch (crowdSystem.Behaviour)
@@ -173,9 +197,34 @@ public class Runner : MonoBehaviour
         SetTargetPosition(position, combatExitRepositionSpeed, delay);
     }
 
-    public void SetPyramidTargetPosition(Vector3 position)
+    public void SetPyramidRepositionPosition(Vector3 repositionPosition, float delay)
     {
-        SetTargetPosition(position, pyramidRepositionSpeed, 0f);
+        pyramidRepositionLocalPosition = repositionPosition;
+        pyramidRepositionDelay = delay;
+        pyramidAdvanceEnabled = false;
+        pyramidTargetReached = false;
+    }
+
+    public void StartPyramidAdvance(Vector3 targetWorldPosition, Vector3 forward)
+    {
+        pyramidTargetWorldPosition = targetWorldPosition;
+        pyramidForward = forward;
+        pyramidAdvanceEnabled = true;
+    }
+
+    private void StopAtPyramidTarget()
+    {
+        float distanceToTarget = Vector3.Dot(
+            pyramidTargetWorldPosition - transform.position,
+            pyramidForward);
+
+        if (!pyramidTargetReached && distanceToTarget > 0f)
+        {
+            return;
+        }
+
+        pyramidTargetReached = true;
+        transform.position += pyramidForward * distanceToTarget;
     }
 
     private void SetTargetPosition(Vector3 position, float repositionSpeed, float delay)

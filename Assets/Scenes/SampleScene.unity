@@ -875,7 +875,7 @@ Transform:
   m_GameObject: {fileID: 1082385571}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.58, z: 96.7}
+  m_LocalPosition: {x: 0, y: -0.58, z: 52.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -900,6 +900,7 @@ MonoBehaviour:
   horizontalSpacing: 0.6
   verticalSpacing: 1
   forwardSpacing: 1
+  repositionDelayBetweenRunners: 0.03
 --- !u!1 &1098746672
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: doorRepositionSpeed
-      value: 999
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: combatRepositionSpeed
@@ -1096,7 +1097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: pyramidRepositionSpeed
-      value: 44
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: combatExitRepositionSpeed
