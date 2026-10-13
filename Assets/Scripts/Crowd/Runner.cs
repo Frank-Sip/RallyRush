@@ -6,7 +6,6 @@ public class Runner : MonoBehaviour
     [SerializeField] private float doorRepositionSpeed = 20f;
     [SerializeField] private float combatEnterRepositionSpeed = 5f;
     [SerializeField] private float combatExitRepositionSpeed = 5f;
-    [SerializeField] private float pyramidRepositionSpeed = 5f;
 
     [Header("Movement Settings")]
     [SerializeField] private float attackSpeed = 5f;
@@ -15,13 +14,11 @@ public class Runner : MonoBehaviour
     [Min(0)] [SerializeField] private float enemyCollisionDistance = 0.01f;
 
     private Vector3 targetLocalPosition;
-    private Vector3 pyramidRepositionLocalPosition;
     private Vector3 pyramidTargetWorldPosition;
     private Vector3 pyramidForward;
     private CrowdSystem crowdSystem;
     private float currentRepositionSpeed;
     private float repositionDelay;
-    private float pyramidRepositionDelay;
     private float verticalVelocity;
     private bool attackPositionReached;
     private bool pyramidAdvanceEnabled;
@@ -30,7 +27,6 @@ public class Runner : MonoBehaviour
     private bool isDead;
 
     public int FormationIndex { get; private set; }
-    public bool PyramidRepositionCompleted => pyramidRepositionDelay <= 0f && transform.localPosition == pyramidRepositionLocalPosition;
 
     private void Awake()
     {
@@ -54,7 +50,6 @@ public class Runner : MonoBehaviour
                 AttackTarget();
                 break;
             case RunnerBehaviour.Pyramid:
-                MoveTowardsPyramidPosition();
                 break;
         }
 
@@ -78,25 +73,6 @@ public class Runner : MonoBehaviour
         Vector3 horizontalTargetPosition = targetLocalPosition;
         horizontalTargetPosition.y = transform.localPosition.y;
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, horizontalTargetPosition, speed * Time.deltaTime);
-    }
-
-    private void MoveTowardsPyramidPosition()
-    {
-        if (pyramidAdvanceEnabled)
-        {
-            return;
-        }
-
-        if (pyramidRepositionDelay > 0f)
-        {
-            pyramidRepositionDelay -= Time.deltaTime;
-            return;
-        }
-
-        transform.localPosition = Vector3.MoveTowards(
-            transform.localPosition,
-            pyramidRepositionLocalPosition,
-            pyramidRepositionSpeed * Time.deltaTime);
     }
 
     private void AttackTarget()
@@ -197,10 +173,9 @@ public class Runner : MonoBehaviour
         SetTargetPosition(position, combatExitRepositionSpeed, delay);
     }
 
-    public void SetPyramidRepositionPosition(Vector3 repositionPosition, float delay)
+    public void SetPyramidFormationPosition(Vector3 position)
     {
-        pyramidRepositionLocalPosition = repositionPosition;
-        pyramidRepositionDelay = delay;
+        transform.localPosition = position;
         pyramidAdvanceEnabled = false;
         pyramidTargetReached = false;
     }

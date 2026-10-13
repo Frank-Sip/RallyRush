@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.Cinemachine;
 using UnityEngine;
 
 [SelectionBase]
@@ -15,26 +14,28 @@ public class PyramidFormation : MonoBehaviour
     [Min(0f)][SerializeField] private float horizontalSpacing = 0.6f;
     [Min(0f)][SerializeField] private float verticalSpacing = 1f;
     [Min(0f)][SerializeField] private float forwardSpacing = 1f;
-    [Min(0f)][SerializeField] private float repositionDelayBetweenRunners = 0.03f;
+    [Min(1)][SerializeField] private int remainingRunnerDistributionLevels = 2;
+    [Min(0f)][SerializeField] private float formationTickInterval = 0.1f;
 
     private CrowdSystem crowdSystem;
     private List<FormationAssignment> activeAssignments;
-    private bool waitingForReposition;
-    private CinemachineCamera cinemachineCamera;
+    private float formationTickTimer;
+    private int formedLevelCount;
+    private bool buildingFormation;
 
     private readonly struct FormationAssignment
     {
         public readonly Runner Runner;
-        public readonly Vector3 RepositionLocalPosition;
+        public readonly int Level;
+        public readonly float HorizontalOffset;
         public readonly Vector3 TargetWorldPosition;
-        public readonly float RepositionDelay;
 
-        public FormationAssignment(Runner runner, Vector3 repositionLocalPosition, Vector3 targetWorldPosition, float repositionDelay)
+        public FormationAssignment(Runner runner, int level, float horizontalOffset, Vector3 targetWorldPosition)
         {
             Runner = runner;
-            RepositionLocalPosition = repositionLocalPosition;
+            Level = level;
+            HorizontalOffset = horizontalOffset;
             TargetWorldPosition = targetWorldPosition;
-            RepositionDelay = repositionDelay;
         }
     }
 
@@ -44,34 +45,23 @@ public class PyramidFormation : MonoBehaviour
 
     private void Start()
     {
-        cinemachineCamera = FindObjectOfType<CinemachineCamera>();
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
         SpawnPyramidObjects();
     }
 
     private void Update()
     {
-        if (!waitingForReposition)
+        if (!buildingFormation)
         {
             return;
         }
 
-        for (int i = 0; i < activeAssignments.Count; i++)
-        {
-            if (!activeAssignments[i].Runner.PyramidRepositionCompleted)
-            {
-                return;
-            }
-        }
+        formationTickTimer -= Time.deltaTime;
 
-        for (int i = 0; i < activeAssignments.Count; i++)
+        if (formationTickTimer <= 0f)
         {
-            FormationAssignment assignment = activeAssignments[i];
-            assignment.Runner.StartPyramidAdvance(assignment.TargetWorldPosition, transform.forward);
+            BuildNextLevel();
         }
-
-        crowdSystem.FinishPyramidReposition();
-        waitingForReposition = false;
     }
 
     private void SpawnPyramidObjects()
@@ -109,63 +99,102 @@ public class PyramidFormation : MonoBehaviour
     {
         CalculateLevels();
         activeAssignments = CalculateRunnerAssignments();
-        PlaceRunners(activeAssignments);
-        cinemachineCamera.Follow = activeAssignments[0].Runner.transform;
         crowdSystem.EnterPyramid();
-        waitingForReposition = true;
+        formedLevelCount = 0;
+        buildingFormation = true;
+        BuildNextLevel();
     }
 
     private List<FormationAssignment> CalculateRunnerAssignments()
     {
         List<Runner> availableRunners = new List<Runner>(crowdSystem.GetRunners());
         List<FormationAssignment> assignments = new List<FormationAssignment>(availableRunners.Count);
-        bool twoRunnerFormation = availableRunners.Count == 2;
+        int[] runnersPerLevel = CalculateRunnersPerLevel();
         availableRunners.Sort((firstRunner, secondRunner) => firstRunner.FormationIndex.CompareTo(secondRunner.FormationIndex));
-        int assignmentIndex = 0;
 
         for (int level = Levels - 1; level >= 0; level--)
         {
-            int runnersInLevel = Levels - level;
-
-            if (level == 0)
-            {
-                runnersInLevel += RemainingRunners;
-            }
-
-            if (twoRunnerFormation)
-            {
-                runnersInLevel = 1;
-            }
+            int runnersInLevel = runnersPerLevel[level];
 
             for (int positionIndex = 0; positionIndex < runnersInLevel; positionIndex++)
             {
                 float horizontalOffset = (positionIndex - (runnersInLevel - 1) * 0.5f) * horizontalSpacing;
-                Vector3 repositionWorldPosition = crowdSystem.transform.position
-                    + transform.right * horizontalOffset
-                    + transform.up * level * verticalSpacing;
                 Vector3 targetWorldPosition = transform.position + transform.right * horizontalOffset + transform.up * level * verticalSpacing + transform.forward * level * forwardSpacing;
 
                 Runner runner = availableRunners[0];
-                Vector3 repositionLocalPosition = runner.transform.parent.InverseTransformPoint(repositionWorldPosition);
-                float repositionDelay = assignmentIndex * repositionDelayBetweenRunners;
 
-                assignments.Add(new FormationAssignment(runner, repositionLocalPosition, targetWorldPosition, repositionDelay));
+                assignments.Add(new FormationAssignment(runner, level, horizontalOffset, targetWorldPosition));
                 availableRunners.RemoveAt(0);
-                assignmentIndex++;
             }
         }
 
         return assignments;
     }
 
-    private static void PlaceRunners(List<FormationAssignment> assignments)
+    private int[] CalculateRunnersPerLevel()
     {
-        for (int i = 0; i < assignments.Count; i++)
+        int[] runnersPerLevel = new int[Levels];
+
+        if (crowdSystem.GetRunnersAmount() == 2)
         {
-            FormationAssignment assignment = assignments[i];
-            assignment.Runner.SetPyramidRepositionPosition(
-                assignment.RepositionLocalPosition,
-                assignment.RepositionDelay);
+            runnersPerLevel[0] = 1;
+            runnersPerLevel[1] = 1;
+            return runnersPerLevel;
         }
+
+        for (int level = 0; level < Levels; level++)
+        {
+            runnersPerLevel[level] = Levels - level;
+        }
+
+        int distributionLevels = Mathf.Min(
+            remainingRunnerDistributionLevels,
+            Mathf.Max(1, Levels - 1));
+
+        for (int i = 0; i < RemainingRunners; i++)
+        {
+            runnersPerLevel[i % distributionLevels]++;
+        }
+
+        return runnersPerLevel;
+    }
+
+    private void BuildNextLevel()
+    {
+        formedLevelCount++;
+        int lowestFormedLevel = Levels - formedLevelCount;
+
+        for (int i = 0; i < activeAssignments.Count; i++)
+        {
+            FormationAssignment assignment = activeAssignments[i];
+
+            if (assignment.Level < lowestFormedLevel)
+            {
+                continue;
+            }
+
+            int currentLevel = assignment.Level - lowestFormedLevel;
+            Vector3 formationWorldPosition = crowdSystem.transform.position
+                + transform.right * assignment.HorizontalOffset
+                + transform.up * currentLevel * verticalSpacing;
+            Vector3 formationLocalPosition = assignment.Runner.transform.parent.InverseTransformPoint(formationWorldPosition);
+
+            assignment.Runner.SetPyramidFormationPosition(formationLocalPosition);
+        }
+
+        if (formedLevelCount < Levels)
+        {
+            formationTickTimer = formationTickInterval;
+            return;
+        }
+
+        for (int i = 0; i < activeAssignments.Count; i++)
+        {
+            FormationAssignment assignment = activeAssignments[i];
+            assignment.Runner.StartPyramidAdvance(assignment.TargetWorldPosition, transform.forward);
+        }
+
+        crowdSystem.FinishPyramidReposition();
+        buildingFormation = false;
     }
 }
