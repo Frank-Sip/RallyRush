@@ -139,6 +139,50 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1655547426999634998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7616594420282043655}
+  - component: {fileID: 611616234550200636}
+  m_Layer: 0
+  m_Name: CameraTrackingTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7616594420282043655
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655547426999634998}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1338222811249418655}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &611616234550200636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655547426999634998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 645a839057e200e419cb84957e5fc2aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
 --- !u!1 &3710068793831503952
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,6 +439,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7616594420282043655}
   - {fileID: 5173851831251694447}
   - {fileID: 8206940674617473590}
   m_Father: {fileID: 0}
@@ -412,7 +457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementController
   regularSpeed: 5
-  combatSpeed: 1
+  combatSpeed: 2
   speedChangeRate: 10
   slideSpeed: 5
   screenLimit: 10
@@ -430,6 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CrowdSystem
   radius: 0.4
   angle: 137.50777
+  combatExitStaggerDuration: 0.5
   maxRunners: 999
 --- !u!1001 &7967026028252224042
 PrefabInstance:
@@ -478,6 +524,18 @@ PrefabInstance:
     - target: {fileID: 260185206011496619, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+      propertyPath: attackSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+      propertyPath: combatExitRepositionSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+      propertyPath: combatEnterRepositionSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5446765266283868625, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: m_Name

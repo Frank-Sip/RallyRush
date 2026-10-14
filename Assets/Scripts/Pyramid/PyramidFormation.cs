@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,8 @@ public class PyramidFormation : MonoBehaviour
     private float formationTickTimer;
     private int formedLevelCount;
     private bool buildingFormation;
+    private bool checkingTargetCompletion;
+    private bool firstLevelEventSent;
 
     private readonly struct FormationAssignment
     {
@@ -42,6 +45,15 @@ public class PyramidFormation : MonoBehaviour
     public int Levels { get; private set; }
     public int UsedRunners { get; private set; }
     public int RemainingRunners { get; private set; }
+    public Runner LastLevelRunner { get; private set; }
+
+    public event Action FirstLevelComplete;
+    public event Action<Runner> LastLevelComplete;
+
+    private void Awake()
+    {
+        ServiceProvider.RegisterService(this);
+    }
 
     private void Start()
     {
@@ -51,16 +63,21 @@ public class PyramidFormation : MonoBehaviour
 
     private void Update()
     {
-        if (!buildingFormation)
+        if (buildingFormation)
         {
+            formationTickTimer -= Time.deltaTime;
+
+            if (formationTickTimer <= 0f)
+            {
+                BuildNextLevel();
+            }
+
             return;
         }
 
-        formationTickTimer -= Time.deltaTime;
-
-        if (formationTickTimer <= 0f)
+        if (checkingTargetCompletion)
         {
-            BuildNextLevel();
+            CheckTargetCompletion();
         }
     }
 
@@ -99,8 +116,11 @@ public class PyramidFormation : MonoBehaviour
     {
         CalculateLevels();
         activeAssignments = CalculateRunnerAssignments();
+        LastLevelRunner = activeAssignments[0].Runner;
         crowdSystem.EnterPyramid();
         formedLevelCount = 0;
+        firstLevelEventSent = false;
+        checkingTargetCompletion = false;
         buildingFormation = true;
         BuildNextLevel();
     }
@@ -196,5 +216,42 @@ public class PyramidFormation : MonoBehaviour
 
         crowdSystem.FinishPyramidReposition();
         buildingFormation = false;
+        checkingTargetCompletion = true;
+    }
+
+    private void CheckTargetCompletion()
+    {
+        bool firstLevelCompleted = true;
+        bool lastLevelCompleted = true;
+
+        for (int i = 0; i < activeAssignments.Count; i++)
+        {
+            FormationAssignment assignment = activeAssignments[i];
+
+            if (!assignment.Runner.PyramidTargetReached)
+            {
+                if (assignment.Level == 0)
+                {
+                    firstLevelCompleted = false;
+                }
+
+                if (assignment.Level == Levels - 1)
+                {
+                    lastLevelCompleted = false;
+                }
+            }
+        }
+
+        if (!firstLevelEventSent && firstLevelCompleted)
+        {
+            firstLevelEventSent = true;
+            FirstLevelComplete?.Invoke();
+        }
+
+        if (lastLevelCompleted)
+        {
+            LastLevelComplete?.Invoke(activeAssignments[0].Runner);
+            checkingTargetCompletion = false;
+        }
     }
 }

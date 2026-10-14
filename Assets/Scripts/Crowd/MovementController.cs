@@ -18,6 +18,7 @@ public class MovementController : MonoBehaviour
     
     private void Awake()
     {
+        ServiceProvider.RegisterService(this);
         crowdSystem = GetComponentInChildren<CrowdSystem>();
         currentSpeed = regularSpeed;
         targetSpeed = regularSpeed;
@@ -97,6 +98,11 @@ public class MovementController : MonoBehaviour
     public void RestoreRegularSpeed()
     {
         SetSpeed(regularSpeed);
+    }
+
+    public void CenterPlayer()
+    {
+        transform.Translate(new Vector3(-transform.position.x, 0f, 0f), Space.World);
     }
 
     private void LateralMovement()

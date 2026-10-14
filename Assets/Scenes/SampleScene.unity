@@ -206,7 +206,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.29082704, y: 0, z: 0, w: 0.95677567}
+  m_LocalRotation: {x: 0.29770163, y: 0.000000012491285, z: -0.000000003895293, w: 0.954659}
   m_LocalPosition: {x: 0, y: 8.71, z: -28.990002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -541,6 +541,7 @@ GameObject:
   - component: {fileID: 632622453}
   - component: {fileID: 632622452}
   - component: {fileID: 632622454}
+  - component: {fileID: 632622455}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -568,9 +569,9 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 1706778615}
-    LookAtTarget: {fileID: 0}
-    CustomLookAtTarget: 0
+    TrackingTarget: {fileID: 1749699753}
+    LookAtTarget: {fileID: 1749699753}
+    CustomLookAtTarget: 1
   Lens:
     FieldOfView: 60.000004
     OrthographicSize: 5
@@ -599,7 +600,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 632622450}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.29082704, y: -0, z: -0, w: 0.95677567}
+  m_LocalRotation: {x: 0.29770166, y: 0.000000011920798, z: -0.0000000020658717, w: 0.954659}
   m_LocalPosition: {x: 0, y: 8.71, z: -28.990002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -625,6 +626,35 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 8.71, z: -8.3}
+--- !u!114 &632622455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632622450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineRotationComposer
+  Composition:
+    ScreenPosition: {x: 0, y: 0.18}
+    DeadZone:
+      Enabled: 0
+      Size: {x: 0.2, y: 0.2}
+    HardLimits:
+      Enabled: 0
+      Size: {x: 0.8, y: 0.8}
+      Offset: {x: 0, y: 0}
+  CenterOnActivate: 1
+  TargetOffset: {x: 0, y: 0, z: 0}
+  Damping: {x: 0.5, y: 0.5}
+  Lookahead:
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
 --- !u!1001 &677789058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -932,7 +962,7 @@ Transform:
   m_GameObject: {fileID: 1082385571}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.58, z: 20.94}
+  m_LocalPosition: {x: 0, y: -0.58, z: 9.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1097,6 +1127,94 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: forwardSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: movementSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: verticalSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: followOffset.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: followOffset.y
+      value: 7.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: followOffset.z
+      value: -8.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: speedChangeRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: rotationComposer
+      value: 
+      objectReference: {fileID: 632622455}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: cinemachineFollow
+      value: 
+      objectReference: {fileID: 632622454}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: movementDirection.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: movementDirection.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: diagonalOffsetSpeed.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: diagonalOffsetSpeed.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: diagonalOffsetSpeed.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: firstLevelFollowOffset.x
+      value: 2.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: firstLevelFollowOffset.y
+      value: 3.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: firstLevelFollowOffset.z
+      value: -5.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: firstLevelOffsetChangeRate
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: pyramidStartFollowOffset.x
+      value: 3.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: pyramidStartFollowOffset.y
+      value: 7.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: pyramidStartFollowOffset.z
+      value: -8.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: pyramidStartOffsetChangeRate
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1338222811249418655, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1137,41 +1255,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: attackSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: repositionSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: doorRepositionSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: combatRepositionSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: pyramidRepositionSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: combatExitRepositionSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: combatEnterRepositionSpeed
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7729875140569456883, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_Name
       value: PlayerController
-      objectReference: {fileID: 0}
-    - target: {fileID: 9046309251851112568, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: combatSpeed
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1235,9 +1321,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 821226d264e88b74c98716307f492dbf, type: 3}
---- !u!4 &1706778615 stripped
+--- !u!4 &1749699753 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1338222811249418655, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7616594420282043655, guid: e8991802c69eb974fa817ec502175a02, type: 3}
   m_PrefabInstance: {fileID: 1529915058}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1893535481

@@ -27,6 +27,7 @@ public class Runner : MonoBehaviour
     private bool isDead;
 
     public int FormationIndex { get; private set; }
+    public bool PyramidTargetReached => pyramidTargetReached;
 
     private void Awake()
     {
@@ -185,6 +186,7 @@ public class Runner : MonoBehaviour
         pyramidTargetWorldPosition = targetWorldPosition;
         pyramidForward = forward;
         pyramidAdvanceEnabled = true;
+        pyramidTargetReached = false;
     }
 
     private void StopAtPyramidTarget()

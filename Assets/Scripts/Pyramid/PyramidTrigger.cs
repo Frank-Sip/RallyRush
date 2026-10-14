@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,11 +8,20 @@ public class PyramidTrigger : MonoBehaviour
     [SerializeField] private Vector3 detectionBoxSize = new Vector3(4f, 2f, 1f);
 
     private CrowdSystem crowdSystem;
+    private MovementController movementController;
     private bool crowdDetected;
+
+    public event Action StartPyramid;
+
+    private void Awake()
+    {
+        ServiceProvider.RegisterService(this);
+    }
 
     private void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
+        movementController = ServiceProvider.GetService<MovementController>();
     }
 
     private void Update()
@@ -38,6 +48,8 @@ public class PyramidTrigger : MonoBehaviour
             if (isInside)
             {
                 crowdDetected = true;
+                movementController.CenterPlayer();
+                StartPyramid?.Invoke();
                 pyramidFormation.StartPyramidFormation();
                 return;
             }
