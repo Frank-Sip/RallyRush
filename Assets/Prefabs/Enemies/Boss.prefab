@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 7116165123987219138}
   - component: {fileID: 5051564654484789725}
   - component: {fileID: 1819796244591298770}
+  - component: {fileID: 3715717820204274156}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -281,7 +282,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3169319178082235837}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0.59, y: 0, z: 28.01}
   m_LocalScale: {x: 3.5102, y: 3.5102, z: 3.5102}
   m_ConstrainProportionsScale: 0
@@ -328,8 +329,6 @@ MonoBehaviour:
   attackDistance: 2.4
   collisionRadius: 1.5
   damageTakenPerHit: 1
-  attackPoint: {fileID: 3041631172244036050}
-  runnerAttackBoxSize: {x: 1, y: 3, z: 1}
   rotationSpeed: 180
 --- !u!114 &1819796244591298770
 MonoBehaviour:
@@ -344,6 +343,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
   maxHealth: 80
+--- !u!114 &3715717820204274156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3169319178082235837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c0cb8d346293f042a3a92587cdbb318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
+  attackPoint: {fileID: 3041631172244036050}
+  runnerAttackBoxSize: {x: 5, y: 3, z: 5}
 --- !u!1 &3518578787153196535
 GameObject:
   m_ObjectHideFlags: 0
