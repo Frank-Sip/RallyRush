@@ -24,7 +24,7 @@ public class MovementController : MonoBehaviour
         targetSpeed = regularSpeed;
     }
     
-    private void Update()
+    public void CustomUpdate()
     {
         UpdateSpeed();
         Move();
@@ -105,12 +105,17 @@ public class MovementController : MonoBehaviour
         transform.Translate(new Vector3(-transform.position.x, 0f, 0f), Space.World);
     }
 
+    public void SetInputStartPosition()
+    {
+        clickScreenPosition = Input.mousePosition;
+        clickPlayerPosition = transform.position;
+    }
+
     private void LateralMovement()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            clickScreenPosition = Input.mousePosition;
-            clickPlayerPosition = transform.position;
+            SetInputStartPosition();
         }
         else if (Input.GetMouseButton(0))
         {

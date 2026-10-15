@@ -16,6 +16,7 @@ public class Runner : MonoBehaviour
     private Vector3 targetLocalPosition;
     private Vector3 pyramidTargetWorldPosition;
     private Vector3 pyramidForward;
+    private Animator animator;
     private CrowdSystem crowdSystem;
     private float currentRepositionSpeed;
     private float repositionDelay;
@@ -31,6 +32,7 @@ public class Runner : MonoBehaviour
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         targetLocalPosition = transform.localPosition;
         currentRepositionSpeed = doorRepositionSpeed;
     }
@@ -38,6 +40,11 @@ public class Runner : MonoBehaviour
     private void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
+
+        if (GameManager.Instance.currentStatus == GameStatus.Gameplay)
+        {
+            SetAnimTrigger("Run");
+        }
     }
 
     private void Update()
@@ -230,6 +237,11 @@ public class Runner : MonoBehaviour
     public void Jump(float jumpForce)
     {
         verticalVelocity = jumpForce;
+    }
+
+    public void SetAnimTrigger(string triggerName)
+    {
+        animator.SetTrigger(triggerName);
     }
 
     public bool Die()
