@@ -32,17 +32,31 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        pyramidTrigger = ServiceProvider.GetService<PyramidTrigger>();
-        pyramidFormation = ServiceProvider.GetService<PyramidFormation>();
-        
-        pyramidTrigger.StartPyramid += ChangeFollowOffset;
-        pyramidFormation.FirstLevelComplete += StartDiagonalMovement;
+        pyramidTrigger = FindAnyObjectByType<PyramidTrigger>();
+        pyramidFormation = FindAnyObjectByType<PyramidFormation>();
+
+        if (pyramidTrigger != null)
+        {
+            pyramidTrigger.StartPyramid += ChangeFollowOffset;
+        }
+
+        if (pyramidFormation != null)
+        {
+            pyramidFormation.FirstLevelComplete += StartDiagonalMovement;
+        }
     }
 
     private void OnDestroy()
     {
-        pyramidTrigger.StartPyramid -= ChangeFollowOffset;
-        pyramidFormation.FirstLevelComplete -= StartDiagonalMovement;
+        if (pyramidTrigger != null)
+        {
+            pyramidTrigger.StartPyramid -= ChangeFollowOffset;
+        }
+
+        if (pyramidFormation != null)
+        {
+            pyramidFormation.FirstLevelComplete -= StartDiagonalMovement;
+        }
     }
 
     private void Update()

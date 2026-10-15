@@ -4,6 +4,8 @@ public enum GameStatus
 {
     Menu,
     Gameplay,
+    Pause,
+    Roullete,
     Victory,
     GameOver
 }
@@ -16,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     private MovementController movementController;
     private CrowdSystem crowdSystem;
+    private Roulette roulette;
 
     public GameStatus currentStatus { get; private set; }
 
@@ -35,6 +38,7 @@ public class GameManager : MonoBehaviour
     {
         movementController = ServiceProvider.GetService<MovementController>();
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
+        roulette = ServiceProvider.GetService<Roulette>();
         SetGameStatus(initialStatus);
     }
 
@@ -48,6 +52,14 @@ public class GameManager : MonoBehaviour
 
             case GameStatus.Gameplay:
                 UpdateGameplayStatus();
+                break;
+
+            case GameStatus.Pause:
+                UpdatePauseStatus();
+                break;
+
+            case GameStatus.Roullete:
+                UpdateRoulleteStatus();
                 break;
 
             case GameStatus.Victory:
@@ -72,6 +84,14 @@ public class GameManager : MonoBehaviour
                 SetGameplayStatus();
                 break;
 
+            case GameStatus.Pause:
+                SetPauseStatus();
+                break;
+
+            case GameStatus.Roullete:
+                SetRoulleteStatus();
+                break;
+
             case GameStatus.Victory:
                 SetVictoryStatus();
                 break;
@@ -89,6 +109,7 @@ public class GameManager : MonoBehaviour
 
     private void SetGameplayStatus()
     {
+        Time.timeScale = 1f;
         movementController.RestoreRegularSpeed();
         var runners = crowdSystem.GetRunners();
 
@@ -106,6 +127,17 @@ public class GameManager : MonoBehaviour
     {
     }
 
+    private void SetPauseStatus()
+    {
+    }
+
+    private void SetRoulleteStatus()
+    {
+        Time.timeScale = 0f;
+        movementController.SetSpeed(0f);
+        roulette.StartRoulette();
+    }
+
     private void UpdateMenuStatus()
     {
         if (Input.GetMouseButtonDown(0))
@@ -118,5 +150,15 @@ public class GameManager : MonoBehaviour
     private void UpdateGameplayStatus()
     {
         movementController.CustomUpdate();
+    }
+
+    private void UpdatePauseStatus()
+    {
+
+    }
+
+    private void UpdateRoulleteStatus()
+    {
+        roulette.CustomUpdate();
     }
 }
