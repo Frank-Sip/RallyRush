@@ -13,7 +13,7 @@ public class DoorValueRange
     }
 }
 
-[CreateAssetMenu(fileName = "DoorSettings", menuName = "Door Settings")]
+[CreateAssetMenu(fileName = "DoorSettings", menuName = "Scriptable Objects/Door Settings")]
 public class DoorSettingsSO : ScriptableObject
 {
     [Header("Value Ranges")]

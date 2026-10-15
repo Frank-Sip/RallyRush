@@ -987,34 +987,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: forwardSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: movementSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: verticalSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: followOffset.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: followOffset.y
-      value: 7.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: followOffset.z
-      value: -8.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: speedChangeRate
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: rotationComposer
       value: 
       objectReference: {fileID: 632622455}
@@ -1022,58 +994,6 @@ PrefabInstance:
       propertyPath: cinemachineFollow
       value: 
       objectReference: {fileID: 632622454}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: movementDirection.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: movementDirection.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: diagonalOffsetSpeed.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: diagonalOffsetSpeed.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: diagonalOffsetSpeed.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: firstLevelFollowOffset.x
-      value: 2.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: firstLevelFollowOffset.y
-      value: 3.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: firstLevelFollowOffset.z
-      value: -5.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: firstLevelOffsetChangeRate
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: pyramidStartFollowOffset.x
-      value: 3.42
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: pyramidStartFollowOffset.y
-      value: 7.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: pyramidStartFollowOffset.z
-      value: -8.26
-      objectReference: {fileID: 0}
-    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: pyramidStartOffsetChangeRate
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1338222811249418655, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1113,10 +1033,6 @@ PrefabInstance:
     - target: {fileID: 1338222811249418655, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
-      propertyPath: attackSpeed
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7729875140569456883, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_Name
@@ -2322,13 +2238,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3460916003834597643, guid: 1314251879f4a7b479f67b27bdee2b56, type: 3}
+      propertyPath: floorContainer
+      value: 
+      objectReference: {fileID: 11400000, guid: 9a5bdadd2f2358a4db703175cacca713, type: 2}
+    - target: {fileID: 3460916003834597643, guid: 1314251879f4a7b479f67b27bdee2b56, type: 3}
+      propertyPath: floors.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3854570789812556803, guid: 1314251879f4a7b479f67b27bdee2b56, type: 3}
       propertyPath: m_Name
       value: FloorManager
       objectReference: {fileID: 0}
     - target: {fileID: 3854570789812556803, guid: 1314251879f4a7b479f67b27bdee2b56, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3854570789812556803, guid: 1314251879f4a7b479f67b27bdee2b56, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

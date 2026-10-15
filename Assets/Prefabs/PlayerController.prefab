@@ -183,6 +183,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645a839057e200e419cb84957e5fc2aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  cinemachineFollow: {fileID: 0}
+  rotationComposer: {fileID: 0}
+  pyramidStartFollowOffset: {x: 3.42, y: 7.33, z: -8.26}
+  pyramidStartOffsetChangeRate: 2
+  firstLevelFollowOffset: {x: 2.69, y: 3.9, z: -5.09}
+  firstLevelOffsetChangeRate: 10
+  movementSpeed: 5
 --- !u!1 &3710068793831503952
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,7 +534,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: attackSpeed
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: combatExitRepositionSpeed
