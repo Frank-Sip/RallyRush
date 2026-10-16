@@ -4006,6 +4006,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3577225468646191772}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5619375363430814200}
   m_SourcePrefab: {fileID: 100100000, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
 --- !u!1 &7325152159048054376 stripped
 GameObject:
@@ -4045,7 +4048,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682bcc1721ed18140a91f91aa6e8bb7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 100
+  maxHealth: 50
+--- !u!114 &5619375363430814200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7325152159048054376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cef6b8eeb8575443ad851852f0acc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BigEnemyReposition
+  attackDistance: 3.56
+  collisionRadius: 2.08
+  damageTakenPerHit: 1
 --- !u!4 &7990506934112283858 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}

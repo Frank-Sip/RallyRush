@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6958693216698527739}
-  - component: {fileID: 5773045291435593409}
   m_Layer: 0
   m_Name: Big Floor
   m_TagString: Untagged
@@ -33,18 +32,6 @@ Transform:
   - {fileID: 226627344998696573}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5773045291435593409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8178671568632302900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8babb0a82012bf4d8df23067d37428d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Floor
 --- !u!1 &9067213948332793085
 GameObject:
   m_ObjectHideFlags: 0

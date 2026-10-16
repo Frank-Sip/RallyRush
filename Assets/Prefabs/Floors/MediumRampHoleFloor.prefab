@@ -116,7 +116,7 @@ Transform:
   m_GameObject: {fileID: 4736688118925303932}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 3.33, z: -5.2124567}
+  m_LocalPosition: {x: 0, y: 1.9, z: -5.2124567}
   m_LocalScale: {x: 0.07110172, y: 0.07110169, z: 0.07110172}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11b01159d1c58644c8a7c639a7d5da8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityModifierComponent
-  detectionBoxSize: {x: 10, y: 3, z: 1}
+  detectionBoxSize: {x: 10, y: 2, z: 1}
 --- !u!1 &5026672827213886070
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +265,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 537823477719919423}
-  - component: {fileID: 5400165646822671584}
   - component: {fileID: 5853212171405706750}
   m_Layer: 0
   m_Name: MediumRampHoleFloor
@@ -295,18 +294,6 @@ Transform:
   - {fileID: 8225992025646795427}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5400165646822671584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8527627877795047804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8babb0a82012bf4d8df23067d37428d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Floor
 --- !u!114 &5853212171405706750
 MonoBehaviour:
   m_ObjectHideFlags: 0

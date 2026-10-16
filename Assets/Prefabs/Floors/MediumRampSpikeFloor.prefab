@@ -76,51 +76,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityModifierComponent
   detectionBoxSize: {x: 10, y: 1, z: 3}
---- !u!1 &3100452204598513313
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1600558783001328097}
-  - component: {fileID: 3845537734868633342}
-  m_Layer: 0
-  m_Name: GravityActivator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1600558783001328097
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3100452204598513313}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 3.33, z: -5.2124567}
-  m_LocalScale: {x: 0.07110172, y: 0.07110169, z: 0.07110172}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3984312975678613611}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3845537734868633342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3100452204598513313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11b01159d1c58644c8a7c639a7d5da8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GravityModifierComponent
-  detectionBoxSize: {x: 10, y: 3, z: 1}
 --- !u!1 &3664959785938935656
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +85,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3984312975678613611}
-  - component: {fileID: 8334907022191200452}
   - component: {fileID: 3081984637510325105}
   m_Layer: 0
   m_Name: MediumRampSpikeFloor
@@ -154,24 +108,11 @@ Transform:
   m_Children:
   - {fileID: 7294385910523384475}
   - {fileID: 4388759137475633870}
-  - {fileID: 1600558783001328097}
   - {fileID: 2378880811503258326}
   - {fileID: 7071414076637530502}
   - {fileID: 3606622071028402023}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8334907022191200452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3664959785938935656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8babb0a82012bf4d8df23067d37428d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Floor
 --- !u!114 &3081984637510325105
 MonoBehaviour:
   m_ObjectHideFlags: 0

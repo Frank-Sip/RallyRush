@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7441848987026870310}
-  - component: {fileID: 6571695824312739383}
   m_Layer: 0
   m_Name: Medium Floor
   m_TagString: Untagged
@@ -33,18 +32,6 @@ Transform:
   - {fileID: 1247112255303456893}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6571695824312739383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8243514676297549806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8babb0a82012bf4d8df23067d37428d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Floor
 --- !u!1 &9048416124502824562
 GameObject:
   m_ObjectHideFlags: 0

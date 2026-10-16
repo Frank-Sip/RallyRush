@@ -8,80 +8,65 @@ public class FloorManager : MonoBehaviour
 
     private void Awake()
     {
-        Floor[] selectedFloors = SelectFloors();
+        FloorData[] selectedFloors = SelectFloors();
         SpawnFloors(selectedFloors);
     }
 
-    private Floor[] SelectFloors()
+    private FloorData[] SelectFloors()
     {
-        Floor[] selectedFloors = new Floor[floorAmount];
-        HashSet<Floor> usedFloors = new HashSet<Floor>();
+        FloorData[] selectedFloors = new FloorData[floorAmount];
+        HashSet<GameObject> usedFloors = new HashSet<GameObject>();
 
-        selectedFloors[0] = GetRandomUnusedFloor(
-            floorContainer.FirstFloors,
-            usedFloors,
-            "first");
+        selectedFloors[0] = GetRandomUnusedFloor(floorContainer.FirstFloors, usedFloors, "first");
 
-        selectedFloors[floorAmount - 1] = GetRandomUnusedFloor(
-            floorContainer.LastFloors,
-            usedFloors,
-            "last");
+        selectedFloors[floorAmount - 1] = GetRandomUnusedFloor(floorContainer.LastFloors, usedFloors, "last");
 
         for (int i = 1; i < floorAmount - 1; i++)
         {
-            selectedFloors[i] = GetRandomUnusedFloor(
-                floorContainer.MiddleFloors,
-                usedFloors,
-                "middle");
+            selectedFloors[i] = GetRandomUnusedFloor(floorContainer.MiddleFloors, usedFloors, "middle");
         }
 
         return selectedFloors;
     }
 
-    private static Floor GetRandomUnusedFloor(
-        Floor[] floorOptions,
-        HashSet<Floor> usedFloors,
+    private static FloorData GetRandomUnusedFloor(
+        FloorData[] floorOptions,
+        HashSet<GameObject> usedFloors,
         string floorGroup)
     {
-        List<Floor> availableFloors = new List<Floor>();
+        List<FloorData> availableFloors = new List<FloorData>();
 
         for (int i = 0; i < floorOptions.Length; i++)
         {
-            if (!usedFloors.Contains(floorOptions[i]))
+            if (!usedFloors.Contains(floorOptions[i].Prefab))
             {
                 availableFloors.Add(floorOptions[i]);
             }
         }
 
-        if (availableFloors.Count == 0)
-        {
-            throw new System.InvalidOperationException(
-                $"FloorContainer does not have enough unique {floorGroup} floors.");
-        }
-
-        Floor selectedFloor = availableFloors[Random.Range(0, availableFloors.Count)];
-        usedFloors.Add(selectedFloor);
+        FloorData selectedFloor = availableFloors[Random.Range(0, availableFloors.Count)];
+        usedFloors.Add(selectedFloor.Prefab);
         return selectedFloor;
     }
 
-    private void SpawnFloors(Floor[] selectedFloors)
+    private void SpawnFloors(FloorData[] selectedFloors)
     {
         Vector3 floorPosition = Vector3.zero;
 
         for (int i = 0; i < selectedFloors.Length; i++)
         {
-            Floor floorPrefab = selectedFloors[i];
+            FloorData floorData = selectedFloors[i];
 
             if (i > 0)
             {
-                floorPosition.z += floorPrefab.GetLength() / 2;
+                floorPosition.z += floorData.Length / 2;
             }
 
-            Floor floorInstance = Instantiate(floorPrefab, transform);
+            GameObject floorInstance = Instantiate(floorData.Prefab, transform);
             floorInstance.transform.localPosition = floorPosition;
             floorInstance.transform.localRotation = Quaternion.identity;
 
-            floorPosition.z += floorInstance.GetLength() / 2;
+            floorPosition.z += floorData.Length / 2;
         }
     }
 }

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6001104718914113276
 Transform:
   m_ObjectHideFlags: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
   attackPoint: {fileID: 6001104718914113276}
-  runnerAttackBoxSize: {x: 1, y: 1, z: 4}
+  runnerAttackBoxSize: {x: 1, y: 1, z: 7}
 --- !u!1001 &3264883186407765389
 PrefabInstance:
   m_ObjectHideFlags: 0

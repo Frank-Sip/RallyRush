@@ -45,7 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FloorManager
   floorAmount: 5
-  floors:
-  - {fileID: 6106231908050270335, guid: 783a0949c77382a4bb53a282b82c68ff, type: 3}
-  - {fileID: 6571695824312739383, guid: 83efdcff83eb5ef43aba5d24ca51f9ac, type: 3}
-  - {fileID: 5773045291435593409, guid: de776b565346ea74e82251456fee17d7, type: 3}
+  floorContainer: {fileID: 11400000, guid: 9a5bdadd2f2358a4db703175cacca713, type: 2}
