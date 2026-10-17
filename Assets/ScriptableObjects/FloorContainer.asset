@@ -16,22 +16,10 @@ MonoBehaviour:
   - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
     length: 30
   middleFloors:
-  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
-    length: 30
-  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
-    length: 30
-  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
-    length: 30
-  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
-    length: 30
-  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
-    length: 30
-  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
-    length: 30
-  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
-    length: 30
-  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
-    length: 30
+  - prefab: {fileID: 3329570304792240432, guid: 1c0d35a95a3f9be49a5ae15d2de49844, type: 3}
+    length: 40
+  - prefab: {fileID: 2498407437121718993, guid: 53ccc9ecdb65b0c4bbdcde7604e5510b, type: 3}
+    length: 60
   lastFloors:
   - prefab: {fileID: 6023676063703551376, guid: 139d11965f4264247bc993524cc11d5e, type: 3}
     length: 30

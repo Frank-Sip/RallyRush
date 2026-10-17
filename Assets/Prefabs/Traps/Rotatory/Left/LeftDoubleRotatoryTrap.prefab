@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3021453062578985972
 Transform:
   m_ObjectHideFlags: 0
@@ -28,8 +28,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.8, y: 0.188, z: 22.4}
-  m_LocalScale: {x: 1.225757, y: 1.225757, z: 1.225757}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2.49, y: 2.49, z: 2.49}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2895389279745725942}
   m_Father: {fileID: 0}
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
   attackPoint: {fileID: 3021453062578985972}
-  runnerAttackBoxSize: {x: 1, y: 1, z: 7}
+  runnerAttackBoxSize: {x: 3, y: 1, z: 15}
 --- !u!1001 &3433084633221870109
 PrefabInstance:
   m_ObjectHideFlags: 0
