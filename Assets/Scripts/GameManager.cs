@@ -138,13 +138,7 @@ public class GameManager : MonoBehaviour
     public void EnterVictoryStatus()
     {
         victoryUI.SetActive(true);
-
-        var runners = crowdSystem.GetRunners();
-
-        for (int i = 0; i < runners.Count; i++)
-        {
-            runners[i].SetAnimTrigger("Victory");
-        }
+        crowdSystem.SetVictoryAnimation();
     }
 
     private void EnterGameOverStatus()

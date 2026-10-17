@@ -12,6 +12,7 @@ public class BossEnemy : BigEnemyReposition
     {
         base.Awake();
         runnerAttackerComponent = GetComponent<RunnerAttackerComponent>();
+        healthComponent.OnDeath += Die;
     }
     
     protected override void Start()
@@ -28,6 +29,11 @@ public class BossEnemy : BigEnemyReposition
     protected override void OnCombatStarted()
     {
         SetAnimTrigger("Attack");
+    }
+
+    public override void Die()
+    {
+        GameManager.Instance.SetVictoryStatus();
     }
 
     private void StartIsAttacking()

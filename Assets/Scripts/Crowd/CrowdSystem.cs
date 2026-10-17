@@ -128,6 +128,14 @@ public class CrowdSystem : MonoBehaviour
         return runners.Count;
     }
 
+    public void SetVictoryAnimation()
+    {
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runners[i].SetAnimTrigger("Victory");
+        }
+    }
+
     public bool RemoveRunner(Runner runner)
     {
         if (!runners.Remove(runner))

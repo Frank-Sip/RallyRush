@@ -252,6 +252,7 @@ public class PyramidFormation : MonoBehaviour
         {
             LastLevelComplete?.Invoke(activeAssignments[0].Runner);
             checkingTargetCompletion = false;
+            GameManager.Instance.SetVictoryStatus();
         }
     }
 }
