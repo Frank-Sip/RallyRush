@@ -12,6 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e9abba1a1d9164084f34c0f9790b4e, type: 3}
   m_Name: FloorContainer
   m_EditorClassIdentifier: Assembly-CSharp::FloorContainer
-  firstFloors: []
-  middleFloors: []
-  lastFloors: []
+  firstFloors:
+  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
+    length: 30
+  middleFloors:
+  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
+    length: 30
+  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
+    length: 30
+  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
+    length: 30
+  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
+    length: 30
+  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
+    length: 30
+  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
+    length: 30
+  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
+    length: 30
+  - prefab: {fileID: 2617875208434519368, guid: 958fc68fb0acb694e89d72a5171dd7c2, type: 3}
+    length: 30
+  lastFloors:
+  - prefab: {fileID: 6023676063703551376, guid: 139d11965f4264247bc993524cc11d5e, type: 3}
+    length: 30

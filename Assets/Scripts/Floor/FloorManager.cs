@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FloorManager : MonoBehaviour
@@ -15,37 +14,34 @@ public class FloorManager : MonoBehaviour
     private FloorData[] SelectFloors()
     {
         FloorData[] selectedFloors = new FloorData[floorAmount];
-        HashSet<GameObject> usedFloors = new HashSet<GameObject>();
+        FloorData[] firstFloors = (FloorData[])floorContainer.FirstFloors.Clone();
+        FloorData[] middleFloors = (FloorData[])floorContainer.MiddleFloors.Clone();
+        FloorData[] lastFloors = (FloorData[])floorContainer.LastFloors.Clone();
 
-        selectedFloors[0] = GetRandomUnusedFloor(floorContainer.FirstFloors, usedFloors, "first");
+        int firstFloorCount = firstFloors.Length;
+        int middleFloorCount = middleFloors.Length;
+        int lastFloorCount = lastFloors.Length;
 
-        selectedFloors[floorAmount - 1] = GetRandomUnusedFloor(floorContainer.LastFloors, usedFloors, "last");
+        selectedFloors[0] = GetRandomUnusedFloor(firstFloors, ref firstFloorCount, "first");
+
+        selectedFloors[floorAmount - 1] = GetRandomUnusedFloor(lastFloors, ref lastFloorCount, "last");
 
         for (int i = 1; i < floorAmount - 1; i++)
         {
-            selectedFloors[i] = GetRandomUnusedFloor(floorContainer.MiddleFloors, usedFloors, "middle");
+            selectedFloors[i] = GetRandomUnusedFloor(middleFloors, ref middleFloorCount, "middle");
         }
 
         return selectedFloors;
     }
 
-    private static FloorData GetRandomUnusedFloor(
-        FloorData[] floorOptions,
-        HashSet<GameObject> usedFloors,
-        string floorGroup)
+    private static FloorData GetRandomUnusedFloor(FloorData[] availableFloors, ref int availableFloorCount, string floorGroup)
     {
-        List<FloorData> availableFloors = new List<FloorData>();
+        int selectedIndex = Random.Range(0, availableFloorCount);
+        FloorData selectedFloor = availableFloors[selectedIndex];
 
-        for (int i = 0; i < floorOptions.Length; i++)
-        {
-            if (!usedFloors.Contains(floorOptions[i].Prefab))
-            {
-                availableFloors.Add(floorOptions[i]);
-            }
-        }
+        availableFloorCount--;
+        availableFloors[selectedIndex] = availableFloors[availableFloorCount];
 
-        FloorData selectedFloor = availableFloors[Random.Range(0, availableFloors.Count)];
-        usedFloors.Add(selectedFloor.Prefab);
         return selectedFloor;
     }
 
