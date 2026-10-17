@@ -1,24 +1,27 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [SelectionBase]
 public class PyramidFormation : MonoBehaviour
 {
-    [Header("Pyramid Settings")]
-    [SerializeField] private GameObject pyramidObject;
-    [Min(0)][SerializeField] private int objectAmount;
-    [SerializeField] private float objectOffsetY;
-    [SerializeField] private float objectOffsetZ;
+    [Header("Step Generation")]
+    [SerializeField] private GameObject stepPrefab;
+    [Min(0)][SerializeField] private int stepAmount;
+    [SerializeField] private float stepOffsetY = 1f;
+    [SerializeField] private float stepOffsetZ = 1f;
 
     [Header("Runner Formation Settings")]
     [Min(0f)][SerializeField] private float horizontalSpacing = 0.6f;
     [Min(0f)][SerializeField] private float verticalSpacing = 1f;
-    [Min(0f)][SerializeField] private float forwardSpacing = 1f;
     [Min(1)][SerializeField] private int remainingRunnerDistributionLevels = 2;
     [Min(0f)][SerializeField] private float formationTickInterval = 0.1f;
 
     private CrowdSystem crowdSystem;
+    [SerializeField, HideInInspector] private Transform[] steps;
     private List<FormationAssignment> activeAssignments;
     private float formationTickTimer;
     private int formedLevelCount;
@@ -58,8 +61,51 @@ public class PyramidFormation : MonoBehaviour
     private void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
-        SpawnPyramidObjects();
+        GetSteps();
     }
+
+    private void GetSteps()
+    {
+        steps = new Transform[transform.childCount];
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            steps[i] = transform.GetChild(i);
+        }
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu("Create Steps")]
+    private void CreateSteps()
+    {
+        steps = new Transform[stepAmount];
+
+        for (int i = 0; i < stepAmount; i++)
+        {
+            GameObject newStep = (GameObject)PrefabUtility.InstantiatePrefab(stepPrefab, transform);
+            Undo.RegisterCreatedObjectUndo(newStep, "Create Pyramid Step");
+
+            newStep.name = $"{stepPrefab.name} {i}";
+            newStep.transform.localPosition = new Vector3(0f, stepOffsetY * i, stepOffsetZ * i);
+            newStep.transform.localRotation = Quaternion.identity;
+            steps[i] = newStep.transform;
+        }
+
+        EditorUtility.SetDirty(this);
+    }
+
+    [ContextMenu("Delete Steps")]
+    private void DeleteSteps()
+    {
+        for (int i = 0; i < steps.Length; i++)
+        {
+            Undo.DestroyObjectImmediate(steps[i].gameObject);
+        }
+
+        steps = Array.Empty<Transform>();
+        EditorUtility.SetDirty(this);
+    }
+#endif
 
     private void Update()
     {
@@ -81,22 +127,13 @@ public class PyramidFormation : MonoBehaviour
         }
     }
 
-    private void SpawnPyramidObjects()
-    {
-        for (int i = 0; i < objectAmount; i++)
-        {
-            Vector3 spawnPosition = transform.position + new Vector3(0f, objectOffsetY * i, objectOffsetZ * i);
-            Instantiate(pyramidObject, spawnPosition, transform.rotation, transform);
-        }
-    }
-
     public void CalculateLevels()
     {
         int runnerAmount = crowdSystem.GetRunnersAmount();
         Levels = 0;
         UsedRunners = 0;
 
-        while (UsedRunners + Levels + 1 <= runnerAmount)
+        while (Levels < steps.Length && UsedRunners + Levels + 1 <= runnerAmount)
         {
             Levels++;
             UsedRunners += Levels;
@@ -139,7 +176,8 @@ public class PyramidFormation : MonoBehaviour
             for (int positionIndex = 0; positionIndex < runnersInLevel; positionIndex++)
             {
                 float horizontalOffset = (positionIndex - (runnersInLevel - 1) * 0.5f) * horizontalSpacing;
-                Vector3 targetWorldPosition = transform.position + transform.right * horizontalOffset + transform.up * level * verticalSpacing + transform.forward * level * forwardSpacing;
+                Transform step = steps[level];
+                Vector3 targetWorldPosition = step.position + step.right * horizontalOffset;
 
                 Runner runner = availableRunners[0];
 

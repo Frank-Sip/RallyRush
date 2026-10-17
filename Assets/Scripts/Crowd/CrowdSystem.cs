@@ -195,6 +195,7 @@ public class CrowdSystem : MonoBehaviour
     {
         Behaviour = RunnerBehaviour.Pyramid;
         IsPyramidRepositioning = true;
+        crowdCount.gameObject.SetActive(false);
     }
 
     public void FinishPyramidReposition()
