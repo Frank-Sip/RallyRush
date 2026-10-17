@@ -408,7 +408,7 @@ Transform:
   m_GameObject: {fileID: 7230678356182761462}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.156, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -463,11 +463,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b8fb2623ae26741b18b3d3c421facc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementController
-  regularSpeed: 5
+  regularSpeed: 10
   combatSpeed: 2
   speedChangeRate: 10
-  slideSpeed: 5
-  screenLimit: 10
+  slideSpeed: 10
+  screenLimit: 14
 --- !u!114 &6906829037168895027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83b989cd110c602489ef0f9ac04d8168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CrowdSystem
-  radius: 0.4
+  radius: 0.2
   angle: 137.50777
   combatExitStaggerDuration: 0.5
   maxRunners: 999
@@ -537,12 +537,16 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+      propertyPath: normalEnemyAttackSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: combatExitRepositionSpeed
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: combatEnterRepositionSpeed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5446765266283868625, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: m_Name

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Runner : MonoBehaviour
 {
@@ -8,7 +9,9 @@ public class Runner : MonoBehaviour
     [SerializeField] private float combatExitRepositionSpeed = 5f;
 
     [Header("Movement Settings")]
-    [SerializeField] private float attackSpeed = 5f;
+    [FormerlySerializedAs("attackSpeed")]
+    [SerializeField] private float normalEnemyAttackSpeed = 5f;
+    [SerializeField] private float bigEnemyAttackSpeed = 5f;
     [SerializeField] private float rotationSpeed = 720f;
     [Min(0f)] [SerializeField] private float gravity = 20f;
     [Min(0)] [SerializeField] private float enemyCollisionDistance = 0.01f;
@@ -18,6 +21,7 @@ public class Runner : MonoBehaviour
     private Vector3 pyramidForward;
     private Animator animator;
     private CrowdSystem crowdSystem;
+    private float currentAttackSpeed;
     private float currentRepositionSpeed;
     private float repositionDelay;
     private float verticalVelocity;
@@ -34,6 +38,7 @@ public class Runner : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         targetLocalPosition = transform.localPosition;
+        currentAttackSpeed = normalEnemyAttackSpeed;
         currentRepositionSpeed = doorRepositionSpeed;
     }
 
@@ -98,7 +103,7 @@ public class Runner : MonoBehaviour
 
         Vector3 combatTargetPosition = crowdSystem.CombatTarget.position;
         combatTargetPosition.y = transform.position.y;
-        transform.position = Vector3.MoveTowards(transform.position, combatTargetPosition, attackSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, combatTargetPosition, currentAttackSpeed * Time.deltaTime);
     }
 
     private void ApplyGravity()
@@ -177,6 +182,16 @@ public class Runner : MonoBehaviour
     public void SetCombatEnterTargetPosition(Vector3 position)
     {
         SetTargetPosition(position, combatEnterRepositionSpeed, 0f);
+    }
+
+    public void UseNormalEnemyAttackSpeed()
+    {
+        currentAttackSpeed = normalEnemyAttackSpeed;
+    }
+
+    public void UseBigEnemyAttackSpeed()
+    {
+        currentAttackSpeed = bigEnemyAttackSpeed;
     }
 
     public void SetCombatExitTargetPosition(Vector3 position, int formationIndex, float delay = 0f)

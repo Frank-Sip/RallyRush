@@ -165,6 +165,12 @@ public class CrowdSystem : MonoBehaviour
     {
         Behaviour = RunnerBehaviour.Combat;
         CombatTarget = combatTarget;
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runners[i].UseNormalEnemyAttackSpeed();
+        }
+
         movementController.EnterCombat(combatTarget);
     }
 
@@ -172,6 +178,12 @@ public class CrowdSystem : MonoBehaviour
     {
         Behaviour = RunnerBehaviour.Combat;
         CombatTarget = combatTarget;
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runners[i].UseBigEnemyAttackSpeed();
+        }
+
         movementController.EnterCombat(combatTarget, combatSpeed);
     }
 
