@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3236714012938872437
 Transform:
@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d073c1dac15c054993803d85c306261, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FloorManager
-  floorAmount: 5
+  floorAmount: 6
   floorContainer: {fileID: 11400000, guid: 9a5bdadd2f2358a4db703175cacca713, type: 2}
