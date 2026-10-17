@@ -25,4 +25,14 @@ public static class ServiceProvider
 
         throw new System.Exception($"Service of type {type} not found.");
     }
+
+    public static void UnregisterService<T>()
+    {
+        services.Remove(typeof(T));
+    }
+
+    public static void ClearServices()
+    {
+        services.Clear();
+    }
 }

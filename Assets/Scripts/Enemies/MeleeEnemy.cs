@@ -16,10 +16,7 @@ public class MeleeEnemy : Enemy
         targetPosition.y = transform.position.y;
 
         RotateTowards(targetPosition);
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetPosition,
-            moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
     }
 

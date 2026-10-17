@@ -15,7 +15,7 @@ public abstract class Enemy : MonoBehaviour, IEnemy
     public bool IsDead { get; private set; }
 
     private EnemyGroup enemyGroup;
-    private Animator animator;
+    private Animator[] animators;
     protected HealthComponent healthComponent;
 
     public static IReadOnlyList<Enemy> ActiveEnemies => activeEnemies;
@@ -33,7 +33,7 @@ public abstract class Enemy : MonoBehaviour, IEnemy
 
     protected virtual void Awake()
     {
-        animator = GetComponentInChildren<Animator>();
+        animators = GetComponentsInChildren<Animator>();
         healthComponent = GetComponent<HealthComponent>();
     }
 
@@ -49,7 +49,15 @@ public abstract class Enemy : MonoBehaviour, IEnemy
 
     public void SetAnimTrigger(string triggerName)
     {
-        animator.SetTrigger(triggerName);
+        for (int i = 0; i < animators.Length; i++)
+        {
+            animators[i].SetTrigger(triggerName);
+        }
+    }
+
+    public void Victory()
+    {
+        SetAnimTrigger("Victory");
     }
 
     public virtual bool IsTargetInAttackRange()

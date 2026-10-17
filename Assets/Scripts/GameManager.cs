@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private GameStatus initialStatus = GameStatus.Menu;
+    [SceneDropdown] [SerializeField] private string sceneName;
+
+    [Header("End Status UI")]
+    [SerializeField] private GameObject victoryUI;
+    [SerializeField] private GameObject gameOverUI;
 
     private MovementController movementController;
     private CrowdSystem crowdSystem;
@@ -40,6 +45,8 @@ public class GameManager : MonoBehaviour
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
         roulette = ServiceProvider.GetService<Roulette>();
         SetGameStatus(initialStatus);
+        victoryUI.SetActive(false);
+        gameOverUI.SetActive(false);
     }
 
     private void Update()
@@ -63,9 +70,8 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameStatus.Victory:
-                break;
-
             case GameStatus.GameOver:
+                UpdateEndStatus();
                 break;
         }
     }
@@ -93,13 +99,23 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameStatus.Victory:
-                SetVictoryStatus();
+                EnterVictoryStatus();
                 break;
 
             case GameStatus.GameOver:
-                SetGameOverStatus();
+                EnterGameOverStatus();
                 break;
         }
+    }
+
+    public void SetVictoryStatus()
+    {
+        SetGameStatus(GameStatus.Victory);
+    }
+
+    public void SetGameOverStatus()
+    {
+        SetGameStatus(GameStatus.GameOver);
     }
 
     private void SetMenuStatus()
@@ -119,12 +135,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SetVictoryStatus()
+    public void EnterVictoryStatus()
     {
+        victoryUI.SetActive(true);
+
+        var runners = crowdSystem.GetRunners();
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runners[i].SetAnimTrigger("Victory");
+        }
     }
 
-    private void SetGameOverStatus()
+    private void EnterGameOverStatus()
     {
+        gameOverUI.SetActive(true);
+
+        var enemies = Enemy.ActiveEnemies;
+
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].Victory();
+        }
     }
 
     private void SetPauseStatus()
@@ -160,5 +192,22 @@ public class GameManager : MonoBehaviour
     private void UpdateRoulleteStatus()
     {
         roulette.CustomUpdate();
+    }
+
+    private void UpdateEndStatus()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            ResetGame();
+        }
+    }
+
+    public void ResetGame()
+    {
+        Time.timeScale = 1f;
+        ServiceProvider.ClearServices();
+        Instance = null;
+        Destroy(gameObject);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 }

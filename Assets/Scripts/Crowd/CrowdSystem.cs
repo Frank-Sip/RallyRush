@@ -19,6 +19,7 @@ public class CrowdSystem : MonoBehaviour
     private readonly List<Runner> runners = new List<Runner>();
 
     private MovementController movementController;
+    private CrowdCount crowdCount;
 
     public RunnerBehaviour Behaviour { get; private set; } = RunnerBehaviour.Running;
     public Transform CombatTarget { get; private set; }
@@ -44,16 +45,12 @@ public class CrowdSystem : MonoBehaviour
     {
         ServiceProvider.RegisterService(this);
         movementController = GetComponentInParent<MovementController>();
+        crowdCount = GetComponentInChildren<CrowdCount>();
         RefreshRunners();
 
         for (int i = 0; i < runners.Count; i++)
         {
             runners[i].SetFormationIndex(i);
-        }
-
-        if (runners.Count > maxRunners)
-        {
-            RemoveRunners(maxRunners);
         }
     }
 
@@ -139,7 +136,17 @@ public class CrowdSystem : MonoBehaviour
         }
 
         RunnersAmountChanged?.Invoke(runners.Count);
+        CrowdDeath();
         return true;
+    }
+
+    public void CrowdDeath()
+    {
+        if (runners.Count <= 0)
+        {
+            crowdCount.gameObject.SetActive(false);
+            GameManager.Instance.SetGameStatus(GameStatus.GameOver);
+        }
     }
 
     public void EnterCombat(Transform combatTarget)
