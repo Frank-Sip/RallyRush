@@ -12,9 +12,9 @@ public abstract class Enemy : MonoBehaviour, IEnemy
 
     public Runner Target { get; private set; }
     public bool HasTarget => Target != null;
-    public bool IsDead { get; private set; }
+    public bool IsDead { get; protected set; }
 
-    private EnemyGroup enemyGroup;
+    protected EnemyGroup enemyGroup;
     private Animator[] animators;
     protected HealthComponent healthComponent;
 
@@ -74,15 +74,6 @@ public abstract class Enemy : MonoBehaviour, IEnemy
 
     public virtual void Die()
     {
-        if (IsDead)
-        {
-            return;
-        }
-
-        IsDead = true;
-        Target = null;
-        enemyGroup.RemoveEnemy(this);
-        enemyGroup.Die();
     }
 
     private void OnDrawGizmos()

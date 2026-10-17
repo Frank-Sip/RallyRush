@@ -59,6 +59,8 @@ public class Runner : MonoBehaviour
                 break;
             case RunnerBehaviour.Pyramid:
                 break;
+            case RunnerBehaviour.Victory:
+                return;
         }
 
         ApplyGravity();
@@ -150,6 +152,8 @@ public class Runner : MonoBehaviour
             case RunnerBehaviour.Pyramid:
                 movementDirection = crowdSystem.transform.forward;
                 break;
+            case RunnerBehaviour.Victory:
+                return;
             default:
                 throw new System.ArgumentOutOfRangeException();
         }

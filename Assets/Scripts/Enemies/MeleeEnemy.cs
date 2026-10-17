@@ -43,7 +43,10 @@ public class MeleeEnemy : Enemy
             return;
         }
 
-        base.Die();
+        IsDead = true;
+        SetTarget(null);
+        enemyGroup.RemoveEnemy(this);
+        enemyGroup.Die();
         Destroy(gameObject);
     }
 }

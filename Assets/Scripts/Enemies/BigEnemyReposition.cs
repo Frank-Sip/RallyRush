@@ -10,7 +10,7 @@ public class BigEnemyReposition : Enemy
     {
         base.Awake();
         healthComponent = GetComponent<HealthComponent>();
-        healthComponent.OnDeath += ExitCombat;
+        healthComponent.OnDeath += Die;
     }
 
     protected virtual void Start()
@@ -51,7 +51,7 @@ public class BigEnemyReposition : Enemy
     {
     }
 
-    private void ExitCombat()
+    public override void Die()
     {
         crowdSystem.ExitBigEnemyCombat();
     }

@@ -6,7 +6,8 @@ public enum RunnerBehaviour
 {
     Running,
     Combat,
-    Pyramid
+    Pyramid,
+    Victory
 }
 
 public class CrowdSystem : MonoBehaviour
@@ -130,6 +131,9 @@ public class CrowdSystem : MonoBehaviour
 
     public void SetVictoryAnimation()
     {
+        Behaviour = RunnerBehaviour.Victory;
+        CombatTarget = null;
+
         for (int i = 0; i < runners.Count; i++)
         {
             runners[i].SetAnimTrigger("Victory");

@@ -49,6 +49,8 @@ public class MovementController : MonoBehaviour
             case RunnerBehaviour.Pyramid:
                 MoveForward();
                 break;
+            case RunnerBehaviour.Victory:
+                break;
         }
     }
 

@@ -12,7 +12,6 @@ public class BossEnemy : BigEnemyReposition
     {
         base.Awake();
         runnerAttackerComponent = GetComponent<RunnerAttackerComponent>();
-        healthComponent.OnDeath += Die;
     }
     
     protected override void Start()

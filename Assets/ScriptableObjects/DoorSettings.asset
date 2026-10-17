@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DoorSettingsSO
   additionValueRange:
     minimumValue: 10
-    maximumValue: 100
+    maximumValue: 80
   subtractionValueRange:
     minimumValue: 10
-    maximumValue: 100
+    maximumValue: 80
   multiplicationValueRange:
     minimumValue: 2
     maximumValue: 10
