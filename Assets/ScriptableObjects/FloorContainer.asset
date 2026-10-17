@@ -20,6 +20,8 @@ MonoBehaviour:
     length: 40
   - prefab: {fileID: 2498407437121718993, guid: 53ccc9ecdb65b0c4bbdcde7604e5510b, type: 3}
     length: 60
+  - prefab: {fileID: 8660866329744217580, guid: 1d6bdc531553f4a4b9cbded8a17f1913, type: 3}
+    length: 40
   lastFloors:
   - prefab: {fileID: 6023676063703551376, guid: 139d11965f4264247bc993524cc11d5e, type: 3}
     length: 30
