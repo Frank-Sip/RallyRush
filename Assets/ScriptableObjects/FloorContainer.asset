@@ -36,6 +36,34 @@ MonoBehaviour:
     length: 60
   - prefab: {fileID: 309699039971532416, guid: b1266c35ea31c1743b75ba0c12f452bc, type: 3}
     length: 60
+  - prefab: {fileID: 7928438404177377084, guid: 65984aa79759b2f4398bdcf4224c7e6c, type: 3}
+    length: 40
+  - prefab: {fileID: 7342436155597314258, guid: 5890ec73fa31fbe4db1c8643ed4dea24, type: 3}
+    length: 40
+  - prefab: {fileID: 5392320995107567757, guid: 5f5a5638d6674884d8715722a123a1eb, type: 3}
+    length: 40
+  - prefab: {fileID: 2925497686273816661, guid: fdc431daf11375c49a2cd54fa3ffe072, type: 3}
+    length: 40
+  - prefab: {fileID: 7141036594069989062, guid: 3c66c3d2438c41d40bfc5299af6e877a, type: 3}
+    length: 40
+  - prefab: {fileID: 9076803485195354352, guid: 8980d1e697fa0dc4db02c3b5ab0eb757, type: 3}
+    length: 40
+  - prefab: {fileID: 5059936551807271434, guid: a6c578d8a586be6418716f7750b40169, type: 3}
+    length: 40
+  - prefab: {fileID: 4448867790571371796, guid: b32369b1aba11f7478d75dcd6b523c77, type: 3}
+    length: 40
+  - prefab: {fileID: 3386644335316705495, guid: f92aa3ae6e7d3b3429f06737fa987a16, type: 3}
+    length: 40
+  - prefab: {fileID: 5609516255398758513, guid: b7ce55d42ba8fff44b755f95485204d3, type: 3}
+    length: 40
+  - prefab: {fileID: 4984056706026861634, guid: 2b801f9b46a10d64387605d6d67ea7ad, type: 3}
+    length: 40
+  - prefab: {fileID: 2131366301409961282, guid: 46f1fee8e82c8ac4c8ac68426368dc12, type: 3}
+    length: 40
+  - prefab: {fileID: 5760974013202055875, guid: f063c1f1f08315a4d92b09e68fe2e072, type: 3}
+    length: 40
+  - prefab: {fileID: 2615960082070975370, guid: 7541edf0cfe51e144a18cab861a41c00, type: 3}
+    length: 40
   lastFloors:
   - prefab: {fileID: 6023676063703551376, guid: 139d11965f4264247bc993524cc11d5e, type: 3}
     length: 30
