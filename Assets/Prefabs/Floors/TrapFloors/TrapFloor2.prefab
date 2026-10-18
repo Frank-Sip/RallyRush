@@ -890,22 +890,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeftQuadrupleRotatoryTrap
       objectReference: {fileID: 0}
-    - target: {fileID: 4552729743547443166, guid: 7a9886b91382bfd40b0d4bfb1a2fe45a, type: 3}
-      propertyPath: runnerAttackBoxSize.x
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 4552729743547443166, guid: 7a9886b91382bfd40b0d4bfb1a2fe45a, type: 3}
-      propertyPath: runnerAttackBoxSize.z
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4920688666082936503, guid: 7a9886b91382bfd40b0d4bfb1a2fe45a, type: 3}
-      propertyPath: runnerAttackBoxSize.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4920688666082936503, guid: 7a9886b91382bfd40b0d4bfb1a2fe45a, type: 3}
-      propertyPath: runnerAttackBoxSize.z
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 7095119634010316118, guid: 7a9886b91382bfd40b0d4bfb1a2fe45a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.107

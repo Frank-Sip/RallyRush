@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 815497398154388713}
   - component: {fileID: 191920704815896555}
   m_Layer: 0
-  m_Name: RightSinlgeRotatoryTrap
+  m_Name: RightSingleRotatoryTrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,10 +28,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.2, y: 0.188, z: -2.83}
-  m_LocalScale: {x: 1.2257568, y: 1.2257568, z: 1.2257568}
+  m_LocalScale: {x: 1.4299998, y: 1.43, z: 1.4299998}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1311434161423076489}
+  - {fileID: 415587969097922968}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &815497398154388713
@@ -68,8 +69,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c0cb8d346293f042a3a92587cdbb318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
-  attackPoint: {fileID: 1819710481665984826}
-  runnerAttackBoxSize: {x: 1, y: 1, z: 7}
+  attackPoint: {fileID: 415587969097922968}
+  runnerAttackBoxSize: {x: 1.5, y: 1, z: 4.8}
 --- !u!1 &3057845795794153038
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,3 +254,34 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7003703682006370657
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 415587969097922968}
+  m_Layer: 0
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &415587969097922968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7003703682006370657}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1819710481665984826}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

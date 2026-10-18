@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.52, y: 0.38, z: 33.88}
-  m_LocalScale: {x: 1.225757, y: 1.225757, z: 1.225757}
+  m_LocalScale: {x: 1.5833104, y: 1.5833104, z: 1.5833104}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4925513010096928526}
@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
   attackPoint: {fileID: 7232495760047345334}
-  runnerAttackBoxSize: {x: 1, y: 1, z: 7}
+  runnerAttackBoxSize: {x: 1.5, y: 1, z: 9}
 --- !u!114 &4082507143608526931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
   attackPoint: {fileID: 7232495760047345334}
-  runnerAttackBoxSize: {x: 6, y: 1, z: 1}
+  runnerAttackBoxSize: {x: 9, y: 1, z: 1.5}
 --- !u!1001 &4143513671331659081
 PrefabInstance:
   m_ObjectHideFlags: 0
