@@ -272,6 +272,7 @@ public class Runner : MonoBehaviour
 
         isDead = true;
         crowdSystem.RemoveRunner(this);
+        crowdSystem.RepositionRunners();
         Destroy(gameObject);
         return true;
     }

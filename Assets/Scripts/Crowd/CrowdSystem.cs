@@ -203,6 +203,16 @@ public class CrowdSystem : MonoBehaviour
         movementController.ExitCombat();
     }
 
+    public void RepositionRunners()
+    {
+        if (Behaviour != RunnerBehaviour.Running)
+        {
+            return;
+        }
+
+        CloseFormationGaps();
+    }
+
     public void EnterPyramid()
     {
         Behaviour = RunnerBehaviour.Pyramid;
