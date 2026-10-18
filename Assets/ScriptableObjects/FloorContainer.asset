@@ -94,6 +94,12 @@ MonoBehaviour:
     length: 24.8
   - prefab: {fileID: 2675752014870564539, guid: 2c44c526e9921c14f9b597ba1ab4b2ce, type: 3}
     length: 24.8
+  - prefab: {fileID: 2186258756775955550, guid: c82f7692b4183b04fbb5bed45b29940f, type: 3}
+    length: 15
+  - prefab: {fileID: 2186258756775955550, guid: 9726ddc5baf84e94984018d8b8a03053, type: 3}
+    length: 15
+  - prefab: {fileID: 2186258756775955550, guid: fdefa4483a1d0074eb0cc2279df1a2fa, type: 3}
+    length: 15
   lastFloors:
   - prefab: {fileID: 6023676063703551376, guid: 139d11965f4264247bc993524cc11d5e, type: 3}
     length: 30

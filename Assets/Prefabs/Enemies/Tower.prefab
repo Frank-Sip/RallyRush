@@ -1600,11 +1600,11 @@ RectTransform:
   m_GameObject: {fileID: 4091820882489649178}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 12.455085, y: 11.457164, z: 12.455085}
+  m_LocalScale: {x: 12.455085, y: 11.457163, z: 12.455085}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 113134366738828542}
-  m_Father: {fileID: 7990506934112283858}
+  m_Father: {fileID: 8883658319345220789}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1905,15 +1905,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4662969014634852574}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.1, z: -1.2}
-  m_LocalScale: {x: 1.053, y: 1.053, z: 1.053}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.0999997, z: -1.1999964}
+  m_LocalScale: {x: 1.053, y: 1.0529999, z: 1.053}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9184549064848529482}
   - {fileID: 4411282407512071380}
   - {fileID: 734331552986421295}
-  m_Father: {fileID: 7990506934112283858}
+  m_Father: {fileID: 8883658319345220789}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4790855119303616335
 GameObject:
@@ -3993,10 +3993,10 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: -782207623202608722, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
+    - targetCorrespondingSourceObject: {fileID: -7917228185606916212, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8604885910475158879}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
+    - targetCorrespondingSourceObject: {fileID: -7917228185606916212, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3518545602342501086}
     m_AddedComponents:
@@ -4008,7 +4008,7 @@ PrefabInstance:
       addedObject: {fileID: 3577225468646191772}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5619375363430814200}
+      addedObject: {fileID: 2129511527607760646}
   m_SourcePrefab: {fileID: 100100000, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
 --- !u!1 &7325152159048054376 stripped
 GameObject:
@@ -4048,8 +4048,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682bcc1721ed18140a91f91aa6e8bb7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 50
---- !u!114 &5619375363430814200
+  maxHealth: 30
+--- !u!114 &2129511527607760646
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4058,14 +4058,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7325152159048054376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cef6b8eeb8575443ad851852f0acc38, type: 3}
+  m_Script: {fileID: 11500000, guid: 903fc0790f5fcd848a997940a7509169, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BigEnemyReposition
+  m_EditorClassIdentifier: Assembly-CSharp::Tower
   attackDistance: 3.56
   collisionRadius: 2.08
   damageTakenPerHit: 1
---- !u!4 &7990506934112283858 stripped
+  fallingTransform: {fileID: 8883658319345220789}
+  fallDistancePerHit: 1.5
+--- !u!4 &8883658319345220789 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
+  m_CorrespondingSourceObject: {fileID: -7917228185606916212, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
   m_PrefabInstance: {fileID: 7595675664333900601}
   m_PrefabAsset: {fileID: 0}
