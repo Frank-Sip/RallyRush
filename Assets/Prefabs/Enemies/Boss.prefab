@@ -356,7 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
   attackPoint: {fileID: 3041631172244036050}
-  runnerAttackBoxSize: {x: 5, y: 3, z: 5}
+  runnerAttackBoxSize: {x: 2, y: 3, z: 5}
 --- !u!1 &3518578787153196535
 GameObject:
   m_ObjectHideFlags: 0

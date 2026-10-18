@@ -172,7 +172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5953776903726738130, guid: daefb1613f7667f468e37fb9885ae49d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.5
+      value: -12.12
       objectReference: {fileID: 0}
     - target: {fileID: 6128729913492666155, guid: daefb1613f7667f468e37fb9885ae49d, type: 3}
       propertyPath: runnerAttackBoxSize.x
@@ -250,7 +250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5553330047845548624, guid: 8f32a8a7fe8ddfc469ea5847c4dd21d2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.01
+      value: -2.89
       objectReference: {fileID: 0}
     - target: {fileID: 5553330047845548624, guid: 8f32a8a7fe8ddfc469ea5847c4dd21d2, type: 3}
       propertyPath: m_LocalRotation.w

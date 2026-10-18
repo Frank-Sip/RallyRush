@@ -18,12 +18,24 @@ MonoBehaviour:
   middleFloors:
   - prefab: {fileID: 3329570304792240432, guid: 1c0d35a95a3f9be49a5ae15d2de49844, type: 3}
     length: 40
+  - prefab: {fileID: 7819760773185805094, guid: 28f9a16b8355d2c40a3b9738755579a4, type: 3}
+    length: 40
   - prefab: {fileID: 2498407437121718993, guid: 53ccc9ecdb65b0c4bbdcde7604e5510b, type: 3}
+    length: 60
+  - prefab: {fileID: 5652224613025344037, guid: 549c50a0535fa95419bc23b56047b840, type: 3}
     length: 60
   - prefab: {fileID: 8660866329744217580, guid: 1d6bdc531553f4a4b9cbded8a17f1913, type: 3}
     length: 40
+  - prefab: {fileID: 804694272166111751, guid: 0814f9adde0be7a4e96d79af9f81f1df, type: 3}
+    length: 40
   - prefab: {fileID: 4100000000000000001, guid: c9e4b661a8384dfb89f96b798d7ec244, type: 3}
     length: 40
+  - prefab: {fileID: 1162034277685939270, guid: d70897934e14d1a42b4cd310d761cbc6, type: 3}
+    length: 40
+  - prefab: {fileID: 8765453958431044315, guid: 0f9e55157ff265346b9977014998fa57, type: 3}
+    length: 60
+  - prefab: {fileID: 309699039971532416, guid: b1266c35ea31c1743b75ba0c12f452bc, type: 3}
+    length: 60
   lastFloors:
   - prefab: {fileID: 6023676063703551376, guid: 139d11965f4264247bc993524cc11d5e, type: 3}
     length: 30
