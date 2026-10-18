@@ -8,8 +8,8 @@ public class DoorOption
     [SerializeField] private SpriteRenderer renderer;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private BonusType bonusType;
-    [SerializeField] private int value;
 
+    private int value;
     public Bounds Bounds => renderer.bounds;
     public BonusType BonusType => bonusType;
     public int Value => value;
@@ -25,6 +25,12 @@ public class DoorOption
     {
         text.text = label;
         renderer.color = color;
+    }
+
+    public void Hide()
+    {
+        renderer.gameObject.SetActive(false);
+        text.gameObject.SetActive(false);
     }
 }
 
@@ -146,6 +152,7 @@ public class Door : MonoBehaviour
 
         SetRunnerAmount(selectedOption.BonusType, selectedOption.Value);
         wasUsed = true;
+        selectedOption.Hide();
     }
 
     private void SetRunnerAmount(BonusType bonusType, int configuredValue)

@@ -64,6 +64,18 @@ MonoBehaviour:
     length: 40
   - prefab: {fileID: 2615960082070975370, guid: 7541edf0cfe51e144a18cab861a41c00, type: 3}
     length: 40
+  - prefab: {fileID: 2186258756775955550, guid: 8bcef7dd461e93841ae62d5f10be90ef, type: 3}
+    length: 15
+  - prefab: {fileID: 8251311429417542592, guid: 5288d1575140291409dca088f09e72d6, type: 3}
+    length: 15
+  - prefab: {fileID: 4222535651261086501, guid: 1d70d40596d8fc2409f210f14e8f8780, type: 3}
+    length: 15
+  - prefab: {fileID: 7343084583888458190, guid: f2463a468bd623e499026454be5cda34, type: 3}
+    length: 20
+  - prefab: {fileID: 6599021647457403073, guid: 23d1f4819806ee0428975e2778158c68, type: 3}
+    length: 20
+  - prefab: {fileID: 9203623488645166705, guid: 53a7d980ae1ef294881f606069a5f60a, type: 3}
+    length: 20
   lastFloors:
   - prefab: {fileID: 6023676063703551376, guid: 139d11965f4264247bc993524cc11d5e, type: 3}
     length: 30

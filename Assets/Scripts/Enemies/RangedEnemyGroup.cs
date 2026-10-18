@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class RangedEnemyGroup : EnemyGroup
 {
     [SerializeField] private float shootPointHeight = 1f;

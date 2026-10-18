@@ -33,6 +33,7 @@ Transform:
   - {fileID: 672246181432028304}
   - {fileID: 7717565137117438554}
   - {fileID: 4483570501664693581}
+  - {fileID: 9086936060922910314}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2720763733305179584
@@ -815,6 +816,68 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
   attackPoint: {fileID: 7717565137117438554}
   runnerAttackBoxSize: {x: 3, y: 1, z: 15}
+--- !u!1001 &2192017029330916824
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7243685781949954044}
+    m_Modifications:
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.563
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26.617071
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7578679657362024354, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+      propertyPath: m_Name
+      value: DoubleDoor
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+--- !u!4 &9086936060922910314 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
+  m_PrefabInstance: {fileID: 2192017029330916824}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6651317655849484315
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -845,7 +908,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7095119634010316118, guid: 7a9886b91382bfd40b0d4bfb1a2fe45a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.08
+      value: -6.107
       objectReference: {fileID: 0}
     - target: {fileID: 7095119634010316118, guid: 7a9886b91382bfd40b0d4bfb1a2fe45a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -853,7 +916,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7095119634010316118, guid: 7a9886b91382bfd40b0d4bfb1a2fe45a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.59
+      value: -12.6
       objectReference: {fileID: 0}
     - target: {fileID: 7095119634010316118, guid: 7a9886b91382bfd40b0d4bfb1a2fe45a, type: 3}
       propertyPath: m_LocalRotation.w
