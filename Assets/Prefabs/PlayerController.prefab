@@ -591,7 +591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathEffectEmitter
   effectPrefab: {fileID: 9090750385006730978, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
-  effectScale: {x: 3, y: 3, z: 3}
+  effectScale: {x: 1, y: 1, z: 1}
   effectColor: {r: 0, g: 0.972549, b: 0.9372549, a: 1}
 --- !u!4 &7857887338735817345 stripped
 Transform:

@@ -3939,15 +3939,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.24
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000008349389
+      value: 0.00000000777618
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.86
+      value: 70.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4009,6 +4009,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2129511527607760646}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1235136839467647699}
   m_SourcePrefab: {fileID: 100100000, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
 --- !u!1 &7325152159048054376 stripped
 GameObject:
@@ -4027,8 +4030,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c12bb849e9280469bbbb3bcc7f8565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedAttack
-  shootingDetectionRange: 18.09
+  shootingDetectionRange: 27.4
   projectilePrefab: {fileID: 5444361984833881763, guid: b8a97f9c73427434cbbbc2f2757d09a4, type: 3}
+  shootActivationDelay: 3
   fireInterval: 1
   shootPoints:
   - {fileID: 7811254600857428711}
@@ -4064,8 +4068,24 @@ MonoBehaviour:
   attackDistance: 3.56
   collisionRadius: 2.08
   damageTakenPerHit: 1
+  deathEffectEmitter: {fileID: 1235136839467647699}
   fallingTransform: {fileID: 8883658319345220789}
   fallDistancePerHit: 1.5
+--- !u!114 &1235136839467647699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7325152159048054376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f019e5b737598c249b8655e703e3ca50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathEffectEmitter
+  effectPrefab: {fileID: -3635540108048244731, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
+  effectScale: {x: 3, y: 3, z: 3}
+  effectColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &8883658319345220789 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7917228185606916212, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
