@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     private MovementController movementController;
     private CrowdSystem crowdSystem;
+    private CrowdCount crowdCount;
     private Roulette roulette;
 
     public GameStatus currentStatus { get; private set; }
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     {
         movementController = ServiceProvider.GetService<MovementController>();
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
+        crowdCount = ServiceProvider.GetService<CrowdCount>();
         roulette = ServiceProvider.GetService<Roulette>();
         SetGameStatus(initialStatus);
         victoryUI.SetActive(false);
@@ -126,6 +128,7 @@ public class GameManager : MonoBehaviour
     private void SetGameplayStatus()
     {
         Time.timeScale = 1f;
+        movementController.SetInputStartPosition();
         movementController.RestoreRegularSpeed();
         var runners = crowdSystem.GetRunners();
 
@@ -138,6 +141,7 @@ public class GameManager : MonoBehaviour
     public void EnterVictoryStatus()
     {
         victoryUI.SetActive(true);
+        crowdCount.gameObject.SetActive(false);
         crowdSystem.SetVictoryAnimation();
     }
 
@@ -168,7 +172,6 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            movementController.SetInputStartPosition();
             StartRangedAttackTimers();
             SetGameStatus(GameStatus.Gameplay);
         }

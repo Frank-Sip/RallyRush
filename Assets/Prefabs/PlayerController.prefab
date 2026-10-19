@@ -467,7 +467,7 @@ MonoBehaviour:
   combatSpeed: 2
   speedChangeRate: 10
   slideSpeed: 17
-  screenLimit: 16
+  screenLimit: 15
 --- !u!114 &6906829037168895027
 MonoBehaviour:
   m_ObjectHideFlags: 0

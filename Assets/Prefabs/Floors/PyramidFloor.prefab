@@ -311,7 +311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3294628347103548559, guid: 364d4270ce2e63949baa0c4c17c01ef3, type: 3}
       propertyPath: detectionBoxSize.x
-      value: 14
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3294628347103548559, guid: 364d4270ce2e63949baa0c4c17c01ef3, type: 3}
       propertyPath: detectionBoxSize.z

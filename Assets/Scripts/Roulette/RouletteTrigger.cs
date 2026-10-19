@@ -32,9 +32,7 @@ public class RouletteTrigger : MonoBehaviour
         {
             Vector3 runnerPosition = runners[i].transform.position - transform.position;
 
-            bool isInside = Mathf.Abs(runnerPosition.x) <= halfBoxSize.x
-                && Mathf.Abs(runnerPosition.y) <= halfBoxSize.y
-                && Mathf.Abs(runnerPosition.z) <= halfBoxSize.z;
+            bool isInside = Mathf.Abs(runnerPosition.x) <= halfBoxSize.x && Mathf.Abs(runnerPosition.y) <= halfBoxSize.y && Mathf.Abs(runnerPosition.z) <= halfBoxSize.z;
 
             if (isInside)
             {

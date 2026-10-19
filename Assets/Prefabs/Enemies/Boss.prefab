@@ -342,7 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682bcc1721ed18140a91f91aa6e8bb7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 80
+  maxHealth: 60
 --- !u!114 &3715717820204274156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,7 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
   attackPoint: {fileID: 3041631172244036050}
-  runnerAttackBoxSize: {x: 2, y: 3, z: 5}
+  runnerAttackBoxSize: {x: 5, y: 3, z: 5}
 --- !u!1 &3518578787153196535
 GameObject:
   m_ObjectHideFlags: 0
