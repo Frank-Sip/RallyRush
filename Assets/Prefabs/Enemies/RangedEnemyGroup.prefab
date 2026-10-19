@@ -280,9 +280,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c12bb849e9280469bbbb3bcc7f8565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedAttack
-  shootingDetectionRange: 28
+  shootingDetectionRange: 18
   projectilePrefab: {fileID: 5444361984833881763, guid: b8a97f9c73427434cbbbc2f2757d09a4, type: 3}
-  fireInterval: 1
+  fireInterval: 2
   shootPoints: []
   projectileSpeed: 15
   projectileRotationSpeed: 720

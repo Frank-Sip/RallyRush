@@ -9,6 +9,7 @@ public class RangedAttack : MonoBehaviour
 
     [Header("Shooting")]
     [SerializeField] private GameObject projectilePrefab;
+    [Min(0f)] [SerializeField] private float shootActivationDelay = 3f;
     [Min(0.01f)] [SerializeField] private float fireInterval = 1f;
     [SerializeField] private Transform[] shootPoints = new Transform[0];
     private Vector3 shootPointOffset;
@@ -21,9 +22,11 @@ public class RangedAttack : MonoBehaviour
     private readonly List<ActiveProjectile> activeProjectiles = new List<ActiveProjectile>();
 
     private CrowdSystem crowdSystem;
+    private float shootActivationTimer;
     private float fireTimer;
-    private bool canShoot = true;
+    private bool canShoot = false;
     private bool isInsideShootingRange;
+    private bool shootActivationTimerRunning;
 
     public event Action OnStartShooting;
 
@@ -34,8 +37,27 @@ public class RangedAttack : MonoBehaviour
 
     private void Update()
     {
+        UpdateShootActivationTimer();
         UpdateShooting();
         UpdateProjectiles();
+    }
+
+    private void UpdateShootActivationTimer()
+    {
+        if (!shootActivationTimerRunning)
+        {
+            return;
+        }
+
+        shootActivationTimer -= Time.deltaTime;
+
+        if (shootActivationTimer > 0f)
+        {
+            return;
+        }
+
+        shootActivationTimerRunning = false;
+        canShoot = true;
     }
 
     private void UpdateShooting()
@@ -192,6 +214,14 @@ public class RangedAttack : MonoBehaviour
     public void SetCanShoot(bool value)
     {
         canShoot = value;
+        shootActivationTimerRunning = false;
+    }
+
+    public void StartShootActivationTimer()
+    {
+        canShoot = false;
+        shootActivationTimer = shootActivationDelay;
+        shootActivationTimerRunning = true;
     }
 
     private void OnDestroy()

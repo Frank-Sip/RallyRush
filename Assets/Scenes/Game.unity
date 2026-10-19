@@ -1096,9 +1096,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6906829037168895027, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: radius
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7729875140569456883, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_Name
       value: PlayerController
+      objectReference: {fileID: 0}
+    - target: {fileID: 9046309251851112568, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: screenLimit
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1270,12 +1278,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3460916003834597643, guid: 1314251879f4a7b479f67b27bdee2b56, type: 3}
       propertyPath: floorAmount
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3460916003834597643, guid: 1314251879f4a7b479f67b27bdee2b56, type: 3}
       propertyPath: floorContainer
       value: 
-      objectReference: {fileID: 11400000, guid: 5252a1f6d88eb3b49988dac9b4bdcd74, type: 2}
+      objectReference: {fileID: 11400000, guid: 9a5bdadd2f2358a4db703175cacca713, type: 2}
     - target: {fileID: 3854570789812556803, guid: 1314251879f4a7b479f67b27bdee2b56, type: 3}
       propertyPath: m_Name
       value: FloorManager

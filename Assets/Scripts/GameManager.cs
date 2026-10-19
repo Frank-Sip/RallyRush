@@ -169,7 +169,18 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             movementController.SetInputStartPosition();
+            StartRangedAttackTimers();
             SetGameStatus(GameStatus.Gameplay);
+        }
+    }
+
+    private void StartRangedAttackTimers()
+    {
+        RangedAttack[] rangedAttacks = FindObjectsByType<RangedAttack>(FindObjectsSortMode.None);
+
+        for (int i = 0; i < rangedAttacks.Length; i++)
+        {
+            rangedAttacks[i].StartShootActivationTimer();
         }
     }
 

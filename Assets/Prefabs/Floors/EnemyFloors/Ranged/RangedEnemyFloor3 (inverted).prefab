@@ -257,10 +257,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1661692058995953617}
     m_Modifications:
-    - target: {fileID: 1146768156491431198, guid: 8635e3080df7b8340b073acc99eff411, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4756491650552067255, guid: 8635e3080df7b8340b073acc99eff411, type: 3}
       propertyPath: m_Name
       value: RangedEnemyGroup
