@@ -91,7 +91,7 @@ MonoBehaviour:
   - prefab: {fileID: 8527627877795047804, guid: 5a3c6093a3f084545a21431fbb1dd9bc, type: 3}
     length: 24.8
   - prefab: {fileID: 6215523860410560177, guid: c848e645b1929fa41a8409199be8e9f6, type: 3}
-    length: 24.8
+    length: 24.72
   - prefab: {fileID: 2675752014870564539, guid: 2c44c526e9921c14f9b597ba1ab4b2ce, type: 3}
     length: 24.8
   - prefab: {fileID: 2186258756775955550, guid: c82f7692b4183b04fbb5bed45b29940f, type: 3}
@@ -107,7 +107,7 @@ MonoBehaviour:
   - prefab: {fileID: 5527912139384664367, guid: c8b0707e1dcfdde48bad59a58da59909, type: 3}
     length: 20
   - prefab: {fileID: 952249480958260729, guid: 9b63bd0511e731e498d28daa77fb9dfb, type: 3}
-    length: 19.9
+    length: 19.9949
   - prefab: {fileID: 3298924630459800181, guid: 262a35eba986c5949a7805d9ff6e8bfe, type: 3}
     length: 27.1
   lastFloors:
