@@ -102,10 +102,6 @@ MonoBehaviour:
     length: 15
   - prefab: {fileID: 7723368660915175881, guid: b4dfd4084c6d6a24eb8f744aedabd346, type: 3}
     length: 24.98
-  - prefab: {fileID: 4682051068431721093, guid: 5db976b37ac21164a90ae2be245601e0, type: 3}
-    length: 20
-  - prefab: {fileID: 5527912139384664367, guid: c8b0707e1dcfdde48bad59a58da59909, type: 3}
-    length: 20
   - prefab: {fileID: 952249480958260729, guid: 9b63bd0511e731e498d28daa77fb9dfb, type: 3}
     length: 19.9949
   - prefab: {fileID: 3298924630459800181, guid: 262a35eba986c5949a7805d9ff6e8bfe, type: 3}
