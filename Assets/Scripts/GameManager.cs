@@ -10,12 +10,16 @@ public enum GameStatus
     GameOver
 }
 
+[RequireComponent(typeof(AudioSource))]
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private GameStatus initialStatus = GameStatus.Menu;
     [SceneDropdown] [SerializeField] private string sceneName;
+
+    [Header("Audio")]
+    [SerializeField] private AudioContainer audioContainer;
 
     [Header("End Status UI")]
     [SerializeField] private GameObject victoryUI;
@@ -25,6 +29,7 @@ public class GameManager : MonoBehaviour
     private CrowdSystem crowdSystem;
     private CrowdCount crowdCount;
     private Roulette roulette;
+    private AudioManager audioManager;
 
     public GameStatus currentStatus { get; private set; }
 
@@ -38,6 +43,10 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        audioManager = new AudioManager();
+        audioManager.Initialize(audioContainer, GetComponent<AudioSource>());
+        ServiceProvider.RegisterService(audioManager);
     }
 
     private void Start()
