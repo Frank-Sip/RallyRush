@@ -124,6 +124,18 @@ public class EnemyGroup : MonoBehaviour
                 enemy.SetTarget(FindNearestRunner(enemy.transform.position));
             }
         }
+
+        IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            Runner runner = runners[i];
+
+            if (!runner.HasCombatEnemyTarget)
+            {
+                runner.SetCombatEnemyTarget(FindNearestEnemy(runner.transform.position));
+            }
+        }
     }
 
     private Runner FindNearestRunner(Vector3 enemyPosition)
@@ -147,6 +159,30 @@ public class EnemyGroup : MonoBehaviour
         }
 
         return nearestRunner;
+    }
+
+    private Enemy FindNearestEnemy(Vector3 runnerPosition)
+    {
+        Enemy nearestEnemy = enemies[0];
+        Vector3 distance = nearestEnemy.transform.position - runnerPosition;
+        distance.y = 0f;
+        float nearestDistanceSqr = distance.sqrMagnitude;
+
+        for (int i = 1; i < enemies.Count; i++)
+        {
+            Enemy enemy = enemies[i];
+            distance = enemy.transform.position - runnerPosition;
+            distance.y = 0f;
+            float distanceSqr = distance.sqrMagnitude;
+
+            if (distanceSqr < nearestDistanceSqr)
+            {
+                nearestDistanceSqr = distanceSqr;
+                nearestEnemy = enemy;
+            }
+        }
+
+        return nearestEnemy;
     }
 
     private void RefreshEnemies()

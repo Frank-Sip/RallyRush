@@ -22,6 +22,7 @@ public class Runner : MonoBehaviour
     private Vector3 pyramidForward;
     private Animator animator;
     private CrowdSystem crowdSystem;
+    private Enemy combatEnemyTarget;
     private float currentAttackSpeed;
     private float currentRepositionSpeed;
     private float repositionDelay;
@@ -34,6 +35,7 @@ public class Runner : MonoBehaviour
 
     public int FormationIndex { get; private set; }
     public bool PyramidTargetReached => pyramidTargetReached;
+    public bool HasCombatEnemyTarget => combatEnemyTarget != null;
 
     private void Awake()
     {
@@ -102,9 +104,19 @@ public class Runner : MonoBehaviour
             return;
         }
 
-        Vector3 combatTargetPosition = crowdSystem.CombatTarget.position;
+        Vector3 combatTargetPosition = GetCombatTargetPosition();
         combatTargetPosition.y = transform.position.y;
         transform.position = Vector3.MoveTowards(transform.position, combatTargetPosition, currentAttackSpeed * Time.deltaTime);
+    }
+
+    private Vector3 GetCombatTargetPosition()
+    {
+        if (combatEnemyTarget != null)
+        {
+            return combatEnemyTarget.transform.position;
+        }
+
+        return crowdSystem.CombatTarget.position;
     }
 
     private void ApplyGravity()
@@ -153,7 +165,7 @@ public class Runner : MonoBehaviour
                 movementDirection = crowdSystem.transform.forward;
                 break;
             case RunnerBehaviour.Combat:
-                movementDirection = crowdSystem.CombatTarget.position - transform.position;
+                movementDirection = GetCombatTargetPosition() - transform.position;
                 break;
             case RunnerBehaviour.Pyramid:
                 movementDirection = crowdSystem.transform.forward;
@@ -193,6 +205,11 @@ public class Runner : MonoBehaviour
     public void UseBigEnemyAttackSpeed()
     {
         currentAttackSpeed = bigEnemyAttackSpeed;
+    }
+
+    public void SetCombatEnemyTarget(Enemy enemy)
+    {
+        combatEnemyTarget = enemy;
     }
 
     public void SetCombatExitTargetPosition(Vector3 position, int formationIndex, float delay = 0f)

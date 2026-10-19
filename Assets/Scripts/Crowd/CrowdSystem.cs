@@ -238,6 +238,7 @@ public class CrowdSystem : MonoBehaviour
     {
         Behaviour = RunnerBehaviour.Running;
         CloseFormationGaps();
+        ClearRunnerCombatTargets();
         CombatTarget = null;
         movementController.ExitCombat();
     }
@@ -246,8 +247,17 @@ public class CrowdSystem : MonoBehaviour
     {
         Behaviour = RunnerBehaviour.Running;
         RestoreRunningFormation();
+        ClearRunnerCombatTargets();
         CombatTarget = null;
         movementController.ExitCombat();
+    }
+
+    private void ClearRunnerCombatTargets()
+    {
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runners[i].SetCombatEnemyTarget(null);
+        }
     }
 
     public void EnterPyramid()
