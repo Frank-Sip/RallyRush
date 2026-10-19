@@ -265,7 +265,7 @@ MonoBehaviour:
   detectionRange: 3.93
   spawnRadius: 2.16
   placementAngle: 137.5
-  minEnemies: 10
+  minEnemies: 5
   maxEnemies: 20
   shootPointHeight: 1
 --- !u!114 &5735282984500202773
@@ -282,6 +282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RangedAttack
   shootingDetectionRange: 18
   projectilePrefab: {fileID: 5444361984833881763, guid: b8a97f9c73427434cbbbc2f2757d09a4, type: 3}
+  shootActivationDelay: 3
   fireInterval: 2
   shootPoints: []
   projectileSpeed: 15

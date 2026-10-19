@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,12 +16,14 @@ public class CrowdSystem : MonoBehaviour
     [SerializeField] private float radius = 1f;
     [SerializeField] private float angle = 1f;
     [Min(0)] [SerializeField] private float combatExitStaggerDuration = 0.5f;
+    [Min(0)] [SerializeField] private float deathRepositionDelay = 0.25f;
     [Min(1)] [SerializeField] private int maxRunners = 999;
 
     private readonly List<Runner> runners = new List<Runner>();
 
     private MovementController movementController;
     private CrowdCount crowdCount;
+    private Coroutine deathRepositionCoroutine;
 
     public RunnerBehaviour Behaviour { get; private set; } = RunnerBehaviour.Running;
     public Transform CombatTarget { get; private set; }
@@ -159,6 +162,50 @@ public class CrowdSystem : MonoBehaviour
             crowdCount.gameObject.SetActive(false);
             GameManager.Instance.SetGameStatus(GameStatus.GameOver);
         }
+    }
+
+    public void RestartDeathRepositionTimer()
+    {
+        if (Behaviour != RunnerBehaviour.Running || runners.Count == 0)
+        {
+            return;
+        }
+
+        if (deathRepositionCoroutine != null)
+        {
+            StopCoroutine(deathRepositionCoroutine);
+        }
+
+        deathRepositionCoroutine = StartCoroutine(WaitForDeathReposition());
+    }
+
+    private IEnumerator WaitForDeathReposition()
+    {
+        yield return new WaitForSeconds(deathRepositionDelay);
+        deathRepositionCoroutine = null;
+
+        if (Behaviour == RunnerBehaviour.Running)
+        {
+            RepositionAfterRunnerDeaths();
+        }
+    }
+
+    private void RepositionAfterRunnerDeaths()
+    {
+        List<Runner> availableRunners = new List<Runner>(runners);
+
+        for (int formationIndex = 0; formationIndex < runners.Count; formationIndex++)
+        {
+            Vector3 targetPosition = CalculateRunnerPosition(formationIndex);
+            int closestRunnerIndex = FindClosestRunnerIndex(availableRunners, targetPosition);
+            Runner closestRunner = availableRunners[closestRunnerIndex];
+
+            closestRunner.SetDeathRepositionTargetPosition(targetPosition, formationIndex);
+            availableRunners.RemoveAt(closestRunnerIndex);
+        }
+
+        runners.Sort((firstRunner, secondRunner) =>
+            firstRunner.FormationIndex.CompareTo(secondRunner.FormationIndex));
     }
 
     public void EnterCombat(Transform combatTarget)
@@ -327,7 +374,6 @@ public class CrowdSystem : MonoBehaviour
 
     public void SetRunnersAmount(int amount)
     {
-        RefreshRunners();
         runners.Sort((firstRunner, secondRunner) => firstRunner.FormationIndex.CompareTo(secondRunner.FormationIndex));
 
         int targetAmount = Mathf.Clamp(amount, 1, maxRunners);
@@ -380,8 +426,9 @@ public class CrowdSystem : MonoBehaviour
 
         for (int i = runners.Count - 1; i >= targetAmount; i--)
         {
-            Destroy(runners[i].gameObject);
+            Runner runnerToRemove = runners[i];
             runners.RemoveAt(i);
+            Destroy(runnerToRemove.gameObject);
         }
     }
 

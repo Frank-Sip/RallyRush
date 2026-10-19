@@ -166,11 +166,8 @@ MonoBehaviour:
   detectionRange: 4.5
   spawnRadius: 3.44
   placementAngle: 137.5078
-  minEnemies: 20
-  maxEnemies: 80
-  attackAnimationTrigger: Attack
-  enemyGroupUI: {fileID: 4798210181101964898}
-  uiMoveSpeed: 0.1
+  minEnemies: 10
+  maxEnemies: 40
 --- !u!1 &3536036544803904757
 GameObject:
   m_ObjectHideFlags: 0

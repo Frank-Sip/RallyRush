@@ -7,6 +7,7 @@ public class Runner : MonoBehaviour
     [SerializeField] private float doorRepositionSpeed = 20f;
     [SerializeField] private float combatEnterRepositionSpeed = 5f;
     [SerializeField] private float combatExitRepositionSpeed = 5f;
+    [SerializeField] private float deathRepositionSpeed = 8f;
 
     [Header("Movement Settings")]
     [FormerlySerializedAs("attackSpeed")]
@@ -200,6 +201,12 @@ public class Runner : MonoBehaviour
         SetTargetPosition(position, combatExitRepositionSpeed, delay);
     }
 
+    public void SetDeathRepositionTargetPosition(Vector3 position, int formationIndex)
+    {
+        FormationIndex = formationIndex;
+        SetTargetPosition(position, deathRepositionSpeed, 0f);
+    }
+
     public void SetPyramidFormationPosition(Vector3 position)
     {
         transform.localPosition = position;
@@ -271,7 +278,12 @@ public class Runner : MonoBehaviour
         }
 
         isDead = true;
-        crowdSystem.RemoveRunner(this);
+
+        if (crowdSystem.RemoveRunner(this))
+        {
+            crowdSystem.RestartDeathRepositionTimer();
+        }
+
         Destroy(gameObject);
         return true;
     }

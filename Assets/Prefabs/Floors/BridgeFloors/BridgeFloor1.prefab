@@ -255,7 +255,7 @@ Transform:
   m_GameObject: {fileID: 3465415816452030130}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0064285714, y: 0, z: -2.496}
+  m_LocalPosition: {x: 0.0064285714, y: 0, z: -1.76}
   m_LocalScale: {x: 0.35714284, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
   attackPoint: {fileID: 6730628800995185165}
-  runnerAttackBoxSize: {x: 15, y: 2, z: 25}
+  runnerAttackBoxSize: {x: 15, y: 2, z: 30}
 --- !u!1001 &5897153900788388882
 PrefabInstance:
   m_ObjectHideFlags: 0

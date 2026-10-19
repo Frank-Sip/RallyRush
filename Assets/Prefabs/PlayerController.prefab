@@ -466,8 +466,8 @@ MonoBehaviour:
   regularSpeed: 10
   combatSpeed: 2
   speedChangeRate: 10
-  slideSpeed: 10
-  screenLimit: 14
+  slideSpeed: 17
+  screenLimit: 16
 --- !u!114 &6906829037168895027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,9 +480,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83b989cd110c602489ef0f9ac04d8168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CrowdSystem
-  radius: 0.2
+  radius: 0.25
   angle: 137.50777
   combatExitStaggerDuration: 0.5
+  deathRepositionDelay: 0
   maxRunners: 999
 --- !u!1001 &7967026028252224042
 PrefabInstance:
@@ -534,6 +535,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: attackSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+      propertyPath: deathRepositionSpeed
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
