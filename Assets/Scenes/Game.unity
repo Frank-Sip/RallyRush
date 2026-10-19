@@ -1754,6 +1754,26 @@ PrefabInstance:
       propertyPath: bossScreenPositionX
       value: -0.36
       objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: firstLevelOffsetChangeRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: pyramidStartFollowOffset.z
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: pyramidStartOffsetChangeRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: diagonalMovementFollowOffset.y
+      value: 14.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 611616234550200636, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: diagonalMovementFollowOffset.z
+      value: -18
+      objectReference: {fileID: 0}
     - target: {fileID: 1338222811249418655, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
