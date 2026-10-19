@@ -17,7 +17,7 @@ public class PyramidFormation : MonoBehaviour
     [Header("Runner Formation Settings")]
     [Min(0f)][SerializeField] private float horizontalSpacing = 0.6f;
     [Min(0f)][SerializeField] private float verticalSpacing = 1f;
-    [Min(1)][SerializeField] private int remainingRunnerDistributionLevels = 2;
+    [Min(1)][SerializeField] private int maxRunnersPerLevel = 50;
     [Min(0f)][SerializeField] private float formationTickInterval = 0.1f;
 
     private CrowdSystem crowdSystem;
@@ -205,13 +205,32 @@ public class PyramidFormation : MonoBehaviour
             runnersPerLevel[level] = Levels - level;
         }
 
-        int distributionLevels = Mathf.Min(
-            remainingRunnerDistributionLevels,
-            Mathf.Max(1, Levels - 1));
+        int availableSpace = 0;
 
-        for (int i = 0; i < RemainingRunners; i++)
+        for (int level = 0; level < Levels; level++)
         {
-            runnersPerLevel[i % distributionLevels]++;
+            availableSpace += Mathf.Max(0, maxRunnersPerLevel - runnersPerLevel[level]);
+        }
+
+        if (RemainingRunners > availableSpace)
+        {
+            throw new InvalidOperationException(
+                $"PyramidFormation cannot distribute {RemainingRunners} remaining runners "
+                + $"without exceeding the limit of {maxRunnersPerLevel} runners per level.");
+        }
+
+        int remainingRunners = RemainingRunners;
+        int distributionLevel = 0;
+
+        while (remainingRunners > 0)
+        {
+            if (runnersPerLevel[distributionLevel] < maxRunnersPerLevel)
+            {
+                runnersPerLevel[distributionLevel]++;
+                remainingRunners--;
+            }
+
+            distributionLevel = (distributionLevel + 1) % Levels;
         }
 
         return runnersPerLevel;
