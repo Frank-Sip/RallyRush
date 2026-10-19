@@ -21,13 +21,23 @@ public class CameraController : MonoBehaviour
     private PyramidFormation pyramidFormation;
     private Runner lastLevelRunner;
     private Vector3 targetFollowOffset;
+    private ScreenComposerSettings pyramidComposition;
     private float currentFollowOffsetChangeRate;
     private bool changingFollowOffset;
     private bool movingToLastRunner;
 
     private void Awake()
     {
-        rotationComposer.enabled = false;
+        pyramidComposition = rotationComposer.Composition;
+
+        ScreenComposerSettings gameplayComposition = pyramidComposition;
+        gameplayComposition.DeadZone.Enabled = true;
+        gameplayComposition.DeadZone.Size = new Vector2(2f, 2f);
+        gameplayComposition.HardLimits.Enabled = false;
+
+        rotationComposer.CenterOnActivate = false;
+        rotationComposer.Composition = gameplayComposition;
+        rotationComposer.enabled = true;
     }
 
     private void Start()
@@ -72,6 +82,7 @@ public class CameraController : MonoBehaviour
 
             changingFollowOffset = cinemachineFollow.FollowOffset != targetFollowOffset;
         }
+
     }
 
     private void LateUpdate()
@@ -89,7 +100,7 @@ public class CameraController : MonoBehaviour
 
     private void ChangeFollowOffset()
     {
-        rotationComposer.enabled = true;
+        rotationComposer.Composition = pyramidComposition;
         targetFollowOffset = pyramidStartFollowOffset;
         currentFollowOffsetChangeRate = pyramidStartOffsetChangeRate;
         changingFollowOffset = true;
