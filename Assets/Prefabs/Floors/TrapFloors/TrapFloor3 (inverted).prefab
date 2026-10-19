@@ -148,7 +148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1819710481665984826, guid: d1c464ffca537f44789222d6fdf6034d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13.59
+      value: 11.74
       objectReference: {fileID: 0}
     - target: {fileID: 1819710481665984826, guid: d1c464ffca537f44789222d6fdf6034d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -210,7 +210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3653855431733975781, guid: 821226d264e88b74c98716307f492dbf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.831242
+      value: 18.46
       objectReference: {fileID: 0}
     - target: {fileID: 3653855431733975781, guid: 821226d264e88b74c98716307f492dbf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -298,14 +298,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5122799407462314758, guid: 8c503e3588c2c2f4f8cbd5c911ffd93b, type: 3}
-      propertyPath: runnerAttackBoxSize.x
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5122799407462314758, guid: 8c503e3588c2c2f4f8cbd5c911ffd93b, type: 3}
-      propertyPath: runnerAttackBoxSize.z
-      value: 12
-      objectReference: {fileID: 0}
     - target: {fileID: 6890890131927713446, guid: 8c503e3588c2c2f4f8cbd5c911ffd93b, type: 3}
       propertyPath: m_Name
       value: LeftDoubleRotatoryTrap
@@ -331,30 +323,6 @@ PrefabInstance:
     - target: {fileID: 1121112740950696269, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
       propertyPath: m_Name
       value: RightDoubleRotatoryTrap
-      objectReference: {fileID: 0}
-    - target: {fileID: 1121112740950696269, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6530221619459142731, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
-      propertyPath: runnerAttackBoxSize.x
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6530221619459142731, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
-      propertyPath: runnerAttackBoxSize.z
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065476367771394177, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.9999999
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065476367771394177, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.9999999
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065476367771394177, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.9999999
       objectReference: {fileID: 0}
     - target: {fileID: 8065476367771394177, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -395,10 +363,6 @@ PrefabInstance:
     - target: {fileID: 8065476367771394177, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065476367771394177, guid: 01242b02785689e43a7b78a480a3a4c8, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
