@@ -109,3 +109,5 @@ MonoBehaviour:
   lastFloors:
   - prefab: {fileID: 6023676063703551376, guid: 139d11965f4264247bc993524cc11d5e, type: 3}
     length: 30
+  - prefab: {fileID: 6023676063703551376, guid: abec2b9aea1939a4bbcd84c7d0f5c993, type: 3}
+    length: 40

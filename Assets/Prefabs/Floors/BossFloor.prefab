@@ -696,10 +696,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 982364720882279731}
   - {fileID: 8632369760280745219}
   - {fileID: 4112855288385150576}
   - {fileID: 7717644632239046755}
-  - {fileID: 982364720882279731}
   - {fileID: 4378242112671963616}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -929,6 +929,14 @@ PrefabInstance:
     - target: {fileID: 3715717820204274156, guid: 375eb59f3d3278a458ce452aca0aaa8d, type: 3}
       propertyPath: runnerAttackBoxSize.x
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051564654484789725, guid: 375eb59f3d3278a458ce452aca0aaa8d, type: 3}
+      propertyPath: attackDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051564654484789725, guid: 375eb59f3d3278a458ce452aca0aaa8d, type: 3}
+      propertyPath: collisionRadius
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

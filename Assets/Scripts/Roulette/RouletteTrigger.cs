@@ -4,16 +4,17 @@ using UnityEngine;
 public class RouletteTrigger : MonoBehaviour
 {
     [SerializeField] private Vector3 detectionBoxSize = new Vector3(4f, 2f, 1f);
-    [SerializeField] private BossEnemy bossEnemy;
 
     private CrowdSystem crowdSystem;
     private MovementController movementController;
+    private BossEnemy bossEnemy;
     private bool crowdDetected;
 
     private void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
         movementController = ServiceProvider.GetService<MovementController>();
+        bossEnemy = ServiceProvider.GetService<BossEnemy>();
     }
 
     private void Update()

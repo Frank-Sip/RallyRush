@@ -44,6 +44,7 @@ public class CameraController : MonoBehaviour
         {
             pyramidFormation.FirstLevelComplete += StartDiagonalMovement;
         }
+
     }
 
     private void OnDestroy()
@@ -57,6 +58,7 @@ public class CameraController : MonoBehaviour
         {
             pyramidFormation.FirstLevelComplete -= StartDiagonalMovement;
         }
+
     }
 
     private void Update()

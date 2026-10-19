@@ -11,6 +11,7 @@ public class BossEnemy : BigEnemyReposition
     protected override void Awake()
     {
         base.Awake();
+        ServiceProvider.RegisterService(this);
         runnerAttackerComponent = GetComponent<RunnerAttackerComponent>();
     }
     
