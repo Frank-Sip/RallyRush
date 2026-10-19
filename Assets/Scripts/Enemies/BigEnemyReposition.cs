@@ -53,6 +53,7 @@ public class BigEnemyReposition : Enemy
 
     public override void Die()
     {
+        PlayDeathEffect();
         crowdSystem.ExitBigEnemyCombat();
     }
 

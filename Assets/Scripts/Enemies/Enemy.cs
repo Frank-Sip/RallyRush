@@ -9,6 +9,7 @@ public abstract class Enemy : MonoBehaviour, IEnemy
     [Min(0)][SerializeField] protected float attackDistance = 0.5f;
     [Min(0)][SerializeField] protected float collisionRadius = 0.5f;
     [Min(0)][SerializeField] private float damageTakenPerHit = 1f;
+    [SerializeField] private DeathEffectEmitter deathEffectEmitter;
 
     public Runner Target { get; private set; }
     public bool HasTarget => Target != null;
@@ -74,6 +75,11 @@ public abstract class Enemy : MonoBehaviour, IEnemy
 
     public virtual void Die()
     {
+    }
+
+    protected void PlayDeathEffect()
+    {
+        deathEffectEmitter.Play();
     }
 
     private void OnDrawGizmos()

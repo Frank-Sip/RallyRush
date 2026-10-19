@@ -47,6 +47,7 @@ public class MeleeEnemy : Enemy
         SetTarget(null);
         enemyGroup.RemoveEnemy(this);
         enemyGroup.Die();
+        PlayDeathEffect();
         Destroy(gameObject);
     }
 }

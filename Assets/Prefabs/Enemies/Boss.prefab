@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: 5051564654484789725}
   - component: {fileID: 1819796244591298770}
   - component: {fileID: 3715717820204274156}
+  - component: {fileID: 3653343709651781082}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -329,6 +330,7 @@ MonoBehaviour:
   attackDistance: 2.4
   collisionRadius: 1.5
   damageTakenPerHit: 1
+  deathEffectEmitter: {fileID: 3653343709651781082}
   rotationSpeed: 180
 --- !u!114 &1819796244591298770
 MonoBehaviour:
@@ -357,6 +359,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
   attackPoint: {fileID: 3041631172244036050}
   runnerAttackBoxSize: {x: 5, y: 3, z: 5}
+--- !u!114 &3653343709651781082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3169319178082235837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f019e5b737598c249b8655e703e3ca50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathEffectEmitter
+  effectPrefab: {fileID: 9090750385006730978, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
+  effectScale: {x: 7, y: 7, z: 7}
+  effectColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &3518578787153196535
 GameObject:
   m_ObjectHideFlags: 0

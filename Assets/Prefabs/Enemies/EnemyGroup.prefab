@@ -395,6 +395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeleeEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 1802289237184619753, guid: 7abdf4169497446488015193746b6fdd, type: 3}
+      propertyPath: deathEffectEmitter
+      value: 
+      objectReference: {fileID: 8629856424172214962}
     - target: {fileID: 6709747974100584092, guid: 7abdf4169497446488015193746b6fdd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -438,8 +442,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1698357972843935271, guid: 7abdf4169497446488015193746b6fdd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8629856424172214962}
   m_SourcePrefab: {fileID: 100100000, guid: 7abdf4169497446488015193746b6fdd, type: 3}
+--- !u!1 &4471987127160342491 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1698357972843935271, guid: 7abdf4169497446488015193746b6fdd, type: 3}
+  m_PrefabInstance: {fileID: 2998965289968972284}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8629856424172214962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4471987127160342491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f019e5b737598c249b8655e703e3ca50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathEffectEmitter
+  effectPrefab: {fileID: 9090750385006730978, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
+  effectScale: {x: 1, y: 1, z: 1}
+  effectColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &8395737960636102496 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6709747974100584092, guid: 7abdf4169497446488015193746b6fdd, type: 3}

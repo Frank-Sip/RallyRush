@@ -185,10 +185,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   cinemachineFollow: {fileID: 0}
   rotationComposer: {fileID: 0}
-  pyramidStartFollowOffset: {x: 3.42, y: 7.33, z: -8.26}
-  pyramidStartOffsetChangeRate: 2
+  pyramidStartFollowOffset: {x: 3.42, y: 7.33, z: -6}
+  pyramidStartOffsetChangeRate: 5
   firstLevelFollowOffset: {x: 2.69, y: 3.9, z: -5.09}
-  firstLevelOffsetChangeRate: 10
+  firstLevelOffsetChangeRate: 1
   movementSpeed: 5
 --- !u!1 &3710068793831503952
 GameObject:
@@ -480,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83b989cd110c602489ef0f9ac04d8168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CrowdSystem
-  radius: 0.25
+  radius: 0.23
   angle: 137.50777
   combatExitStaggerDuration: 0.5
   deathRepositionDelay: 0
@@ -538,8 +538,16 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+      propertyPath: deathEffectEmitter
+      value: 
+      objectReference: {fileID: 5021014152378052581}
+    - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: deathRepositionSpeed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+      propertyPath: pyramidCenteringSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: normalEnemyAttackSpeed
@@ -560,8 +568,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5446765266283868625, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5021014152378052581}
   m_SourcePrefab: {fileID: 100100000, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+--- !u!1 &2667894393881160699 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5446765266283868625, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+  m_PrefabInstance: {fileID: 7967026028252224042}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5021014152378052581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2667894393881160699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f019e5b737598c249b8655e703e3ca50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathEffectEmitter
+  effectPrefab: {fileID: 9090750385006730978, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
+  effectScale: {x: 3, y: 3, z: 3}
+  effectColor: {r: 0, g: 0.972549, b: 0.9372549, a: 1}
 --- !u!4 &7857887338735817345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 260185206011496619, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}

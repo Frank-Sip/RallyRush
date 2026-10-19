@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 8168691323090183036}
   - component: {fileID: 9154045869601497628}
   - component: {fileID: 4779756079701311777}
+  - component: {fileID: 4662111959241563328}
   m_Layer: 0
   m_Name: RangedEnemy
   m_TagString: Untagged
@@ -102,8 +103,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
   attackDistance: 0.5
+  collisionRadius: 0.5
+  damageTakenPerHit: 1
+  deathEffectEmitter: {fileID: 4662111959241563328}
   moveSpeed: 1
   rotationSpeed: 720
+--- !u!114 &4662111959241563328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881711706594721492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f019e5b737598c249b8655e703e3ca50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeathEffectEmitter
+  effectPrefab: {fileID: 9090750385006730978, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
+  effectScale: {x: 1, y: 1, z: 1}
+  effectColor: {r: 1, g: 0.22261894, b: 0, a: 1}
 --- !u!1 &1395501673710772283
 GameObject:
   m_ObjectHideFlags: 0

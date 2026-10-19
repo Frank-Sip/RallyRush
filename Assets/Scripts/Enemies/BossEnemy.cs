@@ -33,6 +33,7 @@ public class BossEnemy : BigEnemyReposition
 
     public override void Die()
     {
+        PlayDeathEffect();
         GameManager.Instance.SetVictoryStatus();
     }
 

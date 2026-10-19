@@ -18,6 +18,9 @@ public class Runner : MonoBehaviour
     [Min(0f)] [SerializeField] private float gravity = 20f;
     [Min(0)] [SerializeField] private float enemyCollisionDistance = 0.01f;
 
+    [Header("Death Effect")]
+    [SerializeField] private DeathEffectEmitter deathEffectEmitter;
+
     private Vector3 targetLocalPosition;
     private Vector3 pyramidTargetWorldPosition;
     private Vector3 pyramidForward;
@@ -332,6 +335,7 @@ public class Runner : MonoBehaviour
             crowdSystem.RestartDeathRepositionTimer();
         }
 
+        deathEffectEmitter.Play();
         Destroy(gameObject);
         return true;
     }
