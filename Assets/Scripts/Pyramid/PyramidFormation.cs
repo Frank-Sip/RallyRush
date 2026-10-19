@@ -159,6 +159,12 @@ public class PyramidFormation : MonoBehaviour
         firstLevelEventSent = false;
         checkingTargetCompletion = false;
         buildingFormation = true;
+
+        for (int i = 0; i < activeAssignments.Count; i++)
+        {
+            activeAssignments[i].Runner.StartPyramidCentering(crowdSystem.transform);
+        }
+
         BuildNextLevel();
     }
 

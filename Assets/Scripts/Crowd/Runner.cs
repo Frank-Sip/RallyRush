@@ -8,6 +8,7 @@ public class Runner : MonoBehaviour
     [SerializeField] private float combatEnterRepositionSpeed = 5f;
     [SerializeField] private float combatExitRepositionSpeed = 5f;
     [SerializeField] private float deathRepositionSpeed = 8f;
+    [SerializeField] private float pyramidCenteringSpeed = 10f;
 
     [Header("Movement Settings")]
     [FormerlySerializedAs("attackSpeed")]
@@ -20,6 +21,7 @@ public class Runner : MonoBehaviour
     private Vector3 targetLocalPosition;
     private Vector3 pyramidTargetWorldPosition;
     private Vector3 pyramidForward;
+    private Transform pyramidCenter;
     private Animator animator;
     private CrowdSystem crowdSystem;
     private Enemy combatEnemyTarget;
@@ -28,6 +30,7 @@ public class Runner : MonoBehaviour
     private float repositionDelay;
     private float verticalVelocity;
     private bool attackPositionReached;
+    private bool pyramidCenteringEnabled;
     private bool pyramidAdvanceEnabled;
     private bool pyramidTargetReached;
     private bool gravityEnabled;
@@ -66,6 +69,7 @@ public class Runner : MonoBehaviour
                 AttackTarget();
                 break;
             case RunnerBehaviour.Pyramid:
+                CenterForPyramid();
                 break;
             case RunnerBehaviour.Victory:
                 return;
@@ -227,14 +231,41 @@ public class Runner : MonoBehaviour
     public void SetPyramidFormationPosition(Vector3 position)
     {
         transform.localPosition = position;
+        pyramidCenteringEnabled = false;
         pyramidAdvanceEnabled = false;
         pyramidTargetReached = false;
+    }
+
+    public void StartPyramidCentering(Transform center)
+    {
+        pyramidCenter = center;
+        pyramidCenteringEnabled = true;
+        pyramidAdvanceEnabled = false;
+        pyramidTargetReached = false;
+    }
+
+    private void CenterForPyramid()
+    {
+        if (!pyramidCenteringEnabled)
+        {
+            return;
+        }
+
+        Vector3 centerPosition = pyramidCenter.position;
+        centerPosition.y = transform.position.y;
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            centerPosition,
+            pyramidCenteringSpeed * Time.deltaTime);
+
+        pyramidCenteringEnabled = transform.position != centerPosition;
     }
 
     public void StartPyramidAdvance(Vector3 targetWorldPosition, Vector3 forward)
     {
         pyramidTargetWorldPosition = targetWorldPosition;
         pyramidForward = forward;
+        pyramidCenteringEnabled = false;
         pyramidAdvanceEnabled = true;
         pyramidTargetReached = false;
     }

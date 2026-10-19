@@ -1682,6 +1682,10 @@ PrefabInstance:
       propertyPath: radius
       value: 0.23
       objectReference: {fileID: 0}
+    - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: pyramidCenteringSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7729875140569456883, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_Name
       value: PlayerController
