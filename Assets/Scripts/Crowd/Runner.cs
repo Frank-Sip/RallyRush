@@ -9,6 +9,8 @@ public class Runner : MonoBehaviour
     [SerializeField] private float combatExitRepositionSpeed = 5f;
     [SerializeField] private float deathRepositionSpeed = 8f;
     [SerializeField] private float pyramidCenteringSpeed = 10f;
+    [SerializeField] private float runningTargetY;
+    [Min(0f)] [SerializeField] private float verticalRepositionSpeed = 5f;
 
     [Header("Movement Settings")]
     [FormerlySerializedAs("attackSpeed")]
@@ -86,6 +88,11 @@ public class Runner : MonoBehaviour
 
     private void UpdateRunningMovement()
     {
+        if (!gravityEnabled)
+        {
+            MoveTowardsRunningHeight();
+        }
+
         if (repositionDelay > 0f)
         {
             repositionDelay -= Time.deltaTime;
@@ -93,6 +100,16 @@ public class Runner : MonoBehaviour
         }
 
         MoveTowardsTarget(currentRepositionSpeed);
+    }
+
+    private void MoveTowardsRunningHeight()
+    {
+        Vector3 localPosition = transform.localPosition;
+        localPosition.y = Mathf.MoveTowards(
+            localPosition.y,
+            runningTargetY,
+            verticalRepositionSpeed * Time.deltaTime);
+        transform.localPosition = localPosition;
     }
 
     private void MoveTowardsTarget(float speed)
