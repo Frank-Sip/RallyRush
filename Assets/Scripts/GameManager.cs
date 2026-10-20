@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     [Min(0)] [SerializeField] private int victorySfxIndex;
     [Min(0)] [SerializeField] private int gameOverSfxIndex;
 
+    [Header("Menu UI")]
+    [SerializeField] private GameObject menuUI;
+
     [Header("End Status UI")]
     [SerializeField] private GameObject victoryUI;
     [SerializeField] private GameObject gameOverUI;
@@ -98,6 +101,7 @@ public class GameManager : MonoBehaviour
     public void SetGameStatus(GameStatus newStatus)
     {
         currentStatus = newStatus;
+        menuUI.SetActive(currentStatus == GameStatus.Menu);
 
         switch (currentStatus)
         {

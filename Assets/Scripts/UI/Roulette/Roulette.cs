@@ -125,43 +125,24 @@ public class Roulette : MonoBehaviour
         for (int i = 0; i < bonuses.Length; i++)
         {
             float sectionAngle = bonuses[i].Size / totalSize * 360f;
-            Vector3 sectionStartDirection = Quaternion.AngleAxis(
-                -sectionStartAngle,
-                normal) * zeroDirection;
+            Vector3 sectionStartDirection = Quaternion.AngleAxis(-sectionStartAngle, normal) * zeroDirection;
 
             Color sectionColor = Color.HSVToRGB(i / (float)bonuses.Length, 0.75f, 1f);
             Color sectionFillColor = sectionColor;
             sectionFillColor.a = 0.2f;
 
             Handles.color = sectionFillColor;
-            Handles.DrawSolidArc(
-                center,
-                -normal,
-                sectionStartDirection,
-                sectionAngle,
-                radius);
+            Handles.DrawSolidArc(center, -normal, sectionStartDirection, sectionAngle, radius);
 
             Handles.color = sectionColor;
-            Handles.DrawWireArc(
-                center,
-                -normal,
-                sectionStartDirection,
-                sectionAngle,
-                radius);
+            Handles.DrawWireArc(center, -normal, sectionStartDirection, sectionAngle, radius);
             Handles.DrawLine(center, center + sectionStartDirection * radius);
 
             float sectionCenterAngle = sectionStartAngle + sectionAngle * 0.5f;
-            Vector3 labelDirection = Quaternion.AngleAxis(
-                -sectionCenterAngle,
-                normal) * zeroDirection;
+            Vector3 labelDirection = Quaternion.AngleAxis(-sectionCenterAngle, normal) * zeroDirection;
             GUIStyle labelStyle = new GUIStyle(EditorStyles.boldLabel);
             labelStyle.normal.textColor = sectionColor;
-
-            Handles.Label(
-                center + labelDirection * radius * 0.65f,
-                $"{i}: {bonuses[i].RunnerAmount:+0;-0;0}\n{sectionAngle:0.#} deg",
-                labelStyle);
-
+            Handles.Label(center + labelDirection * radius * 0.65f, $"{i}: {bonuses[i].RunnerAmount:+0;-0;0}\n{sectionAngle:0.#} deg",labelStyle);
             sectionStartAngle += sectionAngle;
         }
     }
