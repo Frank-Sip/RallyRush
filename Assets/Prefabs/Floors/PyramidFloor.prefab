@@ -662,7 +662,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 7966ba961b58eda418c1f7a4c672162a, type: 2}
     - target: {fileID: 5153893137690986580, guid: 364d4270ce2e63949baa0c4c17c01ef3, type: 3}
       propertyPath: stepAmount
-      value: 44
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5153893137690986580, guid: 364d4270ce2e63949baa0c4c17c01ef3, type: 3}
       propertyPath: steps.Array.size

@@ -294,6 +294,17 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &368701585 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4549639866817802799, guid: e9f1a54beb4ee284d94015940dccfc85, type: 3}
+  m_PrefabInstance: {fileID: 7686308104322225507}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,6 +432,17 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &495353231 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4785732401970735337, guid: e9f1a54beb4ee284d94015940dccfc85, type: 3}
+  m_PrefabInstance: {fileID: 7686308104322225507}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &632622450
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,6 +999,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 926751692}
     - target: {fileID: 4529712609633854513, guid: 6350bdafe383081468a87cdbca6358ec, type: 3}
+      propertyPath: coinSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: 3ef7875b08a96c040b2fea7c41eabe4b, type: 2}
+    - target: {fileID: 4529712609633854513, guid: 6350bdafe383081468a87cdbca6358ec, type: 3}
+      propertyPath: menuCoinsText
+      value: 
+      objectReference: {fileID: 368701585}
+    - target: {fileID: 4529712609633854513, guid: 6350bdafe383081468a87cdbca6358ec, type: 3}
       propertyPath: runProgressUI
       value: 
       objectReference: {fileID: 8795500883138375097}
@@ -988,6 +1018,10 @@ PrefabInstance:
       propertyPath: gameOverSfxIndex
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4529712609633854513, guid: 6350bdafe383081468a87cdbca6358ec, type: 3}
+      propertyPath: victoryCoinsText
+      value: 
+      objectReference: {fileID: 495353231}
     - target: {fileID: 6102181528261129874, guid: 6350bdafe383081468a87cdbca6358ec, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -1165,6 +1199,30 @@ PrefabInstance:
     - target: {fileID: 502505529758691756, guid: e9f1a54beb4ee284d94015940dccfc85, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1133288609329067213, guid: e9f1a54beb4ee284d94015940dccfc85, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 282.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 1133288609329067213, guid: e9f1a54beb4ee284d94015940dccfc85, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 191.41489
+      objectReference: {fileID: 0}
+    - target: {fileID: 2572474916570292670, guid: e9f1a54beb4ee284d94015940dccfc85, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2656176122848179212, guid: e9f1a54beb4ee284d94015940dccfc85, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 159
+      objectReference: {fileID: 0}
+    - target: {fileID: 2656176122848179212, guid: e9f1a54beb4ee284d94015940dccfc85, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 866
+      objectReference: {fileID: 0}
+    - target: {fileID: 4549639866817802799, guid: e9f1a54beb4ee284d94015940dccfc85, type: 3}
+      propertyPath: m_text
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

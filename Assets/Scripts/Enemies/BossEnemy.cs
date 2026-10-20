@@ -38,6 +38,7 @@ public class BossEnemy : BigEnemyReposition
     public override void Die()
     {
         PlayDeathEffect();
+        ServiceProvider.GetService<CoinManager>().AddBossReward();
         GameManager.Instance.SetVictoryStatus();
     }
 
@@ -57,8 +58,6 @@ public class BossEnemy : BigEnemyReposition
         ServiceProvider.GetService<AudioManager>().PlaySFX(attackHitSfxIndex);
     }
     
-    
-
     public void RotateTowardsMostRunners()
     {
         IReadOnlyList<Runner> runners = crowdSystem.GetRunners();

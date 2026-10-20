@@ -49,6 +49,7 @@ public class Chest : MonoBehaviour
             {
                 runnerDetected = true;
                 ServiceProvider.GetService<AudioManager>().PlaySFX(openSfxIndex);
+                ServiceProvider.GetService<CoinManager>().AddFinalChestReward();
                 animator.SetTrigger("Open");
                 return;
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -24,10 +25,12 @@ public class PyramidFormation : MonoBehaviour
     [Min(0)] [SerializeField] private int levelCompleteSfxIndex;
 
     private CrowdSystem crowdSystem;
+    private CoinManager coinManager;
     [SerializeField, HideInInspector] private Transform[] steps;
     private List<FormationAssignment> activeAssignments;
     private float formationTickTimer;
     private int formedLevelCount;
+    private int multiplierStepAmount;
     private bool[] completedLevelSfxPlayed;
     private bool buildingFormation;
     private bool checkingTargetCompletion;
@@ -65,7 +68,9 @@ public class PyramidFormation : MonoBehaviour
     private void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
+        coinManager = ServiceProvider.GetService<CoinManager>();
         GetSteps();
+        SetStepMultiplierTexts();
     }
 
     private void GetSteps()
@@ -75,6 +80,18 @@ public class PyramidFormation : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             steps[i] = transform.GetChild(i);
+        }
+
+        multiplierStepAmount = steps.Length - 1;
+    }
+
+    private void SetStepMultiplierTexts()
+    {
+        for (int stepIndex = 0; stepIndex < multiplierStepAmount; stepIndex++)
+        {
+            float multiplier = coinManager.GetPyramidMultiplier(stepIndex, multiplierStepAmount);
+            TMP_Text multiplierText = steps[stepIndex].GetComponentInChildren<TMP_Text>(true);
+            multiplierText.text = $"x{multiplier:0.0}";
         }
     }
 
@@ -301,6 +318,8 @@ public class PyramidFormation : MonoBehaviour
 
         if (lastLevelCompleted)
         {
+            int reachedStepIndex = Mathf.Min(Levels - 1, multiplierStepAmount - 1);
+            coinManager.AddPyramidReward(reachedStepIndex, multiplierStepAmount);
             LastLevelComplete?.Invoke(activeAssignments[0].Runner);
             checkingTargetCompletion = false;
             GameManager.Instance.SetVictoryStatus();

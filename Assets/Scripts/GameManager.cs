@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public enum GameStatus
@@ -25,11 +26,16 @@ public class GameManager : MonoBehaviour
     [Min(0)] [SerializeField] private int victorySfxIndex;
     [Min(0)] [SerializeField] private int gameOverSfxIndex;
 
+    [Header("Coins")]
+    [SerializeField] private CoinSO coinSettings;
+
     [Header("Menu UI")]
     [SerializeField] private GameObject menuUI;
+    [SerializeField] private TextMeshProUGUI menuCoinsText;
 
     [Header("End Status UI")]
     [SerializeField] private GameObject victoryUI;
+    [SerializeField] private TextMeshProUGUI victoryCoinsText;
     [SerializeField] private GameObject gameOverUI;
 
     [Header("Gameplay UI")]
@@ -41,6 +47,7 @@ public class GameManager : MonoBehaviour
     private Roulette roulette;
     private RunProgress runProgress;
     private AudioManager audioManager;
+    private CoinManager coinManager;
 
     public GameStatus currentStatus { get; private set; }
 
@@ -58,6 +65,13 @@ public class GameManager : MonoBehaviour
         audioManager = new AudioManager(audioContainer);
         audioManager.Init(loopingSfxSource, sfxSource);
         ServiceProvider.RegisterService(audioManager);
+
+        coinManager = new CoinManager(coinSettings);
+        ServiceProvider.RegisterService(coinManager);
+        coinManager.CoinsChanged += UpdateMenuCoinsText;
+        coinManager.EarnedCoinsChanged += UpdateVictoryCoinsText;
+        UpdateMenuCoinsText(coinManager.Coins);
+        UpdateVictoryCoinsText(coinManager.EarnedCoins);
     }
 
     private void Start()
@@ -246,6 +260,16 @@ public class GameManager : MonoBehaviour
         {
             ResetGame();
         }
+    }
+
+    private void UpdateMenuCoinsText(int amount)
+    {
+        menuCoinsText.text = amount.ToString();
+    }
+
+    private void UpdateVictoryCoinsText(int amount)
+    {
+        victoryCoinsText.text = $"+{amount}";
     }
 
     public void ResetGame()

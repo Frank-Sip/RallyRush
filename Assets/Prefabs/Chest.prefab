@@ -1043,6 +1043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Chest
   detectionBoxSize: {x: 2, y: 1, z: 1}
+  openSfxIndex: 0
 --- !u!1 &6652505872307681292
 GameObject:
   m_ObjectHideFlags: 0
