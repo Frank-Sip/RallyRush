@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c4a3f8b9af48341a5cb54fc4ddfe6d, type: 3}
   m_Name: AudioContainer
   m_EditorClassIdentifier: Assembly-CSharp::AudioContainer
-  audioClips: []
+  loopingSfxClips:
+  - {fileID: 8300000, guid: 5d42edcaf7946b046976acd8dcd95185, type: 3}
+  sfxClips:
+  - clip: {fileID: 8300000, guid: ddc8ec5f85ce9324f88a12482d49be6b, type: 3}
+    cooldown: 0

@@ -483,7 +483,7 @@ MonoBehaviour:
   radius: 0.23
   angle: 137.50777
   combatExitStaggerDuration: 0.5
-  deathRepositionDelay: 0
+  deathRepositionDelay: 0.1
   maxRunners: 999
 --- !u!1001 &7967026028252224042
 PrefabInstance:

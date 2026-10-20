@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] private AudioContainer audioContainer;
+    [SerializeField] private AudioSource loopingSfxSource;
+    [SerializeField] private AudioSource sfxSource;
 
     [Header("End Status UI")]
     [SerializeField] private GameObject victoryUI;
@@ -44,8 +46,8 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        audioManager = new AudioManager();
-        audioManager.Initialize(audioContainer, GetComponent<AudioSource>());
+        audioManager = new AudioManager(audioContainer);
+        audioManager.Init(loopingSfxSource, sfxSource);
         ServiceProvider.RegisterService(audioManager);
     }
 
@@ -131,6 +133,7 @@ public class GameManager : MonoBehaviour
 
     private void SetMenuStatus()
     {
+        crowdSystem.StopBehaviourSFX();
         movementController.SetSpeed(0f);
     }
 
@@ -139,6 +142,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         movementController.SetInputStartPosition();
         movementController.RestoreRegularSpeed();
+        crowdSystem.PlayBehaviourSFX();
         var runners = crowdSystem.GetRunners();
 
         for (int i = 0; i < runners.Count; i++)
@@ -149,6 +153,7 @@ public class GameManager : MonoBehaviour
 
     public void EnterVictoryStatus()
     {
+        crowdSystem.StopBehaviourSFX();
         victoryUI.SetActive(true);
         crowdCount.gameObject.SetActive(false);
         crowdSystem.SetVictoryAnimation();
@@ -156,6 +161,7 @@ public class GameManager : MonoBehaviour
 
     private void EnterGameOverStatus()
     {
+        crowdSystem.StopBehaviourSFX();
         gameOverUI.SetActive(true);
 
         var enemies = Enemy.ActiveEnemies;
@@ -168,10 +174,12 @@ public class GameManager : MonoBehaviour
 
     private void SetPauseStatus()
     {
+        crowdSystem.StopBehaviourSFX();
     }
 
     private void SetRoulleteStatus()
     {
+        crowdSystem.StopBehaviourSFX();
         Time.timeScale = 0f;
         movementController.SetSpeed(0f);
         roulette.StartRoulette();

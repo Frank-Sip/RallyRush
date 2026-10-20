@@ -19,6 +19,10 @@ public class CrowdSystem : MonoBehaviour
     [Min(0)] [SerializeField] private float deathRepositionDelay = 0.25f;
     [Min(1)] [SerializeField] private int maxRunners = 999;
 
+    [Header("Audio")]
+    [Min(0)] [SerializeField] private int runningSfxIndex;
+    [Min(0)] [SerializeField] private int pyramidSfxIndex;
+
     private readonly List<Runner> runners = new List<Runner>();
 
     private MovementController movementController;
@@ -68,6 +72,7 @@ public class CrowdSystem : MonoBehaviour
         {
             runners[i].CustomStart();
         }
+
     }
 
     private void Update()
@@ -105,10 +110,7 @@ public class CrowdSystem : MonoBehaviour
             float distanceFromCenter = radius * Mathf.Sqrt(i);
             float angleInRadians = Mathf.Deg2Rad * i * angle;
 
-            Vector3 runnerPosition = centerLocalPosition + new Vector3(
-                distanceFromCenter * Mathf.Cos(angleInRadians),
-                0f,
-                distanceFromCenter * Mathf.Sin(angleInRadians));
+            Vector3 runnerPosition = centerLocalPosition + new Vector3(distanceFromCenter * Mathf.Cos(angleInRadians), 0f, distanceFromCenter * Mathf.Sin(angleInRadians));
 
             int closestRunnerIndex = FindClosestRunnerIndex(availableRunners, runnerPosition);
             Runner closestRunner = availableRunners[closestRunnerIndex];
@@ -170,7 +172,7 @@ public class CrowdSystem : MonoBehaviour
 
     public void SetVictoryAnimation()
     {
-        Behaviour = RunnerBehaviour.Victory;
+        SetBehaviour(RunnerBehaviour.Victory);
         CombatTarget = null;
 
         for (int i = 0; i < runners.Count; i++)
@@ -195,6 +197,7 @@ public class CrowdSystem : MonoBehaviour
     {
         if (runners.Count <= 0)
         {
+            StopBehaviourSFX();
             crowdCount.gameObject.SetActive(false);
             GameManager.Instance.SetGameStatus(GameStatus.GameOver);
         }
@@ -246,7 +249,7 @@ public class CrowdSystem : MonoBehaviour
 
     public void EnterCombat(Transform combatTarget)
     {
-        Behaviour = RunnerBehaviour.Combat;
+        SetBehaviour(RunnerBehaviour.Combat);
         CombatTarget = combatTarget;
 
         for (int i = 0; i < runners.Count; i++)
@@ -259,7 +262,7 @@ public class CrowdSystem : MonoBehaviour
 
     public void EnterCombat(Transform combatTarget, float combatSpeed)
     {
-        Behaviour = RunnerBehaviour.Combat;
+        SetBehaviour(RunnerBehaviour.Combat);
         CombatTarget = combatTarget;
 
         for (int i = 0; i < runners.Count; i++)
@@ -272,7 +275,7 @@ public class CrowdSystem : MonoBehaviour
 
     public void ExitCombat()
     {
-        Behaviour = RunnerBehaviour.Running;
+        SetBehaviour(RunnerBehaviour.Running);
         CloseFormationGaps();
         ClearRunnerCombatTargets();
         CombatTarget = null;
@@ -281,7 +284,7 @@ public class CrowdSystem : MonoBehaviour
 
     public void ExitBigEnemyCombat()
     {
-        Behaviour = RunnerBehaviour.Running;
+        SetBehaviour(RunnerBehaviour.Running);
         RestoreRunningFormation();
         ClearRunnerCombatTargets();
         CombatTarget = null;
@@ -298,9 +301,52 @@ public class CrowdSystem : MonoBehaviour
 
     public void EnterPyramid()
     {
-        Behaviour = RunnerBehaviour.Pyramid;
+        SetBehaviour(RunnerBehaviour.Pyramid);
         IsPyramidRepositioning = true;
         crowdCount.gameObject.SetActive(false);
+    }
+
+    private void SetBehaviour(RunnerBehaviour newBehaviour)
+    {
+        if (Behaviour == newBehaviour)
+        {
+            return;
+        }
+
+        Behaviour = newBehaviour;
+        UpdateBehaviourSFX();
+    }
+
+    private void UpdateBehaviourSFX()
+    {
+        AudioManager audioManager = ServiceProvider.GetService<AudioManager>();
+
+        switch (Behaviour)
+        {
+            case RunnerBehaviour.Running:
+                audioManager.PlayLoopingSFX(runningSfxIndex);
+                break;
+            case RunnerBehaviour.Pyramid:
+                audioManager.StopLoopingSFX();
+                audioManager.PlaySFX(pyramidSfxIndex);
+                break;
+            case RunnerBehaviour.Combat:
+            case RunnerBehaviour.Victory:
+                audioManager.StopLoopingSFX();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    public void PlayBehaviourSFX()
+    {
+        UpdateBehaviourSFX();
+    }
+
+    public void StopBehaviourSFX()
+    {
+        ServiceProvider.GetService<AudioManager>().StopLoopingSFX();
     }
 
     public void FinishPyramidReposition()
