@@ -1417,7 +1417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6906829037168895027, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: deathRepositionDelay
-      value: 0
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: deathSfxIndex
@@ -1430,6 +1430,18 @@ PrefabInstance:
     - target: {fileID: 7729875140569456883, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: m_Name
       value: PlayerController
+      objectReference: {fileID: 0}
+    - target: {fileID: 9046309251851112568, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: slideSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9046309251851112568, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: screenLimit
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 9046309251851112568, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: regularSpeed
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

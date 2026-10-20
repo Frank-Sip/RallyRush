@@ -10,7 +10,6 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float screenLimit = 2f;
 
     private Vector3 clickScreenPosition;
-    private Vector3 clickPlayerPosition;
     private CrowdSystem crowdSystem;
     private Transform runningTarget;
     private Transform combatTarget;
@@ -123,7 +122,6 @@ public class MovementController : MonoBehaviour
     public void SetInputStartPosition()
     {
         clickScreenPosition = Input.mousePosition;
-        clickPlayerPosition = transform.position;
     }
 
     private void LateralMovement()
@@ -134,15 +132,30 @@ public class MovementController : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            float xScreenDifference = Input.mousePosition.x - clickScreenPosition.x;
+            Vector3 currentScreenPosition = Input.mousePosition;
+            float xScreenDifference = currentScreenPosition.x - clickScreenPosition.x;
+            clickScreenPosition = currentScreenPosition;
 
             xScreenDifference /= Screen.width;
-            xScreenDifference *= slideSpeed;
 
             Vector3 newPosition = transform.position;
+            float lateralMovement = xScreenDifference * slideSpeed;
+            Vector2 crowdBounds = crowdSystem.GetCrowdHorizontalBounds();
+            float leftLimit = -screenLimit / 2f;
+            float rightLimit = screenLimit / 2f;
 
-            float targetX = clickPlayerPosition.x + xScreenDifference;
-            newPosition.x = Mathf.Clamp(targetX, -screenLimit / 2 + crowdSystem.GetCrowdRadius(), screenLimit / 2 - crowdSystem.GetCrowdRadius());
+            if (lateralMovement > 0f)
+            {
+                float availableMovement = Mathf.Max(0f, rightLimit - crowdBounds.y);
+                lateralMovement = Mathf.Min(lateralMovement, availableMovement);
+            }
+            else if (lateralMovement < 0f)
+            {
+                float availableMovement = Mathf.Min(0f, leftLimit - crowdBounds.x);
+                lateralMovement = Mathf.Max(lateralMovement, availableMovement);
+            }
+
+            newPosition.x += lateralMovement;
 
             transform.position = newPosition;
         }

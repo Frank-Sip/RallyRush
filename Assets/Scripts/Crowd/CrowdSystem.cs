@@ -146,18 +146,20 @@ public class CrowdSystem : MonoBehaviour
         return new Vector3(x, 0f, z);
     }
 
-    public float GetCrowdRadius()
+    public Vector2 GetCrowdHorizontalBounds()
     {
-        float farthestDistanceSqr = 0f;
+        float firstFormationPositionX = transform.TransformPoint(CalculateRunnerPosition(0)).x;
+        float leftmostFormationX = firstFormationPositionX;
+        float rightmostFormationX = firstFormationPositionX;
 
-        for (int i = 0; i < runners.Count; i++)
+        for (int i = 1; i < runners.Count; i++)
         {
-            Vector3 distanceFromCenter = runners[i].transform.position - transform.position;
-            distanceFromCenter.y = 0f;
-            farthestDistanceSqr = Mathf.Max(farthestDistanceSqr, distanceFromCenter.sqrMagnitude);
+            float formationPositionX = transform.TransformPoint(CalculateRunnerPosition(i)).x;
+            leftmostFormationX = Mathf.Min(leftmostFormationX, formationPositionX);
+            rightmostFormationX = Mathf.Max(rightmostFormationX, formationPositionX);
         }
 
-        return Mathf.Sqrt(farthestDistanceSqr);
+        return new Vector2(leftmostFormationX, rightmostFormationX);
     }
 
     public IReadOnlyList<Runner> GetRunners()
