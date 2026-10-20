@@ -813,6 +813,8 @@ MonoBehaviour:
   rightBridge: {fileID: 7029888966324880672}
   gravityPoint: {fileID: 6036891316854860416}
   detectionBoxSize: {x: 3.3, y: 1, z: 3}
+  buttonSfxIndex: 8
+  bridgeAnimationSfxIndex: 9
 --- !u!1001 &6215589429994543602
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,8 +6,12 @@ public class Ramp : MonoBehaviour
     [Min(0f)] [SerializeField] private float jumpForce = 7f;
     [SerializeField] private Vector3 detectionBoxSize = new Vector3(4f, 2f, 1f);
 
+    [Header("Audio")]
+    [Min(0)] [SerializeField] private int jumpSfxIndex;
+
     private readonly HashSet<Runner> runnersInside = new HashSet<Runner>();
     private CrowdSystem crowdSystem;
+    private bool jumpSfxPlayed;
 
     private void Start()
     {
@@ -34,6 +38,13 @@ public class Ramp : MonoBehaviour
             if (isInside && runnersInside.Add(runner))
             {
                 runner.Jump(jumpForce);
+
+                if (!jumpSfxPlayed)
+                {
+                    jumpSfxPlayed = true;
+                    ServiceProvider.GetService<AudioManager>().PlaySFX(jumpSfxIndex);
+                }
+
                 Debug.Log("Detection");
             }
             else if (!isInside)

@@ -9012,6 +9012,7 @@ MonoBehaviour:
   deathEffectEmitter: {fileID: 1235136839467647699}
   fallingTransform: {fileID: 8883658319345220789}
   fallDistancePerHit: 1.5
+  deathSfxIndex: 3
 --- !u!114 &1235136839467647699
 MonoBehaviour:
   m_ObjectHideFlags: 0

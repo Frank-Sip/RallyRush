@@ -1279,6 +1279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ramp
   jumpForce: 10
   detectionBoxSize: {x: 5, y: 15, z: 1}
+  jumpSfxIndex: 7
 --- !u!114 &3917668033044533815
 MonoBehaviour:
   m_ObjectHideFlags: 0

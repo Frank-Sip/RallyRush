@@ -8,6 +8,10 @@ public class BridgeButton : MonoBehaviour
     [SerializeField] private GameObject gravityPoint;
     [SerializeField] private Vector3 detectionBoxSize = new Vector3(4f, 2f, 1f);
 
+    [Header("Audio")]
+    [Min(0)] [SerializeField] private int buttonSfxIndex;
+    [Min(0)] [SerializeField] private int bridgeAnimationSfxIndex;
+
     private CrowdSystem crowdSystem;
     private bool crowdDetected;
 
@@ -40,8 +44,11 @@ public class BridgeButton : MonoBehaviour
             if (isInside)
             {
                 crowdDetected = true;
+                AudioManager audioManager = ServiceProvider.GetService<AudioManager>();
+                audioManager.PlaySFX(buttonSfxIndex);
                 leftBridge.SetTrigger("Rotate");
                 rightBridge.SetTrigger("Rotate");
+                audioManager.PlaySFX(bridgeAnimationSfxIndex);
                 gravityPoint.SetActive(false);
                 return;
             }
