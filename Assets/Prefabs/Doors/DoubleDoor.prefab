@@ -723,13 +723,13 @@ MonoBehaviour:
   - renderer: {fileID: 8502550867106919661}
     text: {fileID: 8220407774887408378}
     bonusType: 0
-    value: 25
   - renderer: {fileID: 9024589082386611850}
     text: {fileID: 3305931523310699758}
     bonusType: 1
-    value: 25
   doorSettings: {fileID: 11400000, guid: 21b6d022d2fa22a4babf8349bcc4f621, type: 2}
   collisionDistance: 0.15
+  bonusSfxIndex: 5
+  penaltySfxIndex: 6
 --- !u!1 &7634602681880076020
 GameObject:
   m_ObjectHideFlags: 0

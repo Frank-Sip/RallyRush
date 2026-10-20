@@ -55,6 +55,10 @@ public class Door : MonoBehaviour
     [Min(0f)]
     [SerializeField] private float collisionDistance = 0.15f;
 
+    [Header("Audio")]
+    [Min(0)] [SerializeField] private int bonusSfxIndex;
+    [Min(0)] [SerializeField] private int penaltySfxIndex;
+
     private CrowdSystem crowdSystem;
     private bool wasUsed;
 
@@ -151,8 +155,30 @@ public class Door : MonoBehaviour
         if (selectedOption == null) return;
 
         SetRunnerAmount(selectedOption.BonusType, selectedOption.Value);
+        PlayDoorSfx(selectedOption.BonusType);
         wasUsed = true;
         selectedOption.Hide();
+    }
+
+    private void PlayDoorSfx(BonusType bonusType)
+    {
+        int sfxIndex;
+
+        switch (bonusType)
+        {
+            case BonusType.Addition:
+            case BonusType.Multiplication:
+                sfxIndex = bonusSfxIndex;
+                break;
+            case BonusType.Subtraction:
+            case BonusType.Division:
+                sfxIndex = penaltySfxIndex;
+                break;
+            default:
+                throw new System.ArgumentOutOfRangeException(nameof(bonusType), bonusType, null);
+        }
+
+        ServiceProvider.GetService<AudioManager>().PlaySFX(sfxIndex);
     }
 
     private void SetRunnerAmount(BonusType bonusType, int configuredValue)
