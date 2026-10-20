@@ -21,6 +21,9 @@ public class Runner : MonoBehaviour
     [Header("Death Effect")]
     [SerializeField] private DeathEffectEmitter deathEffectEmitter;
 
+    [Header("Audio")]
+    [Min(0)] [SerializeField] private int deathSfxIndex;
+
     private Vector3 targetLocalPosition;
     private Vector3 pyramidTargetWorldPosition;
     private Vector3 pyramidForward;
@@ -330,6 +333,7 @@ public class Runner : MonoBehaviour
         }
 
         deathEffectEmitter.Play();
+        ServiceProvider.GetService<AudioManager>().PlaySFX(deathSfxIndex);
         Destroy(gameObject);
         return true;
     }

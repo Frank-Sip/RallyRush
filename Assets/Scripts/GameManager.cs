@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioContainer audioContainer;
     [SerializeField] private AudioSource loopingSfxSource;
     [SerializeField] private AudioSource sfxSource;
+    [Min(0)] [SerializeField] private int victorySfxIndex;
+    [Min(0)] [SerializeField] private int gameOverSfxIndex;
 
     [Header("End Status UI")]
     [SerializeField] private GameObject victoryUI;
@@ -154,6 +156,7 @@ public class GameManager : MonoBehaviour
     public void EnterVictoryStatus()
     {
         crowdSystem.StopBehaviourSFX();
+        audioManager.PlaySFX(victorySfxIndex);
         victoryUI.SetActive(true);
         crowdCount.gameObject.SetActive(false);
         crowdSystem.SetVictoryAnimation();
@@ -162,6 +165,7 @@ public class GameManager : MonoBehaviour
     private void EnterGameOverStatus()
     {
         crowdSystem.StopBehaviourSFX();
+        audioManager.PlaySFX(gameOverSfxIndex);
         gameOverUI.SetActive(true);
 
         var enemies = Enemy.ActiveEnemies;

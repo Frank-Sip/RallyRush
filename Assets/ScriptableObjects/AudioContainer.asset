@@ -17,3 +17,7 @@ MonoBehaviour:
   sfxClips:
   - clip: {fileID: 8300000, guid: ddc8ec5f85ce9324f88a12482d49be6b, type: 3}
     cooldown: 0
+  - clip: {fileID: 8300000, guid: d089532624ede3943ae63bd7ab1e948f, type: 3}
+    cooldown: 0.1
+  - clip: {fileID: 8300000, guid: b937a9faf7058b745a179ce95fae35d6, type: 3}
+    cooldown: 0
