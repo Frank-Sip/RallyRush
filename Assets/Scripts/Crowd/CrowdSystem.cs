@@ -16,6 +16,7 @@ public class CrowdSystem : MonoBehaviour
     [SerializeField] private float radius = 1f;
     [SerializeField] private float angle = 1f;
     [Min(0)] [SerializeField] private float combatExitStaggerDuration = 0.5f;
+    [Min(0)] [SerializeField] private float deathRepositionBatchDelay = 0.1f;
     [Min(0)] [SerializeField] private float deathRepositionDelay = 0.25f;
     [Min(1)] [SerializeField] private int maxRunners = 999;
 
@@ -222,7 +223,7 @@ public class CrowdSystem : MonoBehaviour
 
     private IEnumerator WaitForDeathReposition()
     {
-        yield return new WaitForSeconds(deathRepositionDelay);
+        yield return new WaitForSeconds(deathRepositionBatchDelay);
         deathRepositionCoroutine = null;
 
         if (Behaviour == RunnerBehaviour.Running)
@@ -234,19 +235,45 @@ public class CrowdSystem : MonoBehaviour
     private void RepositionAfterRunnerDeaths()
     {
         List<Runner> availableRunners = new List<Runner>(runners);
+        float leftExtent = 0f;
+        float rightExtent = 0f;
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            float runnerX = runners[i].transform.localPosition.x;
+            leftExtent = Mathf.Min(leftExtent, runnerX);
+            rightExtent = Mathf.Max(rightExtent, runnerX);
+        }
 
         for (int formationIndex = 0; formationIndex < runners.Count; formationIndex++)
         {
             Vector3 targetPosition = CalculateRunnerPosition(formationIndex);
             int closestRunnerIndex = FindClosestRunnerIndex(availableRunners, targetPosition);
             Runner closestRunner = availableRunners[closestRunnerIndex];
+            float repositionDelay = CalculateDeathRepositionDelay(
+                closestRunner.transform.localPosition.x,
+                leftExtent,
+                rightExtent);
 
-            closestRunner.SetDeathRepositionTargetPosition(targetPosition, formationIndex);
+            closestRunner.SetDeathRepositionTargetPosition(targetPosition, formationIndex, repositionDelay);
             availableRunners.RemoveAt(closestRunnerIndex);
         }
 
         runners.Sort((firstRunner, secondRunner) =>
             firstRunner.FormationIndex.CompareTo(secondRunner.FormationIndex));
+    }
+
+    private float CalculateDeathRepositionDelay(float runnerX, float leftExtent, float rightExtent)
+    {
+        float sideExtent = runnerX < 0f ? Mathf.Abs(leftExtent) : rightExtent;
+
+        if (sideExtent == 0f)
+        {
+            return deathRepositionDelay;
+        }
+
+        float normalizedLateralDistance = Mathf.Abs(runnerX) / sideExtent;
+        return Mathf.Lerp(deathRepositionDelay, 0f, normalizedLateralDistance);
     }
 
     public void EnterCombat(Transform combatTarget)

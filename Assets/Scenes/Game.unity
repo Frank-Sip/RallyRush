@@ -1417,7 +1417,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6906829037168895027, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: deathRepositionDelay
-      value: 0.2
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906829037168895027, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: deathRepositionBatchDelay
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: deathSfxIndex
@@ -1437,7 +1441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9046309251851112568, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: screenLimit
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 9046309251851112568, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: regularSpeed

@@ -244,10 +244,10 @@ public class Runner : MonoBehaviour
         SetTargetPosition(position, combatExitRepositionSpeed, delay);
     }
 
-    public void SetDeathRepositionTargetPosition(Vector3 position, int formationIndex)
+    public void SetDeathRepositionTargetPosition(Vector3 position, int formationIndex, float delay)
     {
         FormationIndex = formationIndex;
-        SetTargetPosition(position, deathRepositionSpeed, 0f);
+        SetTargetPosition(position, deathRepositionSpeed, delay);
     }
 
     public void SetPyramidFormationPosition(Vector3 position)
