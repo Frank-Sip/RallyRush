@@ -20,11 +20,15 @@ public class PyramidFormation : MonoBehaviour
     [Min(1)][SerializeField] private int remainingRunnerDistributionLevels = 2;
     [Min(0f)][SerializeField] private float formationTickInterval = 0.1f;
 
+    [Header("Audio")]
+    [Min(0)] [SerializeField] private int levelCompleteSfxIndex;
+
     private CrowdSystem crowdSystem;
     [SerializeField, HideInInspector] private Transform[] steps;
     private List<FormationAssignment> activeAssignments;
     private float formationTickTimer;
     private int formedLevelCount;
+    private bool[] completedLevelSfxPlayed;
     private bool buildingFormation;
     private bool checkingTargetCompletion;
     private bool firstLevelEventSent;
@@ -156,6 +160,7 @@ public class PyramidFormation : MonoBehaviour
         LastLevelRunner = activeAssignments[0].Runner;
         crowdSystem.EnterPyramid();
         formedLevelCount = 0;
+        completedLevelSfxPlayed = new bool[Levels];
         firstLevelEventSent = false;
         checkingTargetCompletion = false;
         buildingFormation = true;
@@ -286,6 +291,8 @@ public class PyramidFormation : MonoBehaviour
             }
         }
 
+        PlayCompletedLevelSfx();
+
         if (!firstLevelEventSent && firstLevelCompleted)
         {
             firstLevelEventSent = true;
@@ -297,6 +304,38 @@ public class PyramidFormation : MonoBehaviour
             LastLevelComplete?.Invoke(activeAssignments[0].Runner);
             checkingTargetCompletion = false;
             GameManager.Instance.SetVictoryStatus();
+        }
+    }
+
+    private void PlayCompletedLevelSfx()
+    {
+        for (int level = 0; level < Levels; level++)
+        {
+            if (completedLevelSfxPlayed[level])
+            {
+                continue;
+            }
+
+            bool levelCompleted = true;
+
+            for (int i = 0; i < activeAssignments.Count; i++)
+            {
+                FormationAssignment assignment = activeAssignments[i];
+
+                if (assignment.Level == level && !assignment.Runner.PyramidTargetReached)
+                {
+                    levelCompleted = false;
+                    break;
+                }
+            }
+
+            if (!levelCompleted)
+            {
+                continue;
+            }
+
+            completedLevelSfxPlayed[level] = true;
+            ServiceProvider.GetService<AudioManager>().PlaySFX(levelCompleteSfxIndex);
         }
     }
 }

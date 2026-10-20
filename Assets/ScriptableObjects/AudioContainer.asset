@@ -35,3 +35,7 @@ MonoBehaviour:
     cooldown: 1
   - clip: {fileID: 8300000, guid: 3161d99b666dd1c4ba0975a84243fc80, type: 3}
     cooldown: 0
+  - clip: {fileID: 8300000, guid: f03004ed8a1d9504e980bf8894643063, type: 3}
+    cooldown: 0
+  - clip: {fileID: 8300000, guid: 87e6302c87863db4e88ce62df8dc9618, type: 3}
+    cooldown: 0

@@ -5,6 +5,9 @@ public class Chest : MonoBehaviour
 {
     [SerializeField] private Vector3 detectionBoxSize = new Vector3(4f, 2f, 1f);
 
+    [Header("Audio")]
+    [Min(0)] [SerializeField] private int openSfxIndex;
+
     private CrowdSystem crowdSystem;
     private Animator animator;
     private bool runnerDetected;
@@ -45,6 +48,7 @@ public class Chest : MonoBehaviour
             if (isInside)
             {
                 runnerDetected = true;
+                ServiceProvider.GetService<AudioManager>().PlaySFX(openSfxIndex);
                 animator.SetTrigger("Open");
                 return;
             }
