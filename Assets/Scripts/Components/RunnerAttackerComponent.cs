@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -9,13 +10,24 @@ public class RunnerAttackerComponent : MonoBehaviour
     [SerializeField] private Vector3 runnerAttackBoxSize = new Vector3(4f, 2f, 4f);
 
     private bool isAttacking = true;
+    private bool hitRegisteredDuringAttack;
     private Enemy enemy;
     private CrowdSystem crowdSystem;
+
+    public event Action OnRunnerHit;
 
     public bool IsAttacking
     {
         get => isAttacking;
-        set => isAttacking = value;
+        set
+        {
+            isAttacking = value;
+
+            if (isAttacking)
+            {
+                hitRegisteredDuringAttack = false;
+            }
+        }
     }
 
     private void Awake()
@@ -41,6 +53,7 @@ public class RunnerAttackerComponent : MonoBehaviour
         IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
         Vector3 halfBoxSize = runnerAttackBoxSize * 0.5f;
         Quaternion worldToAttackRotation = Quaternion.Inverse(attackPoint.rotation);
+        bool runnerWasHit = false;
 
         for (int i = runners.Count - 1; i >= 0; i--)
         {
@@ -48,8 +61,14 @@ public class RunnerAttackerComponent : MonoBehaviour
 
             if (Mathf.Abs(runnerPosition.x) <= halfBoxSize.x && Mathf.Abs(runnerPosition.y) <= halfBoxSize.y && Mathf.Abs(runnerPosition.z) <= halfBoxSize.z)
             {
-                runners[i].Die();
+                runnerWasHit |= runners[i].Die();
             }
+        }
+
+        if (runnerWasHit && !hitRegisteredDuringAttack)
+        {
+            hitRegisteredDuringAttack = true;
+            OnRunnerHit?.Invoke();
         }
     }
 

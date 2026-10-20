@@ -1344,6 +1344,10 @@ PrefabInstance:
       propertyPath: pyramidSfxIndex
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6906829037168895027, guid: e8991802c69eb974fa817ec502175a02, type: 3}
+      propertyPath: deathRepositionDelay
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7628926698925649877, guid: e8991802c69eb974fa817ec502175a02, type: 3}
       propertyPath: deathSfxIndex
       value: 1
@@ -1589,6 +1593,14 @@ PrefabInstance:
       propertyPath: gameOverUI
       value: 
       objectReference: {fileID: 926751692}
+    - target: {fileID: 4529712609633854513, guid: 6350bdafe383081468a87cdbca6358ec, type: 3}
+      propertyPath: victorySfxIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4529712609633854513, guid: 6350bdafe383081468a87cdbca6358ec, type: 3}
+      propertyPath: gameOverSfxIndex
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6102181528261129874, guid: 6350bdafe383081468a87cdbca6358ec, type: 3}
       propertyPath: m_Name
       value: GameManager

@@ -6,6 +6,9 @@ public class BossEnemy : BigEnemyReposition
 {
     [Min(0.01f)] [SerializeField] private float rotationSpeed = 180f;
 
+    [Header("Audio")]
+    [Min(0)] [SerializeField] private int attackHitSfxIndex;
+
     private RunnerAttackerComponent runnerAttackerComponent;
 
     protected override void Awake()
@@ -13,6 +16,7 @@ public class BossEnemy : BigEnemyReposition
         base.Awake();
         ServiceProvider.RegisterService(this);
         runnerAttackerComponent = GetComponent<RunnerAttackerComponent>();
+        runnerAttackerComponent.OnRunnerHit += PlayAttackHitSfx;
     }
     
     protected override void Start()
@@ -46,6 +50,11 @@ public class BossEnemy : BigEnemyReposition
     {
         runnerAttackerComponent.IsAttacking = false;
         RotateTowardsMostRunners();
+    }
+
+    private void PlayAttackHitSfx()
+    {
+        ServiceProvider.GetService<AudioManager>().PlaySFX(attackHitSfxIndex);
     }
     
     

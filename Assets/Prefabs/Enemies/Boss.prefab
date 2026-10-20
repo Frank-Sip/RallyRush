@@ -332,6 +332,7 @@ MonoBehaviour:
   damageTakenPerHit: 1
   deathEffectEmitter: {fileID: 3653343709651781082}
   rotationSpeed: 180
+  attackHitSfxIndex: 4
 --- !u!114 &1819796244591298770
 MonoBehaviour:
   m_ObjectHideFlags: 0
