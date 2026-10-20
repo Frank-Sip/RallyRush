@@ -29,10 +29,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject victoryUI;
     [SerializeField] private GameObject gameOverUI;
 
+    [Header("Gameplay UI")]
+    [SerializeField] private GameObject runProgressUI;
+
     private MovementController movementController;
     private CrowdSystem crowdSystem;
     private CrowdCount crowdCount;
     private Roulette roulette;
+    private RunProgress runProgress;
     private AudioManager audioManager;
 
     public GameStatus currentStatus { get; private set; }
@@ -135,6 +139,7 @@ public class GameManager : MonoBehaviour
 
     private void SetMenuStatus()
     {
+        runProgressUI.SetActive(false);
         crowdSystem.StopBehaviourSFX();
         movementController.SetSpeed(0f);
     }
@@ -142,6 +147,9 @@ public class GameManager : MonoBehaviour
     private void SetGameplayStatus()
     {
         Time.timeScale = 1f;
+        runProgressUI.SetActive(true);
+        runProgress = ServiceProvider.GetService<RunProgress>();
+        runProgress.CustomStart();
         movementController.SetInputStartPosition();
         movementController.RestoreRegularSpeed();
         crowdSystem.PlayBehaviourSFX();
@@ -155,6 +163,7 @@ public class GameManager : MonoBehaviour
 
     public void EnterVictoryStatus()
     {
+        runProgressUI.SetActive(false);
         crowdSystem.StopBehaviourSFX();
         audioManager.PlaySFX(victorySfxIndex);
         victoryUI.SetActive(true);
@@ -164,6 +173,7 @@ public class GameManager : MonoBehaviour
 
     private void EnterGameOverStatus()
     {
+        runProgressUI.SetActive(false);
         crowdSystem.StopBehaviourSFX();
         audioManager.PlaySFX(gameOverSfxIndex);
         gameOverUI.SetActive(true);
@@ -178,11 +188,13 @@ public class GameManager : MonoBehaviour
 
     private void SetPauseStatus()
     {
+        runProgressUI.SetActive(false);
         crowdSystem.StopBehaviourSFX();
     }
 
     private void SetRoulleteStatus()
     {
+        runProgressUI.SetActive(false);
         crowdSystem.StopBehaviourSFX();
         Time.timeScale = 0f;
         movementController.SetSpeed(0f);
@@ -211,6 +223,7 @@ public class GameManager : MonoBehaviour
     private void UpdateGameplayStatus()
     {
         movementController.CustomUpdate();
+        runProgress.CustomUpdate();
     }
 
     private void UpdatePauseStatus()
