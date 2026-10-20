@@ -43,25 +43,24 @@ public class Runner : MonoBehaviour
     public bool PyramidTargetReached => pyramidTargetReached;
     public bool HasCombatEnemyTarget => combatEnemyTarget != null;
 
-    private void Awake()
+    public void CustomAwake(CrowdSystem owner)
     {
+        crowdSystem = owner;
         animator = GetComponent<Animator>();
         targetLocalPosition = transform.localPosition;
         currentAttackSpeed = normalEnemyAttackSpeed;
         currentRepositionSpeed = doorRepositionSpeed;
     }
 
-    private void Start()
+    public void CustomStart()
     {
-        crowdSystem = ServiceProvider.GetService<CrowdSystem>();
-
         if (GameManager.Instance.currentStatus == GameStatus.Gameplay)
         {
             SetAnimTrigger("Run");
         }
     }
 
-    private void Update()
+    public void CustomUpdate()
     {
         switch (crowdSystem.Behaviour)
         {
@@ -157,7 +156,7 @@ public class Runner : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    public void CustomLateUpdate()
     {
         if (crowdSystem.Behaviour == RunnerBehaviour.Pyramid && pyramidAdvanceEnabled)
         {
@@ -192,7 +191,7 @@ public class Runner : MonoBehaviour
         }
 
     }
-
+    
     public void SetDoorTargetPosition(Vector3 position, int formationIndex)
     {
         FormationIndex = formationIndex;
@@ -256,10 +255,7 @@ public class Runner : MonoBehaviour
 
         Vector3 centerPosition = pyramidCenter.position;
         centerPosition.y = transform.position.y;
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            centerPosition,
-            pyramidCenteringSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, centerPosition, pyramidCenteringSpeed * Time.deltaTime);
 
         pyramidCenteringEnabled = transform.position != centerPosition;
     }
@@ -275,9 +271,7 @@ public class Runner : MonoBehaviour
 
     private void StopAtPyramidTarget()
     {
-        float distanceToTarget = Vector3.Dot(
-            pyramidTargetWorldPosition - transform.position,
-            pyramidForward);
+        float distanceToTarget = Vector3.Dot(pyramidTargetWorldPosition - transform.position, pyramidForward);
 
         if (!pyramidTargetReached && distanceToTarget > 0f)
         {

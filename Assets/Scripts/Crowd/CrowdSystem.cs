@@ -24,6 +24,7 @@ public class CrowdSystem : MonoBehaviour
     private MovementController movementController;
     private CrowdCount crowdCount;
     private Coroutine deathRepositionCoroutine;
+    private bool hasStarted;
 
     public RunnerBehaviour Behaviour { get; private set; } = RunnerBehaviour.Running;
     public Transform CombatTarget { get; private set; }
@@ -54,7 +55,42 @@ public class CrowdSystem : MonoBehaviour
 
         for (int i = 0; i < runners.Count; i++)
         {
+            runners[i].CustomAwake(this);
             runners[i].SetFormationIndex(i);
+        }
+    }
+
+    private void Start()
+    {
+        hasStarted = true;
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runners[i].CustomStart();
+        }
+    }
+
+    private void Update()
+    {
+        int runnerIndex = 0;
+
+        while (runnerIndex < runners.Count)
+        {
+            Runner runner = runners[runnerIndex];
+            runner.CustomUpdate();
+
+            if (runnerIndex < runners.Count && runners[runnerIndex] == runner)
+            {
+                runnerIndex++;
+            }
+        }
+    }
+
+    private void LateUpdate()
+    {
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runners[i].CustomLateUpdate();
         }
     }
 
@@ -423,9 +459,20 @@ public class CrowdSystem : MonoBehaviour
             Runner newRunner = Instantiate(runnerTemplate, runnersParent);
             newRunner.name = runnerTemplate.name;
             newRunner.transform.localRotation = runnerTemplate.transform.localRotation;
+            RegisterRunner(newRunner);
             newRunner.SetDoorTargetPosition(CalculateRunnerPosition(formationIndex), formationIndex);
-            runners.Add(newRunner);
             occupiedFormationIndices.Add(formationIndex);
+        }
+    }
+
+    private void RegisterRunner(Runner runner)
+    {
+        runners.Add(runner);
+        runner.CustomAwake(this);
+
+        if (hasStarted)
+        {
+            runner.CustomStart();
         }
     }
 
