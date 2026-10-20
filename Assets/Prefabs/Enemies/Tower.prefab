@@ -8877,15 +8877,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.142653
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000000777618
+      value: 0.0000005785405
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 70.6
+      value: 28.64
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8969906977ddcc04cb3b170a909cb235, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8979,7 +8979,7 @@ MonoBehaviour:
   - {fileID: 7811254600857428711}
   - {fileID: 3957633784270459809}
   - {fileID: 7666627659369310564}
-  projectileSpeed: 10
+  projectileSpeed: 15
   projectileRotationSpeed: 720
 --- !u!114 &3577225468646191772
 MonoBehaviour:
