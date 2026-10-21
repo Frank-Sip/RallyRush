@@ -18,3 +18,7 @@ MonoBehaviour:
   finalChestReward: 200
   firstStepMultiplier: 1
   finalStepMultiplier: 4
+  initialStartingRunners: 1
+  maxStartingRunners: 100
+  firstRunnerUpgradePrice: 100
+  finalRunnerUpgradePrice: 100000

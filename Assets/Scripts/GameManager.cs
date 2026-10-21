@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public enum GameStatus
 {
@@ -25,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioSource sfxSource;
     [Min(0)] [SerializeField] private int victorySfxIndex;
     [Min(0)] [SerializeField] private int gameOverSfxIndex;
+    [Min(0)] [SerializeField] private int runnerUpgradeSfxIndex;
 
     [Header("Coins")]
     [SerializeField] private CoinSO coinSettings;
@@ -32,6 +36,9 @@ public class GameManager : MonoBehaviour
     [Header("Menu UI")]
     [SerializeField] private GameObject menuUI;
     [SerializeField] private TextMeshProUGUI menuCoinsText;
+    [SerializeField] private Button UpgradeButton;
+    [SerializeField] private TextMeshProUGUI upgradePriceText;
+    [SerializeField] private Image CoinUpgrade;
 
     [Header("End Status UI")]
     [SerializeField] private GameObject victoryUI;
@@ -80,6 +87,9 @@ public class GameManager : MonoBehaviour
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
         crowdCount = ServiceProvider.GetService<CrowdCount>();
         roulette = ServiceProvider.GetService<Roulette>();
+        crowdSystem.SetStartingRunnersAmount(coinManager.StartingRunners);
+        UpgradeButton.onClick.AddListener(BuyStartingRunner);
+        UpdateUpgradeButton();
         SetGameStatus(initialStatus);
         victoryUI.SetActive(false);
         gameOverUI.SetActive(false);
@@ -221,11 +231,56 @@ public class GameManager : MonoBehaviour
 
     private void UpdateMenuStatus()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !IsPointerOverUpgradeButton())
         {
             StartRangedAttackTimers();
             SetGameStatus(GameStatus.Gameplay);
         }
+    }
+
+    private bool IsPointerOverUpgradeButton()
+    {
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, raycastResults);
+
+        for (int i = 0; i < raycastResults.Count; i++)
+        {
+            Transform hitTransform = raycastResults[i].gameObject.transform;
+
+            if (hitTransform == UpgradeButton.transform || hitTransform.IsChildOf(UpgradeButton.transform))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void BuyStartingRunner()
+    {
+        if (!coinManager.TryBuyStartingRunner())
+        {
+            return;
+        }
+
+        audioManager.PlaySFX(runnerUpgradeSfxIndex);
+        crowdSystem.SetStartingRunnersAmount(coinManager.StartingRunners);
+        UpdateUpgradeButton();
+    }
+
+    private void UpdateUpgradeButton()
+    {
+        bool reachedMaximum = coinManager.StartingRunners >= coinManager.MaxStartingRunners;
+        UpgradeButton.interactable = !reachedMaximum;
+        CoinUpgrade.gameObject.SetActive(!reachedMaximum);
+        upgradePriceText.text = reachedMaximum
+            ? "MAX"
+            : coinManager.GetStartingRunnerUpgradePrice().ToString();
     }
 
     private void StartRangedAttackTimers()

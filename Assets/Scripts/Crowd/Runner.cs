@@ -4,6 +4,7 @@ using UnityEngine.Serialization;
 public class Runner : MonoBehaviour
 {
     [Header("Reposition Settings")]
+    [SerializeField] private float menuRepositionSpeed = 12f;
     [SerializeField] private float doorRepositionSpeed = 20f;
     [SerializeField] private float combatEnterRepositionSpeed = 5f;
     [SerializeField] private float combatExitRepositionSpeed = 5f;
@@ -216,6 +217,12 @@ public class Runner : MonoBehaviour
     {
         FormationIndex = formationIndex;
         SetTargetPosition(position, doorRepositionSpeed, 0f);
+    }
+
+    public void SetMenuTargetPosition(Vector3 position, int formationIndex)
+    {
+        FormationIndex = formationIndex;
+        SetTargetPosition(position, menuRepositionSpeed, 0f);
     }
 
     public void SetCombatEnterTargetPosition(Vector3 position)

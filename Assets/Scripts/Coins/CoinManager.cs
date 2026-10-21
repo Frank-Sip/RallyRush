@@ -4,11 +4,14 @@ using UnityEngine;
 public class CoinManager
 {
     private const string CoinsPlayerPrefsKey = "Coins";
+    private const string StartingRunnersPlayerPrefsKey = "StartingRunners";
 
     private readonly CoinSO coinSettings;
 
     public int Coins { get; private set; }
     public int EarnedCoins { get; private set; }
+    public int StartingRunners { get; private set; }
+    public int MaxStartingRunners => coinSettings.MaxStartingRunners;
 
     public event Action<int> CoinsChanged;
     public event Action<int> EarnedCoinsChanged;
@@ -17,6 +20,7 @@ public class CoinManager
     {
         coinSettings = settings;
         LoadCoins();
+        LoadStartingRunners();
     }
 
     public void AddCoins(int amount)
@@ -66,6 +70,45 @@ public class CoinManager
         AddCoins(coinSettings.FinalChestReward);
     }
 
+    public bool TryBuyStartingRunner()
+    {
+        if (StartingRunners >= coinSettings.MaxStartingRunners)
+        {
+            return false;
+        }
+
+        if (!TrySpendCoins(GetStartingRunnerUpgradePrice()))
+        {
+            return false;
+        }
+
+        StartingRunners++;
+        SaveStartingRunners();
+        return true;
+    }
+
+    public int GetStartingRunnerUpgradePrice()
+    {
+        if (StartingRunners >= coinSettings.MaxStartingRunners)
+        {
+            return 0;
+        }
+
+        int upgradeAmount = coinSettings.MaxStartingRunners - coinSettings.InitialStartingRunners;
+        int upgradeIndex = StartingRunners - coinSettings.InitialStartingRunners;
+
+        if (upgradeIndex == upgradeAmount - 1)
+        {
+            return coinSettings.FinalRunnerUpgradePrice;
+        }
+
+        float progress = upgradeIndex / (float)(upgradeAmount - 1);
+        float priceMultiplier = coinSettings.FinalRunnerUpgradePrice /
+                                (float)coinSettings.FirstRunnerUpgradePrice;
+        float rawPrice = coinSettings.FirstRunnerUpgradePrice * Mathf.Pow(priceMultiplier, progress);
+        return Mathf.CeilToInt(rawPrice / 10f) * 10;
+    }
+
     public int CalculatePyramidReward(int stepIndex, int stepAmount)
     {
         float multiplier = GetPyramidMultiplier(stepIndex, stepAmount);
@@ -110,9 +153,23 @@ public class CoinManager
         Coins = PlayerPrefs.GetInt(CoinsPlayerPrefsKey, coinSettings.InitialCoins);
     }
 
+    private void LoadStartingRunners()
+    {
+        StartingRunners = Mathf.Clamp(
+            PlayerPrefs.GetInt(StartingRunnersPlayerPrefsKey, coinSettings.InitialStartingRunners),
+            coinSettings.InitialStartingRunners,
+            coinSettings.MaxStartingRunners);
+    }
+
     private void SaveCoins()
     {
         PlayerPrefs.SetInt(CoinsPlayerPrefsKey, Coins);
+        PlayerPrefs.Save();
+    }
+
+    private void SaveStartingRunners()
+    {
+        PlayerPrefs.SetInt(StartingRunnersPlayerPrefsKey, StartingRunners);
         PlayerPrefs.Save();
     }
 }

@@ -466,7 +466,7 @@ MonoBehaviour:
   regularSpeed: 10
   combatSpeed: 2
   speedChangeRate: 10
-  slideSpeed: 17
+  slideSpeed: 20
   screenLimit: 15
 --- !u!114 &6906829037168895027
 MonoBehaviour:
@@ -483,8 +483,11 @@ MonoBehaviour:
   radius: 0.23
   angle: 137.50777
   combatExitStaggerDuration: 0.5
+  deathRepositionBatchDelay: 0.05
   deathRepositionDelay: 0.1
   maxRunners: 999
+  runningSfxIndex: 0
+  pyramidSfxIndex: 0
 --- !u!1001 &7967026028252224042
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -538,12 +541,16 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
+      propertyPath: deathSfxIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: deathEffectEmitter
       value: 
       objectReference: {fileID: 5021014152378052581}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: deathRepositionSpeed
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 526898752120108543, guid: 5b3b0e2f329dfa949b964147dfea4b50, type: 3}
       propertyPath: pyramidCenteringSpeed

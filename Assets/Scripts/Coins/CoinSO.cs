@@ -15,10 +15,20 @@ public class CoinSO : ScriptableObject
     [Min(0f)] [SerializeField] private float firstStepMultiplier = 1f;
     [Min(0f)] [SerializeField] private float finalStepMultiplier = 4f;
 
+    [Header("Starting Runners Upgrade")]
+    [Min(1)] [SerializeField] private int initialStartingRunners = 1;
+    [Min(1)] [SerializeField] private int maxStartingRunners = 100;
+    [Min(1)] [SerializeField] private int firstRunnerUpgradePrice = 100;
+    [Min(1)] [SerializeField] private int finalRunnerUpgradePrice = 100000;
+
     public int InitialCoins => initialCoins;
     public int BossReward => bossReward;
     public int PyramidBaseReward => pyramidBaseReward;
     public int FinalChestReward => finalChestReward;
     public float FirstStepMultiplier => firstStepMultiplier;
     public float FinalStepMultiplier => finalStepMultiplier;
+    public int InitialStartingRunners => initialStartingRunners;
+    public int MaxStartingRunners => maxStartingRunners;
+    public int FirstRunnerUpgradePrice => firstRunnerUpgradePrice;
+    public int FinalRunnerUpgradePrice => finalRunnerUpgradePrice;
 }

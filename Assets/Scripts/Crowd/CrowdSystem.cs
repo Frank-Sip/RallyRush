@@ -495,13 +495,23 @@ public class CrowdSystem : MonoBehaviour
 
     public void SetRunnersAmount(int amount)
     {
+        SetRunnersAmount(amount, false);
+    }
+
+    public void SetStartingRunnersAmount(int amount)
+    {
+        SetRunnersAmount(amount, true);
+    }
+
+    private void SetRunnersAmount(int amount, bool useMenuReposition)
+    {
         runners.Sort((firstRunner, secondRunner) => firstRunner.FormationIndex.CompareTo(secondRunner.FormationIndex));
 
         int targetAmount = Mathf.Clamp(amount, 1, maxRunners);
 
         if (targetAmount > runners.Count)
         {
-            AddRunners(targetAmount);
+            AddRunners(targetAmount, useMenuReposition);
         }
         else if (targetAmount < runners.Count)
         {
@@ -511,7 +521,7 @@ public class CrowdSystem : MonoBehaviour
         RunnersAmountChanged?.Invoke(runners.Count);
     }
 
-    private void AddRunners(int targetAmount)
+    private void AddRunners(int targetAmount, bool useMenuReposition)
     {
         Runner runnerTemplate = runners[0];
         Transform runnersParent = runnerTemplate.transform.parent;
@@ -535,7 +545,16 @@ public class CrowdSystem : MonoBehaviour
             newRunner.name = runnerTemplate.name;
             newRunner.transform.localRotation = runnerTemplate.transform.localRotation;
             RegisterRunner(newRunner);
-            newRunner.SetDoorTargetPosition(CalculateRunnerPosition(formationIndex), formationIndex);
+
+            if (useMenuReposition)
+            {
+                newRunner.SetMenuTargetPosition(CalculateRunnerPosition(formationIndex), formationIndex);
+            }
+            else
+            {
+                newRunner.SetDoorTargetPosition(CalculateRunnerPosition(formationIndex), formationIndex);
+            }
+
             occupiedFormationIndices.Add(formationIndex);
         }
     }
