@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682bcc1721ed18140a91f91aa6e8bb7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 60
+  maxHealth: 150
 --- !u!114 &3715717820204274156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,8 +358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c0cb8d346293f042a3a92587cdbb318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunnerAttackerComponent
+  detectionBoxSize: {x: 5, y: 3, z: 5}
   attackPoint: {fileID: 3041631172244036050}
-  runnerAttackBoxSize: {x: 5, y: 3, z: 5}
 --- !u!114 &3653343709651781082
 MonoBehaviour:
   m_ObjectHideFlags: 0

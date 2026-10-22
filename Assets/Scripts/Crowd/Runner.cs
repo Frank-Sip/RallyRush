@@ -43,7 +43,6 @@ public class Runner : MonoBehaviour
     private bool pyramidAdvanceEnabled;
     private bool pyramidTargetReached;
     private bool gravityEnabled;
-    private bool isDead;
 
     public int FormationIndex { get; private set; }
     public bool PyramidTargetReached => pyramidTargetReached;
@@ -64,6 +63,20 @@ public class Runner : MonoBehaviour
         {
             SetAnimTrigger("Run");
         }
+    }
+
+    public void Spawn(Vector3 position, int formationIndex, bool useMenuReposition)
+    {
+        if (useMenuReposition)
+        {
+            SetMenuTargetPosition(position, formationIndex);
+        }
+        else
+        {
+            SetDoorTargetPosition(position, formationIndex);
+        }
+
+        CustomStart();
     }
 
     public void CustomUpdate()
@@ -344,21 +357,15 @@ public class Runner : MonoBehaviour
 
     public bool Die()
     {
-        if (isDead)
+        if (!crowdSystem.RemoveRunner(this))
         {
             return false;
         }
 
-        isDead = true;
-
-        if (crowdSystem.RemoveRunner(this))
-        {
-            crowdSystem.RestartDeathRepositionTimer();
-        }
-
+        crowdSystem.RestartDeathRepositionTimer();
         deathEffectEmitter.Play();
         ServiceProvider.GetService<AudioManager>().PlaySFX(deathSfxIndex);
-        Destroy(gameObject);
+        crowdSystem.ReturnRunner(this);
         return true;
     }
 }
