@@ -1,25 +1,15 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Chest : MonoBehaviour
+public class Chest : DetectCrowdComponent
 {
-    [SerializeField] private Vector3 detectionBoxSize = new Vector3(4f, 2f, 1f);
-
     [Header("Audio")]
     [Min(0)] [SerializeField] private int openSfxIndex;
 
-    private CrowdSystem crowdSystem;
     private Animator animator;
-    private bool runnerDetected;
 
     private void Awake()
     {
         animator = GetComponentInParent<Animator>();
-    }
-
-    private void Start()
-    {
-        crowdSystem = ServiceProvider.GetService<CrowdSystem>();
     }
 
     private void Update()
@@ -27,38 +17,11 @@ public class Chest : MonoBehaviour
         DetectRunner();
     }
 
-    private void DetectRunner()
+    protected override void DetectionAction(Runner runner)
     {
-        if (runnerDetected)
-        {
-            return;
-        }
-
-        IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
-        Vector3 halfBoxSize = detectionBoxSize * 0.5f;
-
-        for (int i = 0; i < runners.Count; i++)
-        {
-            Vector3 runnerPosition = runners[i].transform.position - transform.position;
-
-            bool isInside = Mathf.Abs(runnerPosition.x) <= halfBoxSize.x
-                && Mathf.Abs(runnerPosition.y) <= halfBoxSize.y
-                && Mathf.Abs(runnerPosition.z) <= halfBoxSize.z;
-
-            if (isInside)
-            {
-                runnerDetected = true;
-                ServiceProvider.GetService<AudioManager>().PlaySFX(openSfxIndex);
-                ServiceProvider.GetService<CoinManager>().AddFinalChestReward();
-                animator.SetTrigger("Open");
-                return;
-            }
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, detectionBoxSize);
+        enabled = false;
+        ServiceProvider.GetService<AudioManager>().PlaySFX(openSfxIndex);
+        ServiceProvider.GetService<CoinManager>().AddFinalChestReward();
+        animator.SetTrigger("Open");
     }
 }
