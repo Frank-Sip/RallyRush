@@ -8,14 +8,14 @@ public class HealthUI : MonoBehaviour
 
     private Transform cameraTransform;
 
-    private void Start()
+    public void CustomAwake()
     {
         cameraTransform = Camera.main.transform;
         healthComponent.OnDamageTaken += UpdateHealthUI;
         UpdateHealthUI();
     }
 
-    private void Update()
+    public void CustomUpdate()
     {
         healthFillImage.transform.LookAt(healthFillImage.transform.position + cameraTransform.forward, cameraTransform.up);
     }

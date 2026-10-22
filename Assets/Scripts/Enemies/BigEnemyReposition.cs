@@ -9,7 +9,6 @@ public class BigEnemyReposition : Enemy
     public override void CustomAwake()
     {
         base.CustomAwake();
-        healthComponent = GetComponent<HealthComponent>();
         healthComponent.OnDeath += Die;
     }
 

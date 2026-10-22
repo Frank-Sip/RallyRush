@@ -12,7 +12,7 @@ public class HealthComponent : MonoBehaviour
     public event Action OnDamageTaken;
     public event Action OnDeath;
 
-    private void Awake()
+    public void CustomAwake()
     {
         currentHealth = maxHealth;
     }

@@ -10,10 +10,14 @@ public class BossEnemy : BigEnemyReposition
     [Min(0)] [SerializeField] private int attackHitSfxIndex;
 
     private RunnerAttackerComponent runnerAttackerComponent;
+    private HealthUI healthUI;
 
     public override void CustomAwake()
     {
         base.CustomAwake();
+        healthComponent.CustomAwake();
+        healthUI = GetComponentInChildren<HealthUI>(true);
+        healthUI.CustomAwake();
         ServiceProvider.RegisterService(this);
         runnerAttackerComponent = GetComponent<RunnerAttackerComponent>();
         runnerAttackerComponent.OnRunnerHit += PlayAttackHitSfx;
@@ -28,6 +32,7 @@ public class BossEnemy : BigEnemyReposition
     public override void CustomUpdate()
     {
         base.CustomUpdate();
+        healthUI.CustomUpdate();
     }
 
     protected override void OnCombatStarted()

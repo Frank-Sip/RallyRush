@@ -10,10 +10,14 @@ public class Tower : BigEnemyReposition
     [Min(0)] [SerializeField] private int deathSfxIndex;
 
     private RangedAttack rangedAttack;
+    private HealthUI healthUI;
 
     public override void CustomAwake()
     {
         base.CustomAwake();
+        healthComponent.CustomAwake();
+        healthUI = GetComponentInChildren<HealthUI>(true);
+        healthUI.CustomAwake();
         rangedAttack = GetComponent<RangedAttack>();
         rangedAttack.CustomAwake();
         healthComponent.OnDamageTaken += HandleDamageTaken;
@@ -22,6 +26,7 @@ public class Tower : BigEnemyReposition
     public override void CustomUpdate()
     {
         base.CustomUpdate();
+        healthUI.CustomUpdate();
         rangedAttack.CustomUpdate();
     }
 
