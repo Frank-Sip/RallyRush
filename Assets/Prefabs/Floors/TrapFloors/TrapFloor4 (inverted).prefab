@@ -203,6 +203,18 @@ PrefabInstance:
       value: -14.492
       objectReference: {fileID: 0}
     - target: {fileID: 6128729913492666155, guid: daefb1613f7667f468e37fb9885ae49d, type: 3}
+      propertyPath: detectionBoxSize.x
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6128729913492666155, guid: daefb1613f7667f468e37fb9885ae49d, type: 3}
+      propertyPath: detectionBoxSize.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6128729913492666155, guid: daefb1613f7667f468e37fb9885ae49d, type: 3}
+      propertyPath: detectionBoxSize.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6128729913492666155, guid: daefb1613f7667f468e37fb9885ae49d, type: 3}
       propertyPath: runnerAttackBoxSize.x
       value: 6.5
       objectReference: {fileID: 0}
@@ -242,7 +254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.91
+      value: 17.15
       objectReference: {fileID: 0}
     - target: {fileID: 6949287236422534066, guid: 41a2b883ff529ef41a37d9420e7e4fa0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -294,6 +306,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 523170703447950115}
     m_Modifications:
+    - target: {fileID: 2008505908130164882, guid: 8f32a8a7fe8ddfc469ea5847c4dd21d2, type: 3}
+      propertyPath: detectionBoxSize.x
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2008505908130164882, guid: 8f32a8a7fe8ddfc469ea5847c4dd21d2, type: 3}
+      propertyPath: detectionBoxSize.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2008505908130164882, guid: 8f32a8a7fe8ddfc469ea5847c4dd21d2, type: 3}
+      propertyPath: detectionBoxSize.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2008505908130164882, guid: 8f32a8a7fe8ddfc469ea5847c4dd21d2, type: 3}
       propertyPath: runnerAttackBoxSize.x
       value: 6.5

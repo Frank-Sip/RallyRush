@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,27 +16,35 @@ public abstract class DetectCrowdComponent : MonoBehaviour
     protected virtual Transform DetectionOrigin => transform;
     protected virtual bool UseDetectionRotation => false;
     protected virtual Color DetectionGizmoColor => Color.yellow;
+    public virtual bool CanDetect => true;
 
     protected virtual void Start()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
     }
 
-    public virtual void CustomUpdate()
+    public CrowdDetectorData GetDetectionJobData()
     {
-        DetectRunner();
+        Transform detectionOrigin = DetectionOrigin;
+
+        return new CrowdDetectorData
+        {
+            Position = detectionOrigin.position,
+            InverseRotation = math.inverse((quaternion)detectionOrigin.rotation),
+            HalfBoxSize = detectionBoxSize * 0.5f,
+            UseRotation = UseDetectionRotation ? (byte)1 : (byte)0
+        };
     }
 
-    protected void DetectRunner()
+    public void ApplyDetectionResults(IReadOnlyList<Runner> runners, NativeArray<byte> results, int resultOffset)
     {
-        IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
         runnersDetectedThisFrame.Clear();
 
         for (int i = runners.Count - 1; i >= 0; i--)
         {
             Runner runner = runners[i];
 
-            if (!IsRunnerInside(runner))
+            if (results[resultOffset + i] == 0 || !runner.isActiveAndEnabled)
             {
                 continue;
             }
@@ -60,23 +70,6 @@ public abstract class DetectCrowdComponent : MonoBehaviour
     protected void ResetDetectedRunners()
     {
         runnersInside.Clear();
-    }
-
-    private bool IsRunnerInside(Runner runner)
-    {
-        Transform detectionOrigin = DetectionOrigin;
-        Vector3 runnerPosition = runner.transform.position - detectionOrigin.position;
-
-        if (UseDetectionRotation)
-        {
-            runnerPosition = Quaternion.Inverse(detectionOrigin.rotation) * runnerPosition;
-        }
-
-        Vector3 halfBoxSize = detectionBoxSize * 0.5f;
-
-        return Mathf.Abs(runnerPosition.x) <= halfBoxSize.x
-            && Mathf.Abs(runnerPosition.y) <= halfBoxSize.y
-            && Mathf.Abs(runnerPosition.z) <= halfBoxSize.z;
     }
 
     protected virtual void OnDrawGizmos()

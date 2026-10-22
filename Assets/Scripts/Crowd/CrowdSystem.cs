@@ -2,7 +2,115 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
+
+public struct RunnerMovementData
+{
+    public float3 LocalPosition;
+    public float3 TargetLocalPosition;
+    public float RepositionSpeed;
+    public float RepositionDelay;
+    public float RunningTargetY;
+    public float VerticalRepositionSpeed;
+    public float VerticalVelocity;
+    public float Gravity;
+    public float3 LocalGravityDirection;
+    public byte GravityEnabled;
+}
+
+[BurstCompile]
+public struct RunnerMovementJob : IJobParallelFor
+{
+    public float DeltaTime;
+    public NativeArray<RunnerMovementData> Runners;
+
+    public void Execute(int index)
+    {
+        RunnerMovementData runner = Runners[index];
+
+        if (runner.GravityEnabled == 0)
+        {
+            runner.LocalPosition.y = MoveTowards(runner.LocalPosition.y, runner.RunningTargetY, runner.VerticalRepositionSpeed * DeltaTime);
+        }
+
+        if (runner.RepositionDelay > 0f)
+        {
+            runner.RepositionDelay -= DeltaTime;
+        }
+        else
+        {
+            float3 horizontalTargetPosition = runner.TargetLocalPosition;
+            horizontalTargetPosition.y = runner.LocalPosition.y;
+            runner.LocalPosition = MoveTowards(runner.LocalPosition, horizontalTargetPosition, runner.RepositionSpeed * DeltaTime);
+        }
+
+        if (runner.GravityEnabled == 1)
+        {
+            runner.VerticalVelocity -= runner.Gravity * DeltaTime;
+            runner.LocalPosition += runner.LocalGravityDirection * runner.VerticalVelocity * DeltaTime;
+        }
+
+        Runners[index] = runner;
+    }
+
+    private static float MoveTowards(float current, float target, float maxDelta)
+    {
+        float distance = target - current;
+
+        if (math.abs(distance) <= maxDelta)
+        {
+            return target;
+        }
+
+        return current + math.sign(distance) * maxDelta;
+    }
+
+    private static float3 MoveTowards(float3 current, float3 target, float maxDistanceDelta)
+    {
+        float3 direction = target - current;
+        float distance = math.length(direction);
+
+        if (distance <= maxDistanceDelta || distance == 0f)
+        {
+            return target;
+        }
+
+        return current + direction / distance * maxDistanceDelta;
+    }
+}
+
+[BurstCompile]
+public struct RunnerEnemyCollisionJob : IJobParallelFor
+{
+    [ReadOnly] public NativeArray<float3> RunnerPositions;
+    [ReadOnly] public NativeArray<float> RunnerCollisionDistances;
+    [ReadOnly] public NativeArray<float3> EnemyPositions;
+    [ReadOnly] public NativeArray<float> EnemyCollisionRadii;
+    [WriteOnly] public NativeArray<int> CollisionResults;
+    public int EnemyCount;
+
+    public void Execute(int index)
+    {
+        CollisionResults[index] = -1;
+
+        for (int enemyIndex = 0; enemyIndex < EnemyCount; enemyIndex++)
+        {
+            float3 distance = EnemyPositions[enemyIndex] - RunnerPositions[index];
+            distance.y = 0f;
+            float collisionDistance = RunnerCollisionDistances[index] + EnemyCollisionRadii[enemyIndex];
+
+            if (math.lengthsq(distance) <= collisionDistance * collisionDistance)
+            {
+                CollisionResults[index] = enemyIndex;
+                return;
+            }
+        }
+    }
+}
 
 public enum RunnerBehaviour
 {
@@ -20,6 +128,7 @@ public class CrowdSystem : MonoBehaviour
     [Min(0)] [SerializeField] private float deathRepositionBatchDelay = 0.1f;
     [Min(0)] [SerializeField] private float deathRepositionDelay = 0.25f;
     [Min(1)] [SerializeField] private int maxRunners = 999;
+    [Min(1)] [SerializeField] private int runnerJobBatchSize = 64;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI crowdCountText;
@@ -29,11 +138,19 @@ public class CrowdSystem : MonoBehaviour
     [Min(0)] [SerializeField] private int pyramidSfxIndex;
 
     private readonly List<Runner> runners = new List<Runner>();
+    private readonly List<Runner> collisionRunners = new List<Runner>();
+    private readonly List<Enemy> collisionEnemies = new List<Enemy>();
 
     private MovementController movementController;
     private CrowdCount crowdCount;
     private RunnerPool runnerPool;
     private Coroutine deathRepositionCoroutine;
+    private NativeArray<RunnerMovementData> runnerMovementData;
+    private NativeArray<float3> runnerCollisionPositions;
+    private NativeArray<float> runnerCollisionDistances;
+    private NativeArray<float3> enemyCollisionPositions;
+    private NativeArray<float> enemyCollisionRadii;
+    private NativeArray<int> runnerEnemyCollisionResults;
 
     public RunnerBehaviour Behaviour { get; private set; } = RunnerBehaviour.Running;
     public Transform CombatTarget { get; private set; }
@@ -62,6 +179,10 @@ public class CrowdSystem : MonoBehaviour
         crowdCount = new CrowdCount(crowdCountText);
         crowdCount.CustomAwake();
         RefreshRunners();
+        runnerMovementData = new NativeArray<RunnerMovementData>(maxRunners, Allocator.Persistent);
+        runnerCollisionPositions = new NativeArray<float3>(maxRunners, Allocator.Persistent);
+        runnerCollisionDistances = new NativeArray<float>(maxRunners, Allocator.Persistent);
+        runnerEnemyCollisionResults = new NativeArray<int>(maxRunners, Allocator.Persistent);
 
         Runner runnerPrefab = runners[0];
         runnerPool = new RunnerPool(runnerPrefab, runnerPrefab.transform.parent, maxRunners, this);
@@ -87,21 +208,155 @@ public class CrowdSystem : MonoBehaviour
     public void CustomDestroy()
     {
         crowdCount.CustomDestroy();
+        DisposeRunnerMovementData();
     }
 
     public void CustomUpdate()
     {
-        int runnerIndex = 0;
-
-        while (runnerIndex < runners.Count)
+        if (Behaviour == RunnerBehaviour.Running)
         {
-            Runner runner = runners[runnerIndex];
-            runner.CustomUpdate();
-
-            if (runnerIndex < runners.Count && runners[runnerIndex] == runner)
+            UpdateRunningRunners();
+        }
+        else
+        {
+            for (int i = 0; i < runners.Count; i++)
             {
-                runnerIndex++;
+                runners[i].CustomUpdate();
             }
+        }
+
+        if (Behaviour != RunnerBehaviour.Victory)
+        {
+            UpdateRunnerEnemyCollisions();
+        }
+    }
+
+    private void UpdateRunningRunners()
+    {
+        if (runners.Count == 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runnerMovementData[i] = runners[i].GetRunningMovementData();
+        }
+
+        RunnerMovementJob movementJob = new RunnerMovementJob
+        {
+            DeltaTime = Time.deltaTime,
+            Runners = runnerMovementData
+        };
+
+        JobHandle movementHandle = movementJob.Schedule(runners.Count, runnerJobBatchSize);
+        movementHandle.Complete();
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            runners[i].ApplyRunningMovement(runnerMovementData[i]);
+        }
+
+    }
+
+    private void UpdateRunnerEnemyCollisions()
+    {
+        IReadOnlyList<Enemy> activeEnemies = Enemy.ActiveEnemies;
+
+        if (runners.Count == 0 || activeEnemies.Count == 0)
+        {
+            return;
+        }
+
+        EnsureEnemyCollisionCapacity(activeEnemies.Count);
+        collisionRunners.Clear();
+        collisionEnemies.Clear();
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            Runner runner = runners[i];
+            collisionRunners.Add(runner);
+            runnerCollisionPositions[i] = runner.transform.position;
+            runnerCollisionDistances[i] = runner.EnemyCollisionDistance;
+        }
+
+        for (int i = 0; i < activeEnemies.Count; i++)
+        {
+            Enemy enemy = activeEnemies[i];
+            collisionEnemies.Add(enemy);
+            enemyCollisionPositions[i] = enemy.transform.position;
+            enemyCollisionRadii[i] = enemy.CollisionRadius;
+        }
+
+        RunnerEnemyCollisionJob collisionJob = new RunnerEnemyCollisionJob
+        {
+            RunnerPositions = runnerCollisionPositions,
+            RunnerCollisionDistances = runnerCollisionDistances,
+            EnemyPositions = enemyCollisionPositions,
+            EnemyCollisionRadii = enemyCollisionRadii,
+            CollisionResults = runnerEnemyCollisionResults,
+            EnemyCount = collisionEnemies.Count
+        };
+
+        JobHandle collisionHandle = collisionJob.Schedule(collisionRunners.Count, runnerJobBatchSize);
+        collisionHandle.Complete();
+
+        for (int i = 0; i < collisionRunners.Count; i++)
+        {
+            int enemyIndex = runnerEnemyCollisionResults[i];
+
+            if (enemyIndex < 0)
+            {
+                continue;
+            }
+
+            collisionEnemies[enemyIndex].TakeDamage();
+            collisionRunners[i].Die();
+
+            if (Behaviour == RunnerBehaviour.Victory || runners.Count == 0)
+            {
+                return;
+            }
+        }
+    }
+
+    private void EnsureEnemyCollisionCapacity(int requiredCapacity)
+    {
+        if (enemyCollisionPositions.IsCreated && enemyCollisionPositions.Length >= requiredCapacity)
+        {
+            return;
+        }
+
+        if (enemyCollisionPositions.IsCreated)
+        {
+            enemyCollisionPositions.Dispose();
+            enemyCollisionRadii.Dispose();
+        }
+
+        int capacity = Mathf.NextPowerOfTwo(requiredCapacity);
+        enemyCollisionPositions = new NativeArray<float3>(capacity, Allocator.Persistent);
+        enemyCollisionRadii = new NativeArray<float>(capacity, Allocator.Persistent);
+    }
+
+    private void OnDestroy()
+    {
+        DisposeRunnerMovementData();
+    }
+
+    private void DisposeRunnerMovementData()
+    {
+        if (runnerMovementData.IsCreated)
+        {
+            runnerMovementData.Dispose();
+            runnerCollisionPositions.Dispose();
+            runnerCollisionDistances.Dispose();
+            runnerEnemyCollisionResults.Dispose();
+        }
+
+        if (enemyCollisionPositions.IsCreated)
+        {
+            enemyCollisionPositions.Dispose();
+            enemyCollisionRadii.Dispose();
         }
     }
 

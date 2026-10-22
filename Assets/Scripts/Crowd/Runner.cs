@@ -28,6 +28,7 @@ public class Runner : MonoBehaviour
     [Min(0)] [SerializeField] private int deathSfxIndex;
 
     private Vector3 targetLocalPosition;
+    private Vector3 localGravityDirection;
     private Vector3 pyramidTargetWorldPosition;
     private Vector3 pyramidForward;
     private Transform pyramidCenter;
@@ -47,6 +48,7 @@ public class Runner : MonoBehaviour
     public int FormationIndex { get; private set; }
     public bool PyramidTargetReached => pyramidTargetReached;
     public bool HasCombatEnemyTarget => combatEnemyTarget != null;
+    public float EnemyCollisionDistance => enemyCollisionDistance;
 
     public void CustomAwake(CrowdSystem owner)
     {
@@ -54,6 +56,7 @@ public class Runner : MonoBehaviour
         animator = GetComponent<Animator>();
         deathEffectEmitter.CustomAwake();
         targetLocalPosition = transform.localPosition;
+        localGravityDirection = transform.parent.InverseTransformVector(Vector3.up);
         currentAttackSpeed = normalEnemyAttackSpeed;
         currentRepositionSpeed = doorRepositionSpeed;
     }
@@ -88,8 +91,7 @@ public class Runner : MonoBehaviour
         switch (crowdSystem.Behaviour)
         {
             case RunnerBehaviour.Running:
-                UpdateRunningMovement();
-                break;
+                return;
             case RunnerBehaviour.Combat:
                 AttackTarget();
                 break;
@@ -101,33 +103,30 @@ public class Runner : MonoBehaviour
         }
 
         ApplyGravity();
-        CheckEnemyCollision();
     }
 
-    private void UpdateRunningMovement()
+    public RunnerMovementData GetRunningMovementData()
     {
-        if (!gravityEnabled)
+        return new RunnerMovementData
         {
-            MoveTowardsRunningHeight();
-        }
-
-        if (repositionDelay > 0f)
-        {
-            repositionDelay -= Time.deltaTime;
-            return;
-        }
-
-        MoveTowardsTarget(currentRepositionSpeed);
+            LocalPosition = transform.localPosition,
+            TargetLocalPosition = targetLocalPosition,
+            RepositionSpeed = currentRepositionSpeed,
+            RepositionDelay = repositionDelay,
+            RunningTargetY = runningTargetY,
+            VerticalRepositionSpeed = verticalRepositionSpeed,
+            VerticalVelocity = verticalVelocity,
+            Gravity = gravity,
+            LocalGravityDirection = localGravityDirection,
+            GravityEnabled = gravityEnabled ? (byte)1 : (byte)0
+        };
     }
 
-    private void MoveTowardsRunningHeight()
+    public void ApplyRunningMovement(RunnerMovementData movementData)
     {
-        Vector3 localPosition = transform.localPosition;
-        localPosition.y = Mathf.MoveTowards(
-            localPosition.y,
-            runningTargetY,
-            verticalRepositionSpeed * Time.deltaTime);
-        transform.localPosition = localPosition;
+        transform.localPosition = movementData.LocalPosition;
+        repositionDelay = movementData.RepositionDelay;
+        verticalVelocity = movementData.VerticalVelocity;
     }
 
     private void MoveTowardsTarget(float speed)
@@ -172,26 +171,6 @@ public class Runner : MonoBehaviour
 
         verticalVelocity -= gravity * Time.deltaTime;
         transform.position += Vector3.up * verticalVelocity * Time.deltaTime;
-    }
-
-    private void CheckEnemyCollision()
-    {
-        for (int i = 0; i < Enemy.ActiveEnemies.Count; i++)
-        {
-            Enemy enemy = Enemy.ActiveEnemies[i];
-            IEnemy damageTarget = enemy;
-            Vector3 distance = enemy.transform.position - transform.position;
-            distance.y = 0f;
-
-            float totalCollisionDistance = enemyCollisionDistance + damageTarget.CollisionRadius;
-
-            if (distance.sqrMagnitude <= totalCollisionDistance * totalCollisionDistance)
-            {
-                damageTarget.TakeDamage();
-                Die();
-                return;
-            }
-        }
     }
 
     public void CustomLateUpdate()

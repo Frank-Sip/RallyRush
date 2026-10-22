@@ -17,7 +17,7 @@ public class HealthUI : MonoBehaviour
 
     public void CustomUpdate()
     {
-        healthFillImage.transform.LookAt(healthFillImage.transform.position + cameraTransform.forward, cameraTransform.up);
+        transform.LookAt(transform.position + cameraTransform.forward, cameraTransform.up);
     }
 
     private void UpdateHealthUI()

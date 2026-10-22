@@ -14,6 +14,7 @@ public class RunnerAttackerComponent : DetectCrowdComponent
     protected override Transform DetectionOrigin => attackPoint != null ? attackPoint : transform;
     protected override bool UseDetectionRotation => true;
     protected override Color DetectionGizmoColor => Color.magenta;
+    public override bool CanDetect => isAttacking;
 
     public bool IsAttacking
     {
@@ -27,14 +28,6 @@ public class RunnerAttackerComponent : DetectCrowdComponent
                 hitRegisteredDuringAttack = false;
                 ResetDetectedRunners();
             }
-        }
-    }
-
-    public override void CustomUpdate()
-    {
-        if (isAttacking)
-        {
-            base.CustomUpdate();
         }
     }
 

@@ -361,9 +361,22 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         crowdSystem.CustomDestroy();
+        detectionManager.CustomDestroy();
+        enemyManager.CustomDestroy();
         ServiceProvider.ClearServices();
         Instance = null;
         Destroy(gameObject);
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance != this)
+        {
+            return;
+        }
+
+        detectionManager.CustomDestroy();
+        enemyManager.CustomDestroy();
     }
 }

@@ -1,6 +1,70 @@
 using System;
 using System.Collections.Generic;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
+
+public struct ProjectileMovementData
+{
+    public float3 Position;
+    public quaternion Rotation;
+    public float3 TargetPosition;
+    public float Speed;
+    public float RotationSpeed;
+    public float HitDistance;
+    public byte HitTarget;
+}
+
+[BurstCompile]
+public struct ProjectileMovementJob : IJobParallelFor
+{
+    public float DeltaTime;
+    public NativeArray<ProjectileMovementData> Projectiles;
+
+    public void Execute(int index)
+    {
+        ProjectileMovementData projectile = Projectiles[index];
+        float3 direction = projectile.TargetPosition - projectile.Position;
+
+        if (math.lengthsq(direction) > 0f)
+        {
+            quaternion targetRotation = quaternion.LookRotationSafe(direction, math.up());
+            projectile.Rotation = RotateTowards(projectile.Rotation, targetRotation, projectile.RotationSpeed * DeltaTime);
+        }
+
+        projectile.Position = MoveTowards(projectile.Position, projectile.TargetPosition, projectile.Speed * DeltaTime);
+        projectile.HitTarget = math.lengthsq(projectile.TargetPosition - projectile.Position) <= projectile.HitDistance * projectile.HitDistance ? (byte)1 : (byte)0;
+        Projectiles[index] = projectile;
+    }
+
+    private static float3 MoveTowards(float3 current, float3 target, float maxDistanceDelta)
+    {
+        float3 direction = target - current;
+        float distance = math.length(direction);
+
+        if (distance <= maxDistanceDelta || distance == 0f)
+        {
+            return target;
+        }
+
+        return current + direction / distance * maxDistanceDelta;
+    }
+
+    private static quaternion RotateTowards(quaternion current, quaternion target, float maxDegreesDelta)
+    {
+        float dot = math.min(math.abs(math.dot(current.value, target.value)), 1f);
+        float angle = math.degrees(2f * math.acos(dot));
+
+        if (angle == 0f)
+        {
+            return target;
+        }
+
+        return math.slerp(current, target, math.min(1f, maxDegreesDelta / angle));
+    }
+}
 
 public class RangedAttack : MonoBehaviour
 {
@@ -22,6 +86,7 @@ public class RangedAttack : MonoBehaviour
     private float projectileHitDistance = 0.01f;
 
     private readonly List<ProjectilePool.Projectile> activeProjectiles = new List<ProjectilePool.Projectile>();
+    private readonly HashSet<Runner> aliveRunners = new HashSet<Runner>();
 
     private CrowdSystem crowdSystem;
     private ProjectilePool projectilePool;
@@ -30,6 +95,7 @@ public class RangedAttack : MonoBehaviour
     private bool canShoot = false;
     private bool isInsideShootingRange;
     private bool shootActivationTimerRunning;
+    private NativeArray<ProjectileMovementData> projectileMovementData;
 
     public event Action OnStartShooting;
 
@@ -127,15 +193,26 @@ public class RangedAttack : MonoBehaviour
 
     private void UpdateProjectiles()
     {
-        float hitDistanceSqr = projectileHitDistance * projectileHitDistance;
+        if (activeProjectiles.Count == 0)
+        {
+            return;
+        }
+
+        IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
+        aliveRunners.Clear();
+
+        for (int i = 0; i < runners.Count; i++)
+        {
+            aliveRunners.Add(runners[i]);
+        }
 
         for (int i = activeProjectiles.Count - 1; i >= 0; i--)
         {
             ProjectilePool.Projectile projectile = activeProjectiles[i];
 
-            if (!IsTargetAlive(projectile.Target))
+            if (!aliveRunners.Contains(projectile.Target))
             {
-                if (crowdSystem.GetRunnersAmount() == 0)
+                if (runners.Count == 0)
                 {
                     RemoveProjectile(i);
                     continue;
@@ -143,25 +220,52 @@ public class RangedAttack : MonoBehaviour
 
                 projectile.SetTarget(FindNearestRunner(projectile.Transform.position));
             }
+        }
 
-            Vector3 targetPosition = projectile.Target.transform.position;
-            Vector3 direction = targetPosition - projectile.Transform.position;
+        if (activeProjectiles.Count == 0)
+        {
+            return;
+        }
 
-            if (direction.sqrMagnitude > 0f)
+        EnsureProjectileMovementCapacity(activeProjectiles.Count);
+
+        for (int i = 0; i < activeProjectiles.Count; i++)
+        {
+            ProjectilePool.Projectile projectile = activeProjectiles[i];
+            projectileMovementData[i] = new ProjectileMovementData
             {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                projectile.Transform.rotation = Quaternion.RotateTowards(projectile.Transform.rotation, targetRotation, projectileRotationSpeed * Time.deltaTime);
-            }
+                Position = projectile.Transform.position,
+                Rotation = projectile.Transform.rotation,
+                TargetPosition = projectile.Target.transform.position,
+                Speed = projectileSpeed,
+                RotationSpeed = projectileRotationSpeed,
+                HitDistance = projectileHitDistance,
+                HitTarget = 0
+            };
+        }
 
-            projectile.Transform.position = Vector3.MoveTowards(projectile.Transform.position, targetPosition, projectileSpeed * Time.deltaTime);
+        ProjectileMovementJob movementJob = new ProjectileMovementJob
+        {
+            DeltaTime = Time.deltaTime,
+            Projectiles = projectileMovementData
+        };
 
-            if ((targetPosition - projectile.Transform.position).sqrMagnitude > hitDistanceSqr)
+        JobHandle movementHandle = movementJob.Schedule(activeProjectiles.Count, 32);
+        movementHandle.Complete();
+
+        for (int i = 0; i < activeProjectiles.Count; i++)
+        {
+            ProjectileMovementData movementData = projectileMovementData[i];
+            activeProjectiles[i].Transform.SetPositionAndRotation(movementData.Position, movementData.Rotation);
+        }
+
+        for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+        {
+            if (projectileMovementData[i].HitTarget == 1)
             {
-                continue;
+                activeProjectiles[i].Target.Die();
+                RemoveProjectile(i);
             }
-
-            projectile.Target.Die();
-            RemoveProjectile(i);
         }
     }
 
@@ -186,19 +290,19 @@ public class RangedAttack : MonoBehaviour
         return nearestRunner;
     }
 
-    private bool IsTargetAlive(Runner target)
+    private void EnsureProjectileMovementCapacity(int requiredCapacity)
     {
-        IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
-
-        for (int i = 0; i < runners.Count; i++)
+        if (projectileMovementData.IsCreated && projectileMovementData.Length >= requiredCapacity)
         {
-            if (runners[i] == target)
-            {
-                return true;
-            }
+            return;
         }
 
-        return false;
+        if (projectileMovementData.IsCreated)
+        {
+            projectileMovementData.Dispose();
+        }
+
+        projectileMovementData = new NativeArray<ProjectileMovementData>(Mathf.NextPowerOfTwo(requiredCapacity), Allocator.Persistent);
     }
 
     private void RemoveProjectile(int index)
@@ -228,6 +332,11 @@ public class RangedAttack : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (projectileMovementData.IsCreated)
+        {
+            projectileMovementData.Dispose();
+        }
+
         projectilePool.Dispose();
     }
 

@@ -15,6 +15,7 @@ public class EnemyGroup : MonoBehaviour
 
     private string attackAnimationTrigger = "Attack";
     private CrowdSystem crowdSystem;
+    private EnemyManager enemyManager;
     private float formationSpacing;
     private bool crowdDetected;
 
@@ -28,6 +29,7 @@ public class EnemyGroup : MonoBehaviour
     public virtual void CustomStart()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
+        enemyManager = ServiceProvider.GetService<EnemyManager>();
         SpawnEnemies();
 
         for (int i = 0; i < enemies.Count; i++)
@@ -45,7 +47,7 @@ public class EnemyGroup : MonoBehaviour
 
         if (crowdDetected)
         {
-            AssignTargets();
+            enemyManager.UpdateEnemyGroup(enemies, crowdSystem.GetRunners());
         }
 
         UpdateEnemies();
@@ -122,77 +124,6 @@ public class EnemyGroup : MonoBehaviour
         return false;
     }
 
-    private void AssignTargets()
-    {
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            Enemy enemy = enemies[i];
-            if (!enemy.HasTarget)
-            {
-                enemy.SetTarget(FindNearestRunner(enemy.transform.position));
-            }
-        }
-
-        IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
-
-        for (int i = 0; i < runners.Count; i++)
-        {
-            Runner runner = runners[i];
-
-            if (!runner.HasCombatEnemyTarget)
-            {
-                runner.SetCombatEnemyTarget(FindNearestEnemy(runner.transform.position));
-            }
-        }
-    }
-
-    private Runner FindNearestRunner(Vector3 enemyPosition)
-    {
-        IReadOnlyList<Runner> runners = crowdSystem.GetRunners();
-        Runner nearestRunner = null;
-        float nearestDistanceSqr = float.MaxValue;
-
-        for (int i = 0; i < runners.Count; i++)
-        {
-            Runner runner = runners[i];
-            Vector3 distance = runner.transform.position - enemyPosition;
-            distance.y = 0f;
-            float distanceSqr = distance.sqrMagnitude;
-
-            if (distanceSqr < nearestDistanceSqr)
-            {
-                nearestDistanceSqr = distanceSqr;
-                nearestRunner = runner;
-            }
-        }
-
-        return nearestRunner;
-    }
-
-    private Enemy FindNearestEnemy(Vector3 runnerPosition)
-    {
-        Enemy nearestEnemy = enemies[0];
-        Vector3 distance = nearestEnemy.transform.position - runnerPosition;
-        distance.y = 0f;
-        float nearestDistanceSqr = distance.sqrMagnitude;
-
-        for (int i = 1; i < enemies.Count; i++)
-        {
-            Enemy enemy = enemies[i];
-            distance = enemy.transform.position - runnerPosition;
-            distance.y = 0f;
-            float distanceSqr = distance.sqrMagnitude;
-
-            if (distanceSqr < nearestDistanceSqr)
-            {
-                nearestDistanceSqr = distanceSqr;
-                nearestEnemy = enemy;
-            }
-        }
-
-        return nearestEnemy;
-    }
-
     private void RefreshEnemies()
     {
         enemies.Clear();
@@ -212,7 +143,11 @@ public class EnemyGroup : MonoBehaviour
         while (enemyIndex < enemies.Count)
         {
             Enemy enemy = enemies[enemyIndex];
-            enemy.CustomUpdate();
+
+            if (enemy is not MeleeEnemy)
+            {
+                enemy.CustomUpdate();
+            }
 
             if (enemyIndex < enemies.Count && enemies[enemyIndex] == enemy)
             {
