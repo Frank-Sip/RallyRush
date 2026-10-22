@@ -32,10 +32,18 @@ public abstract class Enemy : MonoBehaviour, IEnemy
         activeEnemies.Remove(this);
     }
 
-    protected virtual void Awake()
+    public virtual void CustomAwake()
     {
         animators = GetComponentsInChildren<Animator>();
         healthComponent = GetComponent<HealthComponent>();
+    }
+
+    public virtual void CustomStart()
+    {
+    }
+
+    public virtual void CustomUpdate()
+    {
     }
 
     public virtual void SetTarget(Runner target)

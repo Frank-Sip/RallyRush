@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[DefaultExecutionOrder(-100)]
 public class FloorManager : MonoBehaviour
 {
     [Min(2)][SerializeField] private int floorAmount = 2;

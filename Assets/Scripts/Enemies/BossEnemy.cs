@@ -11,23 +11,23 @@ public class BossEnemy : BigEnemyReposition
 
     private RunnerAttackerComponent runnerAttackerComponent;
 
-    protected override void Awake()
+    public override void CustomAwake()
     {
-        base.Awake();
+        base.CustomAwake();
         ServiceProvider.RegisterService(this);
         runnerAttackerComponent = GetComponent<RunnerAttackerComponent>();
         runnerAttackerComponent.OnRunnerHit += PlayAttackHitSfx;
     }
     
-    protected override void Start()
+    public override void CustomStart()
     {
-        base.Start();
+        base.CustomStart();
         runnerAttackerComponent.IsAttacking = false;
     }
     
-    protected override void Update()
+    public override void CustomUpdate()
     {
-        base.Update();
+        base.CustomUpdate();
     }
 
     protected override void OnCombatStarted()

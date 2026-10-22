@@ -20,18 +20,23 @@ public class EnemyGroup : MonoBehaviour
 
     public event Action<int> EnemiesAmountChanged;
 
-    protected virtual void Awake()
+    public virtual void CustomAwake()
     {
         RefreshEnemies();
     }
 
-    protected virtual void Start()
+    public virtual void CustomStart()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
         SpawnEnemies();
+
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].CustomStart();
+        }
     }
 
-    protected virtual void Update()
+    public virtual void CustomUpdate()
     {
         if (!crowdDetected && IsRunnerInsideRange(detectionRange))
         {
@@ -42,6 +47,8 @@ public class EnemyGroup : MonoBehaviour
         {
             AssignTargets();
         }
+
+        UpdateEnemies();
     }
 
     private void SpawnEnemies()
@@ -57,6 +64,7 @@ public class EnemyGroup : MonoBehaviour
             Enemy newEnemy = Instantiate(enemyTemplate, transform);
             newEnemy.name = enemyTemplate.name;
             newEnemy.SetEnemyGroup(this);
+            newEnemy.CustomAwake();
             enemies.Add(newEnemy);
         }
 
@@ -193,6 +201,23 @@ public class EnemyGroup : MonoBehaviour
         for (int i = 0; i < enemies.Count; i++)
         {
             enemies[i].SetEnemyGroup(this);
+            enemies[i].CustomAwake();
+        }
+    }
+
+    private void UpdateEnemies()
+    {
+        int enemyIndex = 0;
+
+        while (enemyIndex < enemies.Count)
+        {
+            Enemy enemy = enemies[enemyIndex];
+            enemy.CustomUpdate();
+
+            if (enemyIndex < enemies.Count && enemies[enemyIndex] == enemy)
+            {
+                enemyIndex++;
+            }
         }
     }
 

@@ -9,18 +9,25 @@ public class RangedEnemyGroup : EnemyGroup
     private string ShootAnimationTrigger = "Shoot";
     private RangedAttack rangedAttack;
 
-    protected override void Awake()
+    public override void CustomAwake()
     {
-        base.Awake();
+        base.CustomAwake();
         rangedAttack = GetComponent<RangedAttack>();
+        rangedAttack.CustomAwake();
         rangedAttack.OnStartShooting += SetShootAnimation;
     }
 
-    protected override void Start()
+    public override void CustomStart()
     {
-        base.Start();
+        base.CustomStart();
         EnemiesAmountChanged += UpdateShootPoints;
         UpdateShootPoints(GetEnemiesAmount());
+    }
+
+    public override void CustomUpdate()
+    {
+        base.CustomUpdate();
+        rangedAttack.CustomUpdate();
     }
 
     private void UpdateShootPoints(int enemiesAmount)

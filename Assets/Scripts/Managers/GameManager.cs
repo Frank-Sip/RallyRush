@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     private AudioManager audioManager;
     private CoinManager coinManager;
     private DetectionManager detectionManager;
+    private EnemyManager enemyManager;
 
     public GameStatus currentStatus { get; private set; }
 
@@ -86,6 +87,9 @@ public class GameManager : MonoBehaviour
 
         detectionManager = new DetectionManager();
         detectionManager.CustomAwake();
+
+        enemyManager = new EnemyManager();
+        enemyManager.CustomAwake();
     }
 
     private void Start()
@@ -94,6 +98,7 @@ public class GameManager : MonoBehaviour
         movementController = ServiceProvider.GetService<MovementController>();
         crowdCount = ServiceProvider.GetService<CrowdCount>();
         roulette = ServiceProvider.GetService<Roulette>();
+        enemyManager.CustomStart();
         detectionManager.CustomStart();
         crowdSystem.SetStartingRunnersAmount(coinManager.StartingRunners);
         UpgradeButton.onClick.AddListener(BuyStartingRunner);
@@ -106,6 +111,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         crowdSystem.CustomUpdate();
+        enemyManager.CustomUpdate();
 
         switch (currentStatus)
         {

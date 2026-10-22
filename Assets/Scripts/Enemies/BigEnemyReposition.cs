@@ -6,19 +6,19 @@ public class BigEnemyReposition : Enemy
     protected CrowdSystem crowdSystem;
     private bool crowdDetected;
 
-    protected override void Awake()
+    public override void CustomAwake()
     {
-        base.Awake();
+        base.CustomAwake();
         healthComponent = GetComponent<HealthComponent>();
         healthComponent.OnDeath += Die;
     }
 
-    protected virtual void Start()
+    public override void CustomStart()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
     }
 
-    protected virtual void Update()
+    public override void CustomUpdate()
     {
         if (!crowdDetected)
         {

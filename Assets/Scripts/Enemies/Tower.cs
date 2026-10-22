@@ -9,10 +9,20 @@ public class Tower : BigEnemyReposition
     [Header("Audio")]
     [Min(0)] [SerializeField] private int deathSfxIndex;
 
-    protected override void Awake()
+    private RangedAttack rangedAttack;
+
+    public override void CustomAwake()
     {
-        base.Awake();
+        base.CustomAwake();
+        rangedAttack = GetComponent<RangedAttack>();
+        rangedAttack.CustomAwake();
         healthComponent.OnDamageTaken += HandleDamageTaken;
+    }
+
+    public override void CustomUpdate()
+    {
+        base.CustomUpdate();
+        rangedAttack.CustomUpdate();
     }
 
     private void HandleDamageTaken()

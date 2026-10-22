@@ -5,7 +5,7 @@ public class MeleeEnemy : Enemy
     [Min(0)] [SerializeField] private float moveSpeed = 6f;
     [Min(0)] [SerializeField] private float rotationSpeed = 720f;
 
-    private void Update()
+    public override void CustomUpdate()
     {
         if (!HasTarget)
         {

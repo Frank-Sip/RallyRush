@@ -30,12 +30,12 @@ public class RangedAttack : MonoBehaviour
 
     public event Action OnStartShooting;
 
-    private void Start()
+    public void CustomAwake()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
     }
 
-    private void Update()
+    public void CustomUpdate()
     {
         UpdateShootActivationTimer();
         UpdateShooting();
