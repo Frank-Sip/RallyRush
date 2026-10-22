@@ -12,11 +12,6 @@ public class RouletteTrigger : DetectCrowdComponent
         bossEnemy = ServiceProvider.GetService<BossEnemy>();
     }
 
-    private void Update()
-    {
-        DetectRunner();
-    }
-
     protected override void DetectionAction(Runner runner)
     {
         enabled = false;

@@ -10,11 +10,6 @@ public class BridgeButton : DetectCrowdComponent
     [Min(0)] [SerializeField] private int buttonSfxIndex;
     [Min(0)] [SerializeField] private int bridgeAnimationSfxIndex;
 
-    private void Update()
-    {
-        DetectRunner();
-    }
-
     protected override void DetectionAction(Runner runner)
     {
         enabled = false;

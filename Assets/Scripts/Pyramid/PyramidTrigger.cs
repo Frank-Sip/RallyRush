@@ -20,11 +20,6 @@ public class PyramidTrigger : DetectCrowdComponent
         movementController = ServiceProvider.GetService<MovementController>();
     }
 
-    private void Update()
-    {
-        DetectRunner();
-    }
-
     protected override void DetectionAction(Runner runner)
     {
         enabled = false;

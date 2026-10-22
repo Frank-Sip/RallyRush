@@ -20,6 +20,11 @@ public abstract class DetectCrowdComponent : MonoBehaviour
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
     }
 
+    public virtual void CustomUpdate()
+    {
+        DetectRunner();
+    }
+
     protected void DetectRunner()
     {
         IReadOnlyList<Runner> runners = crowdSystem.GetRunners();

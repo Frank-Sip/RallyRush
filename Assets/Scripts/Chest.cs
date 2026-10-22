@@ -12,11 +12,6 @@ public class Chest : DetectCrowdComponent
         animator = GetComponentInParent<Animator>();
     }
 
-    private void Update()
-    {
-        DetectRunner();
-    }
-
     protected override void DetectionAction(Runner runner)
     {
         enabled = false;

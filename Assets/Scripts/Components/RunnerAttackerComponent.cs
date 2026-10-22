@@ -30,11 +30,11 @@ public class RunnerAttackerComponent : DetectCrowdComponent
         }
     }
 
-    private void Update()
+    public override void CustomUpdate()
     {
         if (isAttacking)
         {
-            DetectRunner();
+            base.CustomUpdate();
         }
     }
 

@@ -2,11 +2,6 @@ using UnityEngine;
 
 public class GravityModifierComponent : DetectCrowdComponent
 {
-    private void Update()
-    {
-        DetectRunner();
-    }
-
     protected override void DetectionAction(Runner runner)
     {
         ToggleRunnerGravity(runner);
