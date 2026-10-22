@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Ramp : MonoBehaviour
 {
-    [Min(0f)] [SerializeField] private float jumpForce = 7f;
+    [Min(0f)][SerializeField] private float jumpForce = 7f;
     [SerializeField] private Vector3 detectionBoxSize = new Vector3(4f, 2f, 1f);
 
     [Header("Audio")]
-    [Min(0)] [SerializeField] private int jumpSfxIndex;
+    [Min(0)][SerializeField] private int jumpSfxIndex;
 
     private readonly HashSet<Runner> runnersInside = new HashSet<Runner>();
     private CrowdSystem crowdSystem;
@@ -44,8 +44,6 @@ public class Ramp : MonoBehaviour
                     jumpSfxPlayed = true;
                     ServiceProvider.GetService<AudioManager>().PlaySFX(jumpSfxIndex);
                 }
-
-                Debug.Log("Detection");
             }
             else if (!isInside)
             {

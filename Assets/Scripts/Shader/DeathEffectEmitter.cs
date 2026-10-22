@@ -6,9 +6,16 @@ public class DeathEffectEmitter : MonoBehaviour
     [SerializeField] private Vector3 effectScale = Vector3.one;
     [ColorUsage(true, true)] [SerializeField] private Color effectColor = Color.white;
 
+    private SplashPool splashPool;
+
+    public void CustomAwake()
+    {
+        splashPool = ServiceProvider.GetService<SplashPool>();
+        splashPool.Preload(effectPrefab);
+    }
+
     public void Play()
     {
-        DeathEffect effect = Instantiate(effectPrefab, transform.position, transform.rotation);
-        effect.Play(effectScale, effectColor);
+        splashPool.Play(effectPrefab, transform, effectScale, effectColor);
     }
 }

@@ -36,6 +36,7 @@ public abstract class Enemy : MonoBehaviour, IEnemy
     {
         animators = GetComponentsInChildren<Animator>();
         healthComponent = GetComponent<HealthComponent>();
+        deathEffectEmitter.CustomAwake();
     }
 
     public virtual void CustomStart()

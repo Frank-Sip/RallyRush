@@ -52,6 +52,7 @@ public class Runner : MonoBehaviour
     {
         crowdSystem = owner;
         animator = GetComponent<Animator>();
+        deathEffectEmitter.CustomAwake();
         targetLocalPosition = transform.localPosition;
         currentAttackSpeed = normalEnemyAttackSpeed;
         currentRepositionSpeed = doorRepositionSpeed;
@@ -67,6 +68,9 @@ public class Runner : MonoBehaviour
 
     public void Spawn(Vector3 position, int formationIndex, bool useMenuReposition)
     {
+        gravityEnabled = false;
+        verticalVelocity = 0f;
+
         if (useMenuReposition)
         {
             SetMenuTargetPosition(position, formationIndex);

@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour
     [Header("Coins")]
     [SerializeField] private CoinSO coinSettings;
 
+    [Header("Splash Pool")]
+    [Min(0)] [SerializeField] private int splashPoolInitialCount = 20;
+    [Min(1)] [SerializeField] private int splashPoolExpandCount = 10;
+
     [Header("Menu UI")]
     [SerializeField] private GameObject menuUI;
     [SerializeField] private TextMeshProUGUI menuCoinsText;
@@ -57,6 +61,7 @@ public class GameManager : MonoBehaviour
     private CoinManager coinManager;
     private DetectionManager detectionManager;
     private EnemyManager enemyManager;
+    private SplashPool splashPool;
 
     public GameStatus currentStatus { get; private set; }
 
@@ -70,6 +75,9 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        splashPool = new SplashPool(transform, splashPoolInitialCount, splashPoolExpandCount);
+        ServiceProvider.RegisterService(splashPool);
 
         crowdSystem = FindAnyObjectByType<CrowdSystem>();
         crowdSystem.CustomAwake();

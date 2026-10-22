@@ -16,12 +16,15 @@ public class RangedAttack : MonoBehaviour
 
     [Header("Projectile")]
     [Min(0)] [SerializeField] private float projectileSpeed = 10f;
-    [Min(0)][SerializeField] private float projectileRotationSpeed = 720f;
+    [Min(0)] [SerializeField] private float projectileRotationSpeed = 720f;
+    [Min(0)] [SerializeField] private int projectilePoolInitialCount = 10;
+    [Min(1)] [SerializeField] private int projectilePoolExpandCount = 5;
     private float projectileHitDistance = 0.01f;
 
-    private readonly List<ActiveProjectile> activeProjectiles = new List<ActiveProjectile>();
+    private readonly List<ProjectilePool.Projectile> activeProjectiles = new List<ProjectilePool.Projectile>();
 
     private CrowdSystem crowdSystem;
+    private ProjectilePool projectilePool;
     private float shootActivationTimer;
     private float fireTimer;
     private bool canShoot = false;
@@ -33,6 +36,7 @@ public class RangedAttack : MonoBehaviour
     public void CustomAwake()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
+        projectilePool = new ProjectilePool(projectilePrefab, projectilePoolInitialCount, projectilePoolExpandCount);
     }
 
     public void CustomUpdate()
@@ -117,9 +121,7 @@ public class RangedAttack : MonoBehaviour
             Transform shootPoint = shootPoints[i];
             Vector3 shootPosition = shootPoint.position + shootPointOffset;
             Runner target = FindNearestRunner(shootPosition);
-            GameObject projectile = Instantiate(projectilePrefab, shootPosition, shootPoint.rotation);
-
-            activeProjectiles.Add(new ActiveProjectile(projectile.transform, target));
+            activeProjectiles.Add(projectilePool.Get(shootPosition, target));
         }
     }
 
@@ -129,7 +131,7 @@ public class RangedAttack : MonoBehaviour
 
         for (int i = activeProjectiles.Count - 1; i >= 0; i--)
         {
-            ActiveProjectile projectile = activeProjectiles[i];
+            ProjectilePool.Projectile projectile = activeProjectiles[i];
 
             if (!IsTargetAlive(projectile.Target))
             {
@@ -201,7 +203,7 @@ public class RangedAttack : MonoBehaviour
 
     private void RemoveProjectile(int index)
     {
-        Destroy(activeProjectiles[index].Transform.gameObject);
+        projectilePool.Return(activeProjectiles[index]);
         activeProjectiles.RemoveAt(index);
     }
 
@@ -226,10 +228,7 @@ public class RangedAttack : MonoBehaviour
 
     private void OnDestroy()
     {
-        for (int i = 0; i < activeProjectiles.Count; i++)
-        {
-            Destroy(activeProjectiles[i].Transform.gameObject);
-        }
+        projectilePool.Dispose();
     }
 
     private void OnDrawGizmosSelected()
@@ -238,20 +237,4 @@ public class RangedAttack : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, shootingDetectionRange);
     }
 
-    private class ActiveProjectile
-    {
-        public Transform Transform { get; }
-        public Runner Target { get; private set; }
-
-        public ActiveProjectile(Transform projectileTransform, Runner target)
-        {
-            Transform = projectileTransform;
-            Target = target;
-        }
-
-        public void SetTarget(Runner target)
-        {
-            Target = target;
-        }
-    }
 }
