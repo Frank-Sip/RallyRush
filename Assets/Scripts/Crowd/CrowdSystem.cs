@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public enum RunnerBehaviour
@@ -19,6 +20,9 @@ public class CrowdSystem : MonoBehaviour
     [Min(0)] [SerializeField] private float deathRepositionBatchDelay = 0.1f;
     [Min(0)] [SerializeField] private float deathRepositionDelay = 0.25f;
     [Min(1)] [SerializeField] private int maxRunners = 999;
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI crowdCountText;
 
     [Header("Audio")]
     [Min(0)] [SerializeField] private int runningSfxIndex;
@@ -51,11 +55,12 @@ public class CrowdSystem : MonoBehaviour
         }
     }
 
-    private void Awake()
+    public void CustomAwake()
     {
         ServiceProvider.RegisterService(this);
-        movementController = GetComponentInParent<MovementController>();
-        crowdCount = GetComponentInChildren<CrowdCount>();
+        movementController = GetComponent<MovementController>();
+        crowdCount = new CrowdCount(crowdCountText);
+        crowdCount.CustomAwake();
         RefreshRunners();
 
         for (int i = 0; i < runners.Count; i++)
@@ -65,9 +70,10 @@ public class CrowdSystem : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void CustomStart()
     {
         hasStarted = true;
+        crowdCount.CustomStart();
 
         for (int i = 0; i < runners.Count; i++)
         {
@@ -76,7 +82,12 @@ public class CrowdSystem : MonoBehaviour
 
     }
 
-    private void Update()
+    public void CustomDestroy()
+    {
+        crowdCount.CustomDestroy();
+    }
+
+    public void CustomUpdate()
     {
         int runnerIndex = 0;
 
@@ -92,7 +103,7 @@ public class CrowdSystem : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    public void CustomLateUpdate()
     {
         for (int i = 0; i < runners.Count; i++)
         {
@@ -201,7 +212,7 @@ public class CrowdSystem : MonoBehaviour
         if (runners.Count <= 0)
         {
             StopBehaviourSFX();
-            crowdCount.gameObject.SetActive(false);
+            crowdCount.SetActive(false);
             GameManager.Instance.SetGameStatus(GameStatus.GameOver);
         }
     }
@@ -332,7 +343,7 @@ public class CrowdSystem : MonoBehaviour
     {
         SetBehaviour(RunnerBehaviour.Pyramid);
         IsPyramidRepositioning = true;
-        crowdCount.gameObject.SetActive(false);
+        crowdCount.SetActive(false);
     }
 
     private void SetBehaviour(RunnerBehaviour newBehaviour)

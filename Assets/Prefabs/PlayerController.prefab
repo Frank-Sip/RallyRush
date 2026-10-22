@@ -278,7 +278,6 @@ GameObject:
   - component: {fileID: 8860125671335906842}
   - component: {fileID: 5124602084718179446}
   - component: {fileID: 834535760351259052}
-  - component: {fileID: 2448187103831452487}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -370,19 +369,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2448187103831452487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7152385489736431903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: addfa27069f2d184ca60769c4cf0f071, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CrowdCount
-  crowdCountText: {fileID: 6074689991982559224}
 --- !u!1 &7230678356182761462
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,6 +472,7 @@ MonoBehaviour:
   deathRepositionBatchDelay: 0.05
   deathRepositionDelay: 0.1
   maxRunners: 999
+  crowdCountText: {fileID: 6074689991982559224}
   runningSfxIndex: 0
   pyramidSfxIndex: 0
 --- !u!1001 &7967026028252224042

@@ -70,6 +70,9 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        crowdSystem = FindAnyObjectByType<CrowdSystem>();
+        crowdSystem.CustomAwake();
+
         audioManager = new AudioManager(audioContainer);
         audioManager.Init(loopingSfxSource, sfxSource);
         ServiceProvider.RegisterService(audioManager);
@@ -87,8 +90,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        crowdSystem.CustomStart();
         movementController = ServiceProvider.GetService<MovementController>();
-        crowdSystem = ServiceProvider.GetService<CrowdSystem>();
         crowdCount = ServiceProvider.GetService<CrowdCount>();
         roulette = ServiceProvider.GetService<Roulette>();
         detectionManager.CustomStart();
@@ -102,6 +105,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        crowdSystem.CustomUpdate();
+
         switch (currentStatus)
         {
             case GameStatus.Menu:
@@ -125,6 +130,11 @@ public class GameManager : MonoBehaviour
                 UpdateEndStatus();
                 break;
         }
+    }
+
+    private void LateUpdate()
+    {
+        crowdSystem.CustomLateUpdate();
     }
 
     public void SetGameStatus(GameStatus newStatus)
@@ -200,7 +210,7 @@ public class GameManager : MonoBehaviour
         crowdSystem.StopBehaviourSFX();
         audioManager.PlaySFX(victorySfxIndex);
         victoryUI.SetActive(true);
-        crowdCount.gameObject.SetActive(false);
+        crowdCount.SetActive(false);
         crowdSystem.SetVictoryAnimation();
     }
 
@@ -290,7 +300,7 @@ public class GameManager : MonoBehaviour
 
     private void StartRangedAttackTimers()
     {
-        RangedAttack[] rangedAttacks = FindObjectsByType<RangedAttack>(FindObjectsSortMode.None);
+        RangedAttack[] rangedAttacks = FindObjectsByType<RangedAttack>(FindObjectsInactive.Exclude);
 
         for (int i = 0; i < rangedAttacks.Length; i++)
         {
@@ -336,6 +346,7 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         Time.timeScale = 1f;
+        crowdSystem.CustomDestroy();
         ServiceProvider.ClearServices();
         Instance = null;
         Destroy(gameObject);

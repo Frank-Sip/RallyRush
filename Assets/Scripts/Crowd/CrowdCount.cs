@@ -1,30 +1,38 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
-public class CrowdCount : MonoBehaviour
+public class CrowdCount
 {
-    [SerializeField] private TextMeshProUGUI crowdCountText;
-
+    private readonly TextMeshProUGUI crowdCountText;
+    private readonly GameObject crowdCountUI;
     private CrowdSystem crowdSystem;
 
-    private void Awake()
+    public CrowdCount(TextMeshProUGUI text)
+    {
+        crowdCountText = text;
+        crowdCountUI = crowdCountText.canvas.gameObject;
+    }
+
+    public void CustomAwake()
     {
         ServiceProvider.RegisterService(this);
     }
 
-    private void Start()
+    public void CustomStart()
     {
         crowdSystem = ServiceProvider.GetService<CrowdSystem>();
         crowdSystem.RunnersAmountChanged += UpdateCrowdCount;
         UpdateCrowdCount(crowdSystem.GetRunnersAmount());
     }
 
-    private void OnDestroy()
+    public void CustomDestroy()
     {
-        if (crowdSystem != null)
-        {
-            crowdSystem.RunnersAmountChanged -= UpdateCrowdCount;
-        }
+        crowdSystem.RunnersAmountChanged -= UpdateCrowdCount;
+    }
+
+    public void SetActive(bool isActive)
+    {
+        crowdCountUI.SetActive(isActive);
     }
 
     private void UpdateCrowdCount(int amount)
